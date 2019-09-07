@@ -3,7 +3,6 @@ A class using the folium module to visualize the sentiments after new proposal
 has been presented to residents in LOU area.
 """
 
-
 from geopy.geocoders import Nominatim
 from pandas.io.json import json_normalize
 import folium

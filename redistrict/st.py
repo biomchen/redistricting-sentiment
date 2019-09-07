@@ -30,7 +30,6 @@ class SentiAnalysis:
         self.swnAll = {}
         self.makeSWN(base)
 
-
     def makeSWN(self, base):
 
         records = [line.split('\t') for line in open(self.base)]
@@ -43,7 +42,6 @@ class SentiAnalysis:
             if word not in self.swnAll:
                 self.swnAll[word] = {}
                 self.swnAll[word]['score'] = float(pScore) - float(nScore)
-
 
     def weighting(self, m, s):
 
@@ -66,7 +64,6 @@ class SentiAnalysis:
                 num +=1
         return weighted_sum
 
-
     def cleanText(self, filename):
 
         if '.txt' in filename or '.csv' in filename:
@@ -88,7 +85,6 @@ class SentiAnalysis:
                 return textClean
             except:
                 return "name error"
-
 
     def scoreText(self, text):
 

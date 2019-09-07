@@ -36,7 +36,6 @@ class shape2json:
         self.addresses = addresses
         self.coordinates = coordinates
 
-
     def trans2json(self): # schoolPara refers to 'SCHOOL_1','SCHOOL' in different shapefiles
         reader = shapefile.Reader(self.fname)
         fields = reader.fields[1:]
@@ -104,7 +103,6 @@ class shape2json:
 
         print('Done!')
 
-
     def getCoordinates(self):
         self.coordinates = {}
 
@@ -118,4 +116,4 @@ class shape2json:
             else:
                 self.coordinates.update({school:(coordinate.latitude, coordinate.longitude)})
 
-        print('Done!')   
+        print('Done!')
