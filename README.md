@@ -21,7 +21,10 @@ The shapefile that can be download at Frederick County [website](https://www.fre
 
 ---------------------------
 
-### Class developed for the project
+### redistrict Module
+This module includes three newly developed classes, SentiAnalysis(), shape2json(), and MapVisualization(). Each class have been specifically
+developed to analyze the public assessible data.
+
 #### Class SentiAnalysis()
 
 #### Class shape2json()
