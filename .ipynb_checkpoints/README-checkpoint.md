@@ -3,6 +3,7 @@
 Author: Meng Chen
 
 ---------------------------
+### About
 
 Southeastern communities of Frederick County has been growing steadfast due to newly approved development projects in this area. Local schools have been growing over their designed capacity for years. Particularly, in Urbana area, a huge working force will join the local community as a new biopharmaceutical manufacturing facility is being established by [Kite Pharma](https://www.kitepharma.com) and a hotel and restaurant chain will be build in next two years. There is a urgent need to redistrict local schools based on changing feeding patterns.
 
@@ -12,8 +13,17 @@ This project primarily focuses on sentiments after the second-round proposal for
 
 ---------------------------
 
+### Data origination
+
 The original survey data can be download as [PDF files](https://www.fcps.org/capital-program/lou-meetings).
 The shapefile that can be download at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data).
+
+### Class developed for the project
+#### Class SentiAnalysis()
+
+#### Class shape2json()
+
+#### Class MapVisualization()
 
 
 If you have any questions, please contact me at meng.chen03@gmail.com.
