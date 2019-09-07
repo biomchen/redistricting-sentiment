@@ -16,7 +16,10 @@ This project primarily focuses on sentiments after the second-round proposal for
 ### Data origination
 
 The original survey data can be download as [PDF files](https://www.fcps.org/capital-program/lou-meetings).
+
 The shapefile that can be download at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data).
+
+---------------------------
 
 ### Class developed for the project
 #### Class SentiAnalysis()
