@@ -25,11 +25,16 @@ The shapefile that can be download at Frederick County [website](https://www.fre
 This module includes three newly developed classes, SentiAnalysis(), shape2json(), and MapVisualization(). Each class have been specifically
 developed to analyze the public assessible data.
 
-#### Class SentiAnalysis()
+##### Class SentiAnalysis()
+The class can take either a string or a text file as input to calculate sentiment scores. It cleans the text before the analyses. The SentiWordNet 3.0 has been used to score the sentiments of the words. Three different weighting schemes have been used. In addition, the proportion of positive, negative, and neutural feedbacks are generated as well raw scores of individual word in the data.
 
-#### Class shape2json()
+**Input would like this**:
+'Welcome to our new house.' or 'comments_school_redistricting.txt'
+**Out put would like this**:
 
-#### Class MapVisualization()
+##### Class shape2json()
+
+##### Class MapVisualization()
 
 
 If you have any questions, please contact me at meng.chen03@gmail.com.
