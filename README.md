@@ -1,4 +1,4 @@
-### Sentiment Analyses of Linganore-Oakdale-Urbana Area Redistricting (A Two-week Project)
+### Sentiment Analyses of Linganore-Oakdale-Urbana Area Redistricting (A two-week project)
 
 @Meng Chen
 
