@@ -52,7 +52,7 @@ The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordin
 The outputs are json files for each elementary, middle, and high school district.
 In addition, the class provides coordinates for each school based on their address.
 
-**Unfortunately, this two-week time window has hinder my effort to clean up the geojson file. The polygon plots in the interactive maps are not ideal. I will come back to work on this around October.**
+**Unfortunately, this two-week time window has hinder my effort to clean up the shapefiles. The polygon plots in the interactive maps are not ideal. I will come back to work on this around October.**
 
 ---------------------------
 
