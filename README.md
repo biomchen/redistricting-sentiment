@@ -58,6 +58,6 @@ This class visualize the results in a interactive map. Mulitple arguments have b
 'MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')'
 ```
 **Output**
-<a href="ES_A.html"></a>
+<dl><dt>href="ES_A.html"></dt></dl>
 
 If you have any questions, please contact me at meng.chen03@gmail.com.
