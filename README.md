@@ -1,4 +1,4 @@
-### Sentiment Analyses of Linganore-Oakdale-Urbana Area Redistricting
+### Sentiment Analyses of Linganore-Oakdale-Urbana Area Redistricting (Two-week Project)
 
 Author: Meng Chen
 
@@ -22,19 +22,43 @@ The shapefile that can be download at Frederick County [website](https://www.fre
 ---------------------------
 
 ### redistrict Module
-This module includes three newly developed classes, SentiAnalysis(), shape2json(), and MapVisualization(). Each class have been specifically
-developed to analyze the public assessible data.
+This module includes three newly developed classes, _SentiAnalysis()_, _shape2json()_, and _MapVisualization()_. Each class have been specifically
+developed to analyze the public accessible data of LOU Redistricting.
+
+Class  | Description
+------ | -----------
+SentiAnalysis() | Analyze the sentiments of the comments on school redistricting in LOU Area
+shape2json() | Convert the shapefile to geojson for visualization (ESPG 2236 to ESPG 4483)
+MapVisualization() | Visualize the results on a interactive map.
 
 ##### Class SentiAnalysis()
 The class can take either a string or a text file as input to calculate sentiment scores. It cleans the text before the analyses. The SentiWordNet 3.0 has been used to score the sentiments of the words. Three different weighting schemes have been used. In addition, the proportion of positive, negative, and neutural feedbacks are generated as well raw scores of individual word in the data.
 
-**Input would like this**:
-'Welcome to our new house.' or 'comments_school_redistricting.txt'
-**Out put would like this**:
+**Input**:
+```python
+'SentAnalysis().scoreText('Welcome to our new house.')'
+```
+**Output**:
+Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
+![](result_example1)
+
 
 ##### Class shape2json()
+The class converts shapefile downloaded from Frederick County Governemnt website to geojson. Some of record names in the shapefile are not consistent, which needs to customerize before the conversion.
+The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordinateConvert()_ were created to convert the coordinates to ESPG 4326 for map plots.
+The outputs are json file for elementary, middle, and high school districts.
+In addition, the class provides coordinates for each school based on their address.
+
+**Unfortunately, limited time has hinder my effort to clean up the geojson file. The polygon plots in the interactive maps are not prefect. I will come back to work on this when I have some time later**
 
 ##### Class MapVisualization()
+This class visualize the results in a interactive map. Mulitple arguments have been listed, including coordiantes, score(mean score, percentage, or raw), option (A, B, AB) and etc.
+**Input**:
+```python
+'MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')'
+```
+**Output**
+[](ES_A.html)
 
 
 If you have any questions, please contact me at meng.chen03@gmail.com.
