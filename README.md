@@ -28,7 +28,7 @@ developed to analyze the public accessible data of LOU Redistricting.
 Class  | Description
 ------ | -----------
 SentiAnalysis() | Analyze the sentiments of the comments on school redistricting in LOU Area
-shape2json() | Convert the shapefile to geojson for visualization (ESPG 2236 to ESPG 4483)
+shape2json() | Convert the shapefile to geojson for visualization (internally convert ESPG 2236 to ESPG 4483)
 MapVisualization() | Visualize the results on a interactive map.
 
 ---------------------------
@@ -49,10 +49,10 @@ Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative
 ### _shape2json()_
 The class converts shapefile downloaded from Frederick County Governemnt website to geojson. Some of record names in the shapefile are not consistent, which needs to customerize before the conversion.
 The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordinateConvert()_ were created to convert the coordinates to ESPG 4326 for map plots.
-The outputs are json file for elementary, middle, and high school districts.
+The outputs are json files for each elementary, middle, and high school district.
 In addition, the class provides coordinates for each school based on their address.
 
-**Unfortunately, the limited time has hinder my effort to clean up the geojson file. The polygon plots in the interactive maps are not prefect. I will come back to work on this when I have some time later**
+**Unfortunately, this two-week time window has hinder my effort to clean up the geojson file. The polygon plots in the interactive maps are not ideal. I will come back to work on this around October.**
 
 ---------------------------
 
