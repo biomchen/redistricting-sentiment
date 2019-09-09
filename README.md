@@ -38,7 +38,7 @@ The class can take either a string or a text file as input to calculate sentimen
 ```python
 'SentAnalysis().scoreText('Welcome to our new house.')'
 ```
-**Output**:
+**Output**:                                                                 
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
 ![](result_example1.png)
 
