@@ -1,6 +1,6 @@
 ### Sentiment Analyses of Linganore-Oakdale-Urbana Area Redistricting (Two-week Project)
 
-Author: Meng Chen
+@Meng Chen
 
 ---------------------------
 ### About
@@ -31,6 +31,8 @@ SentiAnalysis() | Analyze the sentiments of the comments on school redistricting
 shape2json() | Convert the shapefile to geojson for visualization (ESPG 2236 to ESPG 4483)
 MapVisualization() | Visualize the results on a interactive map.
 
+---------------------------
+
 ##### Class SentiAnalysis()
 The class can take either a string or a text file as input to calculate sentiment scores. It cleans the text before the analyses. The SentiWordNet 3.0 has been used to score the sentiments of the words. Three different weighting schemes have been used. In addition, the proportion of positive, negative, and neutural feedbacks are generated as well raw scores of individual word in the data.
 
@@ -42,6 +44,7 @@ The class can take either a string or a text file as input to calculate sentimen
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
 ![](result_example1.png)
 
+---------------------------
 
 ##### Class shape2json()
 The class converts shapefile downloaded from Frederick County Governemnt website to geojson. Some of record names in the shapefile are not consistent, which needs to customerize before the conversion.
@@ -49,7 +52,9 @@ The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordin
 The outputs are json file for elementary, middle, and high school districts.
 In addition, the class provides coordinates for each school based on their address.
 
-**Unfortunately, limited time has hinder my effort to clean up the geojson file. The polygon plots in the interactive maps are not prefect. I will come back to work on this when I have some time later**
+**Unfortunately, the limited time has hinder my effort to clean up the geojson file. The polygon plots in the interactive maps are not prefect. I will come back to work on this when I have some time later**
+
+---------------------------
 
 ##### Class MapVisualization()
 This class visualize the results in a interactive map. Mulitple arguments have been listed, including coordiantes, score(mean score, percentage, or raw), option (A, B, AB) and etc.
@@ -57,7 +62,7 @@ This class visualize the results in a interactive map. Mulitple arguments have b
 ```python
 'MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')'
 ```
-**Output**
-![](ES_A.html)
+**Output** (forgive I don't have time to further clean up the json file)
+![](result_example2.png)
 
 If you have any questions, please contact me at meng.chen03@gmail.com.
