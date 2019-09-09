@@ -62,7 +62,7 @@ This class visualize the results in a interactive map. Mulitple arguments have b
 ```python
 'MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')'
 ```
-**Output** (forgive I don't have time to further clean up the json file)
+**Output** (Please forgive me for not having time to further clean the shapefile)
 ![](result_example2.png)
 
 If you have any questions, please contact me at meng.chen03@gmail.com.
