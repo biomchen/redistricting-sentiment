@@ -33,7 +33,7 @@ MapVisualization() | Visualize the results on a interactive map.
 
 ---------------------------
 
-##### Class SentiAnalysis()
+### _SentiAnalysis()_
 The class can take either a string or a text file as input to calculate sentiment scores. It cleans the text before the analyses. The SentiWordNet 3.0 has been used to score the sentiments of the words. Three different weighting schemes have been used. In addition, the proportion of positive, negative, and neutural feedbacks are generated as well raw scores of individual word in the data.
 
 **Input**:
@@ -46,7 +46,7 @@ Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative
 
 ---------------------------
 
-##### Class shape2json()
+### _shape2json()_
 The class converts shapefile downloaded from Frederick County Governemnt website to geojson. Some of record names in the shapefile are not consistent, which needs to customerize before the conversion.
 The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordinateConvert()_ were created to convert the coordinates to ESPG 4326 for map plots.
 The outputs are json file for elementary, middle, and high school districts.
@@ -56,7 +56,7 @@ In addition, the class provides coordinates for each school based on their addre
 
 ---------------------------
 
-##### Class MapVisualization()
+### _MapVisualization()_
 This class visualize the results in a interactive map. Mulitple arguments have been listed, including coordiantes, score(mean score, percentage, or raw), option (A, B, AB) and etc.
 **Input**:
 ```python
