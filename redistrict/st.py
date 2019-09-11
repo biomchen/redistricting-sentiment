@@ -1,21 +1,11 @@
 """
-Sentimant Analysis based on the comments from LOU redistricting survey.
-This analyses are based on several different categories including:
-1) in general the whole sentiment of the public
-2) by school district
-3) by elementary schools
-4) by middle schools
-5) by high schools
+A class to analyze sentiments of the comments from LOU redistricting survey.
 
 The SentiWordNet 3.0 dataset has been preprocessed before the analyses
 by removing all description at the beginning of the data as well as
 empty space in the end of it.
 
-Text cleaning method is adopted from Muhammad Alfiansyah's kernel with
-some modifications for a file and a sentence:
-https://www.kaggle.com/muhammadalfiansyah/push-the-lgbm-v19
-
-The weighting method is adopted from Anela Chan with some modifications:
+Building a SentiWordNet is adopted from Anela Chan with some modifications:
 https://github.com/anelachan/sentimentanalysis
 
 """

@@ -66,4 +66,4 @@ This class visualize the results in a interactive map. Mulitple arguments have b
 **(Please forgive me for not having time to further clean the shapefile)**
 ![](result_example2.png)
 
-If you have any questions, please contact me at meng.chen03@gmail.com.
+If you have any questions, please contact me at meng.chen03(at)gmail.com.
