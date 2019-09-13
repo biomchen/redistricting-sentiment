@@ -87,17 +87,18 @@ class SentiAnalysis:
 
         methodNames = ['arithmetic', 'geometric', 'harmonic']
 
-        for word in self.cleanText(text):
-            for key in self.swnAll.keys():
-                if word == key:
-                    singleScore = self.swnAll[word]['score']
-                    if singleScore > 0:
-                        pCount += 1
-                    elif singleScore < 0:
-                        nCount += 1
+        textSet = set(self.cleanText(text))
+        keySet = set(self.swnAll.keys())
 
-                    count += 1
-                    scoresAll.append(singleScore)
+        for word in textSet.intersection(keySet):
+            singleScore = self.swnAll[word]['score']
+            if singleScore > 0:
+                pCount += 1
+            elif singleScore < 0:
+                nCount += 1
+
+                count += 1
+                scoresAll.append(singleScore)
 
         if count >= 1:
             for method in methodNames:
