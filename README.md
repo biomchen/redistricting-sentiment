@@ -3,25 +3,38 @@
 @Meng Chen
 
 ---------------------------
-### About
+### Introduction
 
-Southeastern communities of Frederick County has been growing steadfast due to newly approved development projects in this area. Local schools have been growing over their designed capacity for years. Particularly, in Urbana area, a huge working force will join the local community as a new biopharmaceutical manufacturing facility is being established by [Kite Pharma](https://www.kitepharma.com) and a hotel and restaurant chain will be build in next two years. There is a urgent need to redistrict local schools based on changing feeding patterns.
+Linganore-Oakdale-Urbana (LOU) Area is located in the southeastern area of the Frederick County of Maryland. During last ten years, the local communities have been transformed into well-maintained suburban residency for people who work in the Washington-Maryland area. Many professionals, such as administrative government employees or military personals chose to live in these neighborhoods, despite the distant transportation between their working place and home. Even some government facilities has located in this area. For an example, the Social Security Data Center is located next to the Park and Ride of the Exit 26 of Interstate-270 in the Urbana area. Recently, [Kite Pharma](https://www.kitepharma.com) is starting to build a pharmaceutical manufacturing facility here, and along its side, there will be a hotel and restaurant chain established in two years. Urbana area becomes the prime area for both business and residents.
 
-Based on the message of the Board of Education, Frederick County, the redistricting roots on the inequal development of the local communities ([here for detials](https://www.fcps.org/capital-program/linganore-oakdale-urbana-area-redistricting-study).) However, the redistricting study stired local communities because of concerns of the student development, property price, community integrity, and etc.
+These ongoing developments bring prosperity to the local communities. So does anxiety. For an example, the workforce brought by Kite Pharma has been estimated about 200-300 employees initially to 700-900 by its capacity. Such huge workforce will need hundreds of houses and/or apartments to acommendate their housing needs. Thus, the estate projects have been steadfastly developed in this area. More and more houses starts to show themselves off the landscape. However, only two new elementary schools have been added to the area, which cannot alleviate overcrowd situations in schools. It becomes clear that, without any additional government funding, the Board of Education of Frederick County has an urgent need to conduct school redistricting based on changing feeding patterns.
 
-This project primarily focuses on sentiments after the second-round proposal for redistricting LOU. The analyses were based on public avaliable datasets (survey results and current districts) provided by CropperGIS Inc that is contractor carries out the LOU redistricting study and Frederick County, respectively.
+Starting in January, 2019, Frederick County has contracted with Cropper GIS Consulting to conduct the redistricting study, which is expected to completed by the end of the 2019. This study primarily focuses on attendance boundary and feeder patterns for two new schools that supposedly address the enrollment growth in this area and provides projections of the school enrollments in next 5-8 years. Based on the message of the Board of Education, the redistricting roots in their core belief that all students are entitled equally to respect, opportunity, and excellence ([here for details](https://www.fcps.org/capital-program/linganore-oakdale-urbana-area-redistricting-study).) However, after the community meeting in March, 2019, the proposed attendance boundary stirred the outrage from local communities based on analyses of the parents' feedbacks provided by the study. Such outrage seems to be alleviated by the new proposed attendance boundary at the community meeting of June, 2019 based on an initial assessment. Unfortunately, no analyses has been carried out and provides the results to confirm such presumed sentiments among and to find the preferable attendance boundaries among parents.
 
----------------------------
-
-### Data origination
-
-The original survey data can be download as [PDF files](https://www.fcps.org/capital-program/lou-meetings).
-
-The shapefile that can be download at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data).
+This project primarily focuses on the sentiment and preferences of parents for new proposed options after the community meeting in June, 2019. I complied public available data from Frederick Government and Frederick County Public Schools websites and used Python to develop algorithms to analyze sentiments by elementary, middle, and high schools in general. A set of sentiment scores present the preferences of local community parents by different options. To understand the results effectively, I visualize the results in an interactive map.
 
 ---------------------------
 
-### redistrict Module
+### Materials and Methods
+
+---------------------------
+
+#### Materials
+
+---------------------------
+
+The survey results after Public Engagement Session in June, 4, 5, and 6, 2019 for Frederick County Public Schools Linganore-Oakdale-Urbana Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled in a PDF file, and represented as multiple tables in 209 pages. Prior to analyze the comments, the PDF file were converted to an excel file with three columns (school name, comments, and options). Additional cleaning proceedures will be detailed in the Methods.
+
+The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the polygon data that splits the all Frederick County Public schools into different school district and were used to visualize the results. The shapefile was generated by ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers(OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the coordinates in shapefile of Maryland were converted under the spatial reference ID EPSG 4326. See Methods for details.
+
+---------------------------
+
+#### Methods
+___________________________
+
+
+
+#### redistrict Module
 This module includes three newly developed classes, _SentiAnalysis()_, _shape2json()_, and _MapVisualization()_. Each class have been specifically
 developed to analyze the public accessible data of LOU Redistricting.
 
