@@ -12,29 +12,23 @@ https://github.com/anelachan/sentimentanalysis
 
 import re
 
-class SentiAnalysis:
-
+class SentimentAnalysis:
     def __init__(self, base = 'SentiWordNet.txt'):
-
         self.base = base
-        self.swnAll = {}
-        self.makeSWN(base)
+        self.swn_all_words = {}
+        self.build_swn(base)
 
-    def makeSWN(self, base):
-
+    def build_swn(self, base):
         records = [line.split('\t') for line in open(self.base)]
-
         for rec in records:
             word = rec[4].split('#')[0]
             pScore = rec[2]
             nScore = rec[3]
-
             if word not in self.swnAll:
-                self.swnAll[word] = {}
-                self.swnAll[word]['score'] = float(pScore) - float(nScore)
+                self.swn_all_words[word] = {}
+                self.swn_all_words[word]['score'] = float(pScore) - float(nScore)
 
     def weighting(self, m, s):
-
         if m == 'arithmetic':
             scores = 0
             for score in s:
@@ -54,8 +48,7 @@ class SentiAnalysis:
                 num +=1
         return weighted_sum
 
-    def cleanText(self, filename):
-
+    def clean_text(self, filename):
         if '.txt' in filename or '.csv' in filename:
             textsCleanAll = []
             texts = [line.rsplit() for line in open(filename, encoding = 'utf8')]
@@ -76,38 +69,32 @@ class SentiAnalysis:
             except:
                 return "name error"
 
-    def scoreText(self, text):
-
+    def score_text(self, text):
         scoresAll = []
         scores = 0
         count = 0
         pCount = 0
         nCount = 0
         finalScore = {}
-
         methodNames = ['arithmetic', 'geometric', 'harmonic']
-
-        textSet = set(self.cleanText(text))
-        keySet = set(self.swnAll.keys())
+        textSet = set(self.clean_text(text))
+        keySet = set(self.swn_all_words.keys())
 
         for word in textSet.intersection(keySet):
-            singleScore = self.swnAll[word]['score']
+            singleScore = self.swn_all_words[word]['score']
             if singleScore > 0:
                 pCount += 1
             elif singleScore < 0:
                 nCount += 1
-
                 count += 1
                 scoresAll.append(singleScore)
 
         if count >= 1:
             for method in methodNames:
                 finalScore[method] = round(self.weighting(method, scoresAll), 3)
-
             positive = round(pCount/count, 3)
             negative = round(nCount/count, 3)
             neutral = 1 - positive - negative
-
             return (list(finalScore.values()), positive, negative, neutral, scoresAll)
         else:
             return 0

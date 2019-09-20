@@ -10,7 +10,6 @@ import json
 import vincent
 
 class MapVisualization:
-
     def __init__(self, coordinates, precentage, option, location, polygon):
         self.coordinates = coordinates
         self.precentage = precentage
@@ -18,31 +17,27 @@ class MapVisualization:
         self.location = location
         self.polygon = polygon
 
-    def vinPlot(self, data, sch):
+    def get_json(self, data, school_name):
         pie_chart = vincent.Pie(data, height =100, width =100, inner_radius = 25)
         pie_chart.colors(brew = 'Set2')
-        pie_chart.legend(sch[:-10])  # -10 for elementary, -6 for middle, -4 for high
+        pie_chart.legend(school_name[:-10])  # -10 for elementary, -6 for middle, -4 for high
         pie_json = pie_chart.to_json()
 
         return pie_json
 
-    def foliumVisual(self, col):
-
+    def folium_visual(self, col):
         locationCenter = Nominatim(user_agent='my-application').geocode(self.location)
-
         initMap = folium.Map(location = [locationCenter.latitude, locationCenter.longitude],
                              zoom_start = 11)
 
         for school in self.coordinates.keys():
-
             lat = self.coordinates[school][0]
             lon = self.coordinates[school][1]
 
             if lat == 'NA' or lon == 'NA':
                 continue
-
             else:
-                chart_json = self.vinPlot(self.precentage[school][self.option], school)
+                chart_json = self.get_json(self.precentage[school][self.option], school)
                 folium.Marker(location = [lat, lon],
                               popup = folium.Popup(max_width = 400).add_child(
                                   folium.Vega(chart_json, width = 200, height =100)),
