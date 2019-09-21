@@ -9,11 +9,12 @@ Building a SentiWordNet is adopted from Anela Chan with some modifications:
 https://github.com/anelachan/sentimentanalysis
 
 """
-
 import re
 
+
 class SentimentAnalysis:
-    def __init__(self, base = 'SentiWordNet.txt'):
+
+    def __init__(self, base='SentiWordNet.txt'):
         self.base = base
         self.swn_all_words = {}
         self.build_swn(base)
@@ -26,8 +27,7 @@ class SentimentAnalysis:
             nScore = rec[3]
             if word not in self.swnAll:
                 self.swn_all_words[word] = {}
-                self.swn_all_words[word]['score'] = float(pScore)
-                                                    - float(nScore)
+                self.swn_all_words[word]['score'] = float(pScore)-float(nScore)
 
     def weighting(self, m, s):
         if m == 'arithmetic':
@@ -45,34 +45,34 @@ class SentimentAnalysis:
             weighted_sum = 0
             num = 2
             for score in s:
-                weighted_sum += (score *(1/num))
-                num +=1
+                weighted_sum += (score * (1/num))
+                num += 1
         return weighted_sum
 
     def clean_text(self, filename):
         if '.txt' in filename or '.csv' in filename:
             textsCleanAll = []
-            data = open(filename,encoding = 'utf8')
+            data = open(filename, encoding='utf8')
             texts = [line.rsplit() for line in data]
             try:
                 for line in texts:
                     for text in line:
                         textClean = text.lower()
-                        textClean = re.sub('[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
+                        textClean = re.sub(r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
                                            '',
                                            textClean)
                         textsCleanAll.append(textClean)
                 return textsCleanAll
-            except:
+            except Exception:
                 return "name error"
         else:
             try:
                 textClean = filename.lower()
-                textClean = re.sub('[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
+                textClean = re.sub(r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
                                    '',
                                    textClean).split()
                 return textClean
-            except:
+            except Exception:
                 return "name error"
 
     def score_text(self, text):
@@ -97,7 +97,8 @@ class SentimentAnalysis:
 
         if count >= 1:
             for method in methodNames:
-                finalScore[method] = round(self.weighting(method, scoresAll), 3)
+                score = self.weighting(method, scoresAll)
+                finalScore[method] = round(score, 3)
             positive = round(pCount/count, 3)
             negative = round(nCount/count, 3)
             neutral = 1 - positive - negative
