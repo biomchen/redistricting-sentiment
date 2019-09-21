@@ -18,7 +18,10 @@ class MapVisualization:
         self.polygon = polygon
 
     def get_json(self, data, school_name):
-        pie_chart = vincent.Pie(data, height =100, width =100, inner_radius = 25)
+        pie_chart = vincent.Pie(data,
+                                height =100,
+                                width =100,
+                                inner_radius = 25)
         pie_chart.colors(brew = 'Set2')
         pie_chart.legend(school_name[:-10])  # -10 for elementary, -6 for middle, -4 for high
         pie_json = pie_chart.to_json()
@@ -26,8 +29,10 @@ class MapVisualization:
         return pie_json
 
     def folium_visual(self, col):
-        locationCenter = Nominatim(user_agent='my-application').geocode(self.location)
-        initMap = folium.Map(location = [locationCenter.latitude, locationCenter.longitude],
+        nominatim = Nominatim(user_agent='my-application')
+        locationCenter = nominatim.geocode(self.location)
+        initMap = folium.Map(location = [locationCenter.latitude,
+                                         locationCenter.longitude],
                              zoom_start = 11)
 
         for school in self.coordinates.keys():
@@ -37,11 +42,14 @@ class MapVisualization:
             if lat == 'NA' or lon == 'NA':
                 continue
             else:
-                chart_json = self.get_json(self.precentage[school][self.option], school)
+                chart_json = self.get_json(self.precentage[school][self.option],
+                                           school)
+                vega = folium.Vega(chart_json, width = 200, height =100)
+                pop_up = folium.Popup(max_width = 400).add_child(vega)
+                icon = folium.Icon(color = col, icon = 'info-sign')
                 folium.Marker(location = [lat, lon],
-                              popup = folium.Popup(max_width = 400).add_child(
-                                  folium.Vega(chart_json, width = 200, height =100)),
-                              icon = folium.Icon(color = col, icon = 'info-sign')
+                              popup = pop_up,
+                              icon = icon
                              ).add_to(initMap)
 
         geojson = self.polygon
