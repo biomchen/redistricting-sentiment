@@ -26,7 +26,8 @@ class SentimentAnalysis:
             nScore = rec[3]
             if word not in self.swnAll:
                 self.swn_all_words[word] = {}
-                self.swn_all_words[word]['score'] = float(pScore) - float(nScore)
+                self.swn_all_words[word]['score'] = float(pScore)
+                                                    - float(nScore)
 
     def weighting(self, m, s):
         if m == 'arithmetic':
@@ -51,12 +52,15 @@ class SentimentAnalysis:
     def clean_text(self, filename):
         if '.txt' in filename or '.csv' in filename:
             textsCleanAll = []
-            texts = [line.rsplit() for line in open(filename, encoding = 'utf8')]
+            data = open(filename,encoding = 'utf8')
+            texts = [line.rsplit() for line in data]
             try:
                 for line in texts:
                     for text in line:
                         textClean = text.lower()
-                        textClean = re.sub('[.?!;:@#$%^&*()-_+={}[]|\>/’"]', '', textClean)
+                        textClean = re.sub('[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
+                                           '',
+                                           textClean)
                         textsCleanAll.append(textClean)
                 return textsCleanAll
             except:
@@ -64,7 +68,9 @@ class SentimentAnalysis:
         else:
             try:
                 textClean = filename.lower()
-                textClean = re.sub('[.?!;:@#$%^&*()-_+={}[]|\>/’"]', '', textClean).split()
+                textClean = re.sub('[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
+                                   '',
+                                   textClean).split()
                 return textClean
             except:
                 return "name error"
@@ -95,6 +101,10 @@ class SentimentAnalysis:
             positive = round(pCount/count, 3)
             negative = round(nCount/count, 3)
             neutral = 1 - positive - negative
-            return (list(finalScore.values()), positive, negative, neutral, scoresAll)
+            return (list(finalScore.values()),
+                    positive,
+                    negative,
+                    neutral,
+                    scoresAll)
         else:
             return 0
