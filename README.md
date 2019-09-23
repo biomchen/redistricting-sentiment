@@ -49,11 +49,16 @@ MapVisualization | Visualize the sentiment score of different school districts o
 #### 2.2.1.1 The class of the sentiment analysis
 ```Python
 class SentimentAnalysis():
+
+    def __init__(self, base='SentiWordNet.txt'):
+      self.base = base
+      self.swn_all_words = {}
+      self.build_swn(base)
 ```
 In general, the class calculates the scores of the sentiments of text, and the input can be either string or text file. The results will include mean score, percentage, and row scors of all words.
 
 ```Python
-def weighting(method, score_list):
+def weighting(self, method, score_list):
 ```
 It uses different weighting methods to calculate the mean of the sentiment score.
 
@@ -63,7 +68,7 @@ Parameter | Description
 `score_list` |a list of the row sentiment scores of the words
 
 ```Python
-def build_swn(base):
+def build_swn(self, base):
 ```
 This function build a dictionary of the sentiment score of each word in the SentiWordNet 3.0. The original SentiWordNet file has been modified to remove unnecessary heading and descriptive details about the SentiWordNet project prior to input for building the dictionary.
 
@@ -72,7 +77,7 @@ Parameter | Description
 `base` | the sentiment score data of the SentiWordNet project, version 3.0
 
 ```Python
-def clean_text(filename):
+def clean_text(self, filename):
 ```
 It changes the upper case to lower case as well removes non-word characters in a sentence or a paragraph and compile them together for scoring the sentiment.
 
@@ -81,7 +86,7 @@ Parameter | Description
 `filename` | an input of either a string or a txt file
 
 ```Python
-def score_text():
+def score_text(self, text):
 ```
 This score the sentiment of words in the sentence or paragraphs, and calculate the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
 Parameter | Description
@@ -92,7 +97,7 @@ Parameter | Description
 
 **Input**:
 ```python
-'SentimentAnalysis().score_text('Welcome to our new house.')'
+SentimentAnalysis().score_text('Welcome to our new house.')
 ```
 **Output**:                                                                 
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
@@ -102,8 +107,17 @@ Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative
 
 #### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
-class Shape2Json(fname, output1, output2, school_param, school_list,
+class Shape2Json:
+
+    def __init__(self, fname, output1, output2, school_param, school_list,
                  addresses=None, coordinates=None):
+        self.fname = fname
+        self.output1 = output1
+        self.output2 = output2
+        self.school_param = school_param
+        self.school_list = school_names
+        self.addresses = addresses
+        self.coordinates = coordinates
 ```
 The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. Unfortunately, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for a field attribute. the The conversion of the shapefile are two-step process using two methods, convert_json and convert_epsg.
 
@@ -112,38 +126,82 @@ Parameter | Description
 `fname` | an input of the shapefile's name
 `output1` | json output after converting the shapefile
 `output2` | json output after converting output1 from the spatial reference of Maryland to the spatial reference of world
-`school_param` | 'SCHOOL' or 'SCHOO_1' in the field attribute
+`school_param` | 'SCHOOL' used in one of field attributes for elementary and high schools; 'SCHOO_1' used for middle schools
 `school_list` | school names by grouping elementary, middle, and high schools separately
-`addresses` | the school address
+`addresses` | the school addresses
 `coordinates` | the gps cooridinates of the schools
 
 ```Python
-def convert_json():
+def convert_json(self):
 ```
 It converts shapefile into geojson file. All files have been output as `output1`.
 
 ```Python
-def convert_epsg():
+def convert_epsg(self):
 ```
 The function converts json file of output1 that was generated under spatial reference EPSG 2248 to the spatial reference of world EPSG 4326. The files contains not only 'Polygon' but also 'MultiPolygon' which requires additional step for conversion.
 In addition, this function attain the school address from the output1.
 
 ```Python
-def get_coordinates():
+def get_coordinates(self):
 ```
-It acquires the GPS coordinates of the schools.
+The functionality is to acquire the GPS coordinates of every school in the project.
 
 ---------------------------
 
 #### 2.2.1.3 The class visualizing the results
-### _MapVisualization()_
-This class visualize the results in a interactive map. Mulitple arguments have been listed, including coordiantes, score(mean score, percentage, or raw), option (A, B, AB) and etc.
+```Python
+class MapVisualization():
+
+    def __init__(self, coordinates, precentage, option, location, polygon):
+      self.coordinates = coordinates
+      self.precentage = precentage
+      self.option = option
+      self.location = location
+      self.polygon = polygon
+```
+Parameter | Description
+----|----
+`coordinates` | the GPS coordinates of the schools
+`percentage` | the percentage of the positive, negative, and neural feedbacks from parents for visualizing the pie chart
+`option` | proposed option A and option B
+`location` | centeral location of the map
+`polygon` | the coordiantes of school districts by elementary, middle, and high
+
+This class uses folium madule to plot results in an interactive maps. Each school is represented by popup icon with a pie chart indicating percentage of sentiments of parents' feedback.
+
+```Python
+def get_json(self, data, school_name):
+
+```
+Parameter | Description
+----|----
+`data`| scoring data
+`school_name`| the name of each school
+
+It uses `vincint` module to acquire json data of the pie chart of the results.
+
+```Python
+def folium_visual(self, col):
+```
+Parameter | Description
+----|----
+`color`| the color of your choice for popup icon
+
+
+### 3. Results
+The final results vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
+
+#### An Example:
+
 **Input**:
 ```python
-'MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')'
+MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')
 ```
 **Output**                                              
 **(Please forgive me for not having time to further clean the shapefile)**
 ![](results/result_example2.png)
+
+
 
 If you have any questions, please contact me at meng.chen03(at)gmail.com.
