@@ -32,9 +32,9 @@ class MapVisualization:
     def folium_visual(self, col):
         nominatim = Nominatim(user_agent='my-application')
         locationCenter = nominatim.geocode(self.location)
-        initMap = folium.Map(location=[locationCenter.latitude,
-                                       locationCenter.longitude],
-                             zoom_start=11)
+        map = folium.Map(location=[locationCenter.latitude,
+                                   locationCenter.longitude],
+                         zoom_start=11)
 
         for school in self.coordinates.keys():
             lat = self.coordinates[school][0]
@@ -51,9 +51,9 @@ class MapVisualization:
                 folium.Marker(location=[lat, lon],
                               popup=pop_up,
                               icon=icon
-                              ).add_to(initMap)
+                              ).add_to(map)
 
         geojson = self.polygon
-        folium.GeoJson(geojson, name='geojson').add_to(initMap)
+        folium.GeoJson(geojson, name='geojson').add_to(map)
 
         return initMap
