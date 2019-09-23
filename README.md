@@ -55,14 +55,10 @@ In general, the class calculates the scores of the sentiments of text, and the i
 def weighting(method, score_list):
 ```
 It uses different weighting methods to calculate the mean of the sentiment score.
-|   |   |   |   |   |
-|   |---|---|---|---|
-|   |   |   |   |   |
-|   |   |   |   |   |
-|   |   |   |   |   |
-  * Parameters:
-    * method: _arithmetic, geometric, and harmonic_
-    * score_list: a list of the row sentiment scores of the words
+|*Parameters*| |
+|---|---|
+|`method`|_arithmetic, geometric, and harmonic_|
+|`score_list`|a list of the row sentiment scores of the words|
 
 ```Python
 def build_swn(base):
