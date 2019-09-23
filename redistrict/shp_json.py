@@ -50,8 +50,6 @@ class Shape2Json:
                               indent=2) + '\n')
         json_file.close()
 
-        print('Done!')
-
     def convert_epsg(self):
         in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
         out_proj = Proj(init='epsg:4326')
@@ -102,8 +100,6 @@ class Shape2Json:
                               indent=2) + '\n')
         json_file.close()
 
-        print('Done!')
-
     def get_coordinates(self):
         self.coordinates = {}
 
@@ -118,5 +114,3 @@ class Shape2Json:
             else:
                 self.coordinates.update({school: (coordinate.latitude,
                                                   coordinate.longitude)})
-
-        print('Done!')

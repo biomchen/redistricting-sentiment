@@ -3,7 +3,7 @@
 Author @Meng Chen
 
 ---------------------------
-### Introduction
+### 1. Introduction
 
 Linganore-Oakdale-Urbana (LOU) Area is located in the southeastern area of the Frederick County of Maryland. During last ten years, the local communities have been transformed into well-maintained suburban residency for people who work in the Washington-Maryland area. Many professionals, such as administrative government employees or military personals chose to live in these neighborhoods, despite the distant transportation between their working place and home. Even some government facilities has located in this area. For an example, the Social Security Data Center is located next to the Park and Ride of the Exit 26 of Interstate-270 in the Urbana area. Recently, [Kite Pharma](https://www.kitepharma.com) is starting to build a pharmaceutical manufacturing facility here, and along its side, there will be a hotel and restaurant chain established in two years. Urbana area becomes the prime area for both business and residents.
 
@@ -15,11 +15,11 @@ This project primarily focuses on the sentiment and preferences of parents for n
 
 ---------------------------
 
-### Materials and Methods
+### 2. Materials and Methods
 
 ---------------------------
 
-#### Materials
+#### 2.1 Materials
 
 ---------------------------
 
@@ -30,12 +30,12 @@ The shapefiles of Frederick County School District have been downloaded at Frede
 
 ---------------------------
 
-#### Methods
+#### 2.2 Methods
 ___________________________
 
 I used Python to create three classes to analyze the data and visualize the results. Each of class has specific methods to analyze data and output the results. I assemble them all together as a module named 'redistrict'. See below for details of functionality of each class as well as methods inside.
 
-#### redistrict Module
+#### 2.2.1 redistrict Module
 This module includes three newly developed classes, ___SentimentAnalysis()__, ___Shape2Json()___, and ___MapVisualization()___. Each class have been developed to address certain questions during the analyses.
 
 Class  | Description
@@ -46,6 +46,7 @@ MapVisualization | Visualize the sentiment score of different school districts o
 
 ---------------------------
 
+#### 2.2.1.1 The class of the sentiment analysis
 ```Python
 class SentimentAnalysis():
 ```
@@ -82,10 +83,12 @@ Parameter | Description
 ```Python
 def score_text():
 ```
-This score the sentiment of words in the sentence or paragraphs, and provides the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
+This score the sentiment of words in the sentence or paragraphs, and calculate the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
 Parameter | Description
 ----|----
 `text` | the text file after cleaning
+
+#### An Example:
 
 **Input**:
 ```python
@@ -97,26 +100,40 @@ Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative
 
 ---------------------------
 
+#### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
-class Shape2Json():
+class Shape2Json(fname, output1, output2, school_param, school_list, addresses=None, coordinates=None):
 ```
-The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. Unfortunately, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for field_attributes. the The conversion of the shapefile are two-step process using two methods.
-convert_json and convert_epsg.
+The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. Unfortunately, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for a field attribute. the The conversion of the shapefile are two-step process using two methods, convert_json and convert_epsg.
+Parameter | Description
+----|----
+`fname` | an input of the shapefile's name
+`output1` | json output after converting the shapefile
+`output2` | json output after converting output1 from the spatial reference of Maryland to the spatial reference of world
+`school_param` | 'SCHOOL' or 'SCHOO_1' in the field attribute
+`school_list` | school names by grouping elementary, middle, and high schools separately
+`addresses` | the school address
+`coordinates` | the gps cooridinates of the schools
 
 ```Python
 def convert_json():
 ```
-It converts shapefile into geojson file.
+It converts shapefile into geojson file. All files have been output as `output1`.
 
+```Python
+def convert_epsg():
+```
+The function converts json file of output1 that was generated under spatial reference EPSG 2248 to the spatial reference of world EPSG 4326. The files contains not only 'Polygon' but also 'MultiPolygon' which requires additional step for conversion.
+In addition, this function attain the school address from the output1.
 
-The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordinateConvert()_ were created to convert the coordinates to ESPG 4326 for map plots.
-The outputs are json files for each elementary, middle, and high school district.
-In addition, the class provides coordinates for each school based on their address.
-
-**Unfortunately, this two-week time window has hinder my effort to clean up the shapefiles. The polygon plots in the interactive maps are not ideal. I will come back to work on this around October.**
+```Python
+def get_coordinates():
+```
+It acquires the GPS coordinates of the schools.
 
 ---------------------------
 
+#### 2.2.1.3 The class visualizing the results
 ### _MapVisualization()_
 This class visualize the results in a interactive map. Mulitple arguments have been listed, including coordiantes, score(mean score, percentage, or raw), option (A, B, AB) and etc.
 **Input**:
