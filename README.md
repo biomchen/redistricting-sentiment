@@ -102,9 +102,11 @@ Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative
 
 #### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
-class Shape2Json(fname, output1, output2, school_param, school_list, addresses=None, coordinates=None):
+class Shape2Json(fname, output1, output2, school_param, school_list,
+                 addresses=None, coordinates=None):
 ```
 The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. Unfortunately, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for a field attribute. the The conversion of the shapefile are two-step process using two methods, convert_json and convert_epsg.
+
 Parameter | Description
 ----|----
 `fname` | an input of the shapefile's name
