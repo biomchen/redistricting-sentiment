@@ -36,13 +36,13 @@ ___________________________
 I used Python to create three classes to analyze the data and visualize the results. Each of class has specific methods to analyze data and output the results. I assemble them all together as a module named 'redistrict'. See below for details of functionality of each class as well as methods inside.
 
 #### redistrict Module
-This module includes three newly developed classes, _SentimentAnalysis()_, _Shape2Json()_, and _MapVisualization()_. Each class have been developed to address certain questions during the analyses.
+This module includes three newly developed classes, ___SentimentAnalysis()__, ___Shape2Json()___, and ___MapVisualization()___. Each class have been developed to address certain questions during the analyses.
 
 Class  | Description
 ------ | -----------
-SentimentAnalysis() | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
-Shape2Json() | Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world one
-MapVisualization() | Visualize the sentiment score of different school districts on a interactive map
+SentimentAnalysis | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
+Shape2Json| Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world one
+MapVisualization | Visualize the sentiment score of different school districts on a interactive map
 
 ---------------------------
 
@@ -55,6 +55,11 @@ In general, the class calculates the scores of the sentiments of text, and the i
 def weighting(method, score_list):
 ```
 It uses different weighting methods to calculate the mean of the sentiment score.
+|   |   |   |   |   |
+|   |---|---|---|---|
+|   |   |   |   |   |
+|   |   |   |   |   |
+|   |   |   |   |   |
   * Parameters:
     * method: _arithmetic, geometric, and harmonic_
     * score_list: a list of the row sentiment scores of the words
