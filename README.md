@@ -40,33 +40,49 @@ This module includes three newly developed classes, _SentimentAnalysis()_, _Shap
 
 Class  | Description
 ------ | -----------
-SentiAnalysis() | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
-Shape2Json() | Convert the ESRI shapefile to geojson; convert coordinates from the Maryland geospatial reference to the world one
+SentimentAnalysis() | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
+Shape2Json() | Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world one
 MapVisualization() | Visualize the sentiment score of different school districts on a interactive map
 
 ---------------------------
 
-#### _SentimentAnalysis()_
-This class calculate the scores of the sentiments of text, and the input can be either string or text file. The results will include mean score, percentage, and row scors of all words.
+```Python
+class SentimentAnalysis():
+```
+In general, the class calculates the scores of the sentiments of text, and the input can be either string or text file. The results will include mean score, percentage, and row scors of all words.
 
 ```Python
-def build_swn():
+def weighting(method, score_list):
+```
+It uses different weighting methods to calculate the mean of the sentiment score.
+  * Parameters:
+    * method: _arithmetic, geometric, and harmonic_
+    * score_list: a list of the row sentiment scores of the words
+
+```Python
+def build_swn(base):
 ```
 This function build a dictionary of the sentiment score of each word in the SentiWordNet 3.0. The original SentiWordNet file has been modified to remove unnecessary heading and descriptive details about the SentiWordNet project prior to input for building the dictionary.
+  * Parameters:
+    * base: the sentiment score data of the SentiWordNet project, version 3.0.
 
 ```Python
-def clean_text():
+def clean_text(filename):
 ```
 It changes the upper case to lower case as well removes non-word characters in a sentence or a paragraph and compile them together for scoring the sentiment.
+  * Parameters:
+    * filename: either an input of a string or a txt file.
 
 ```Python
 def score_text():
 ```
 This score the sentiment of words in the sentence or paragraphs, and provides the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
+  * Parameters:
+    * text: the text after cleaning.
 
 **Input**:
 ```python
-'SentAnalysis().scoreText('Welcome to our new house.')'
+'SentimentAnalysis().score_text('Welcome to our new house.')'
 ```
 **Output**:                                                                 
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
@@ -74,8 +90,18 @@ Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative
 
 ---------------------------
 
-### _shape2json()_
-The class converts shapefile downloaded from Frederick County Governemnt website to geojson. Some of record names in the shapefile are not consistent, which needs to customerize before the conversion.
+```Python
+class Shape2Json():
+```
+The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. Unfortunately, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for field_attributes. the The conversion of the shapefile are two-step process using two methods.
+convert_json and convert_epsg.
+
+```Python
+def convert_json():
+```
+It converts shapefile into geojson file.
+
+
 The ESPG of the shapefiles created by ArcGIS is 2248. Internal function _coordinateConvert()_ were created to convert the coordinates to ESPG 4326 for map plots.
 The outputs are json files for each elementary, middle, and high school district.
 In addition, the class provides coordinates for each school based on their address.
