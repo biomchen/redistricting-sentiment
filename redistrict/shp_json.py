@@ -52,14 +52,14 @@ class Shape2Json:
 
         print('Done!')
 
-    def epsg_convert(self):
+    def convert_epsg(self):
         in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
         out_proj = Proj(init='epsg:4326')
 
         print("coverting coordinates ...")
 
-        with open(self.output1) as jsonFile:
-            data = json.load(jsonFile)
+        with open(self.output1) as json_file:
+            data = json.load(json_file)
             features_old = data['features']
             coordinates = []
             features_new = []
