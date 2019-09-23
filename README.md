@@ -36,19 +36,33 @@ ___________________________
 I used Python to create three classes to analyze the data and visualize the results. Each of class has specific methods to analyze data and output the results. I assemble them all together as a module named 'redistrict'. See below for details of functionality of each class as well as methods inside.
 
 #### redistrict Module
-This module includes three newly developed classes, _SentiAnalysis()_, _shape2json()_, and _MapVisualization()_. Each class have been specifically
-developed to analyze the public accessible data of LOU Redistricting.
+This module includes three newly developed classes, _SentimentAnalysis()_, _Shape2Json()_, and _MapVisualization()_. Each class have been developed to address certain questions during the analyses.
 
 Class  | Description
 ------ | -----------
-SentiAnalysis() | Analyze the sentiments of the comments on school redistricting in LOU Area
-shape2json() | Convert the shapefile to geojson for visualization (internally convert ESPG 2236 to ESPG 4483)
-MapVisualization() | Visualize the results on a interactive map.
+SentiAnalysis() | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
+Shape2Json() | Convert the ESRI shapefile to geojson; convert coordinates from the Maryland geospatial reference to the world one
+MapVisualization() | Visualize the sentiment score of different school districts on a interactive map
 
 ---------------------------
 
-### _SentiAnalysis()_
-The class can take either a string or a text file as input to calculate sentiment scores. It cleans the text before the analyses. The SentiWordNet 3.0 has been used to score the sentiments of the words. Three different weighting schemes have been used. In addition, the proportion of positive, negative, and neutural feedbacks are generated as well raw scores of individual word in the data.
+#### _SentimentAnalysis()_
+This class calculate the scores of the sentiments of text, and the input can be either string or text file. The results will include mean score, percentage, and row scors of all words.
+
+```Python
+def build_swn():
+```
+This function build a dictionary of the sentiment score of each word in the SentiWordNet 3.0. The original SentiWordNet file has been modified to remove unnecessary heading and descriptive details about the SentiWordNet project prior to input for building the dictionary.
+
+```Python
+def clean_text():
+```
+It changes the upper case to lower case as well removes non-word characters in a sentence or a paragraph and compile them together for scoring the sentiment.
+
+```Python
+def score_text():
+```
+This score the sentiment of words in the sentence or paragraphs, and provides the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
 
 **Input**:
 ```python
