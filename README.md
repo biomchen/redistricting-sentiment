@@ -186,7 +186,7 @@ def folium_visual(self, col):
 ```
 Parameter | Description
 ----|----
-`color`| the color of your choice for popup icon
+`col`| the color of your choice for popup icon
 
 
 ### 3. Results
