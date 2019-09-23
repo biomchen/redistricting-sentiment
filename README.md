@@ -176,7 +176,7 @@ def get_json(self, data, school_name):
 ```
 Parameter | Description
 ----|----
-`data`| scoring data
+`data`| sentiment score data
 `school_name`| the name of each school
 
 It uses `vincint` module to acquire json data of the pie chart of the results.
