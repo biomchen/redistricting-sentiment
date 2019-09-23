@@ -56,7 +56,7 @@ def weighting(method, score_list):
 ```
 It uses different weighting methods to calculate the mean of the sentiment score.
 
-*Parameters* |Description
+Parameter | Description
 ----|----
 `method` | arithmetic, geometric, and harmonic
 `score_list` |a list of the row sentiment scores of the words
@@ -65,22 +65,27 @@ It uses different weighting methods to calculate the mean of the sentiment score
 def build_swn(base):
 ```
 This function build a dictionary of the sentiment score of each word in the SentiWordNet 3.0. The original SentiWordNet file has been modified to remove unnecessary heading and descriptive details about the SentiWordNet project prior to input for building the dictionary.
-  * Parameters:
-    * base: the sentiment score data of the SentiWordNet project, version 3.0.
+
+Parameter | Description
+----|----
+`base` | the sentiment score data of the SentiWordNet project, version 3.0
 
 ```Python
 def clean_text(filename):
 ```
 It changes the upper case to lower case as well removes non-word characters in a sentence or a paragraph and compile them together for scoring the sentiment.
-  * Parameters:
-    * filename: either an input of a string or a txt file.
+
+Parameter | Description
+----|----
+`filename` | an input of either a string or a txt file
 
 ```Python
 def score_text():
 ```
 This score the sentiment of words in the sentence or paragraphs, and provides the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
-  * Parameters:
-    * text: the text after cleaning.
+Parameter | Description
+----|----
+`text` | the text file after cleaning
 
 **Input**:
 ```python
