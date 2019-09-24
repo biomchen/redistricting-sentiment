@@ -176,11 +176,12 @@ Parameter | Description
 It uses `vincint` module to acquire json data of the pie chart of the results for visualization.
 
 ```Python
-    def folium_visual(self, col):
+    def folium_visual(self, col, file_name):
 ```
 Parameter | Description
 ----|----
 `col`| the color of your choice for popup icon
+`file_name`| save the interactive map to a file in the results folder
 
 ---
 ## 3. Results
@@ -190,7 +191,7 @@ In general, six interactive maps have been produced based on three school catego
 
 **Input**:
 ```python
-MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue')
+MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue', 'results/es_A.html')
 ```
 **Output**                                              
 **(Please forgive me for not having time to further clean the shapefile)**
