@@ -1,0 +1,1 @@
+The shapefile can be downloaded at https://www.frederickcountymd.gov/5969/Download-GIS-Data
