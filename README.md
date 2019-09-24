@@ -25,11 +25,11 @@ This project primarily focuses on the sentiment and preferences of parents for n
 
 The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. Prior to the analysis, the PDF file were converted to an excel file containing school name, comments, and options. See Methods for additional cleaning procedures.
 
-`Original Survey Comments`
+##### **Original Survey Comments**
 
 ![](data/survey_example.png)
 
-`Converted Survey Comments`
+##### **Converted Survey Comments**
 
 ![](data/survey_example_converted.png)
 
@@ -48,9 +48,9 @@ This module includes three newly developed classes, `SentimentAnalysis`, `Shape2
 
 Class  | Description
 ------ | -----------
-SentimentAnalysis | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
-Shape2Json| Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world spatial reference
-MapVisualization | Visualize the sentiment score of different school districts on a interactive map
+`SentimentAnalysis` | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
+`Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world spatial reference
+`MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
 
 ---------------------------
 
