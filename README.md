@@ -1,4 +1,4 @@
-## Sentiment Analyses of Linganore-Oakdale-Urbana Area Redistricting
+## Sentiment of Linganore-Oakdale-Urbana Area Redistricting
 
 Author @Meng Chen
 
