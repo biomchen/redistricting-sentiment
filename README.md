@@ -51,9 +51,9 @@ MapVisualization | Visualize the sentiment score of different school districts o
 class SentimentAnalysis():
 
     def __init__(self, base='SentiWordNet.txt'):
-      self.base = base
-      self.swn_all_words = {}
-      self.build_swn(base)
+        self.base = base
+        self.swn_all_words = {}
+        self.build_swn(base)
 ```
 In general, the class calculates the scores of the sentiments of text, and the input can be either string or text file. The results will include mean score, percentage, and row scors of all words.
 
@@ -154,11 +154,11 @@ The functionality is to acquire the GPS coordinates of every school in the proje
 class MapVisualization():
 
     def __init__(self, coordinates, score, option, location, polygon):
-      self.coordinates = coordinates
-      self.score = precentage
-      self.option = option
-      self.location = location
-      self.polygon = polygon
+        self.coordinates = coordinates
+        self.score = precentage
+        self.option = option
+        self.location = location
+        self.polygon = polygon
 ```
 Parameter | Description
 ----|----
