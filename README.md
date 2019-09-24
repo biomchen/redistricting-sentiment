@@ -13,7 +13,7 @@ Starting in January, 2019, Frederick County has contracted with Cropper GIS Cons
 
 This project primarily focuses on the sentiment and preferences of parents for new proposed options after the Public Engagement Session in June, 2019. The parents' preferable options will be compared with the plan of the superintendent's recommendation to investigate whether Board of Education's choices are aligned with parents' preferences and seek potential explanation. These will help board members understand the if parents support or oppose which option in a quantitative way and identify which communities have been mostly affected after June's proposal. In addition, the results will aid parents to recognize the educational needs of the majority of the their local communities.
 
----------------------------
+---
 ## 2. Materials and Methods
 
 ### 2.1 Materials
@@ -31,7 +31,7 @@ The survey results after Public Engagement Session in June, 2019 for LOU Redistr
 ### 2.1.2 Shapefile
 The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the basic information of school districts, including school names, school address, the types of schools, and the polygon data that separates school districts. The shapefile was created by ESRI ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers (OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the original coordinates of Maryland were converted under the spatial reference ID EPSG 4326 of world map. See Methods for details.
 
----------------------------
+---
 
 ### 2.2 Methods
 I used Python programming language to develop three classes to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes is compiled together as a module named 'redistrict'. See below for details of functionality of each class as well as methods inside.
@@ -183,7 +183,7 @@ Parameter | Description
 ----|----
 `col`| the color of your choice for popup icon
 
------------------------
+---
 ## 3. Results
 The final results vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
 
@@ -198,5 +198,5 @@ MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisu
 ![](results/result_example2.png)
 
 
-
+---
 If you have any questions, please contact me at meng.chen03(at)gmail.com.
