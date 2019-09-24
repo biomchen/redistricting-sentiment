@@ -124,7 +124,7 @@ Parameter | Description
 `fname` | an input of the shapefile's name
 `output1` | json output after converting the shapefile
 `output2` | json output after converting output1 from the spatial reference of Maryland to the spatial reference of world
-`school_param` | 'SCHOOL' used in one of field attributes for elementary and high schools; 'SCHOO_1' used for middle schools
+`school_param` | 'SCHOOL_1' used in one of field attributes for elementary schools; 'SCHOOL' used for middle and high schools
 `school_list` | a list of elementary schools, middle schools, or high schools
 `addresses` | a list of school addresses
 `coordinates` | a list of the cooridinates of the schools
