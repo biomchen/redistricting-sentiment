@@ -66,7 +66,7 @@ class SentimentAnalysis:
 In general, this class calculates the scores of the sentiments of sentences or paragraphs using either string or text file. The results will include mean score, percentage, and row scores of all scored words. The SentiWordNet 3.0 can be download at [here](https://github.com/aesuli/SentiWordNet).
 
 ```Python
-def weighting(self, method, score_list):
+    def weighting(self, method, score_list):
 ```
 It uses different weighting methods to calculate the mean of the sentiment scores.
 
@@ -76,7 +76,7 @@ Parameter | Description
 `score_list` | a list of the raw sentiment scores of the words
 
 ```Python
-def build_swn(self, base):
+    def build_swn(self, base):
 ```
 This function builds a dictionary of the sentiment score of each word in the SentiWordNet 3.0. The heading and descriptive details of SentiWordNet project has been removed prior to the input for building the dictionary.
 
@@ -85,7 +85,7 @@ Parameter | Description
 `base` | the sentiment score data of the SentiWordNet project, version 3.0
 
 ```Python
-def clean_text(self, filename):
+    def clean_text(self, filename):
 ```
 It changes the upper case to lower case as well removes non-word characters in a sentence or a paragraph before compiling them together for calculating the sentiment.
 
@@ -94,7 +94,7 @@ Parameter | Description
 `filename` | an input of either a string or a txt file
 
 ```Python
-def score_text(self, text):
+    def score_text(self, text):
 ```
 This scores the sentiment of each word in the sentence or paragraphs, and calculate the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
 
@@ -141,18 +141,18 @@ Parameter | Description
 `coordinates` | the gps cooridinates of the schools
 
 ```Python
-def convert_json(self):
+    def convert_json(self):
 ```
 It converts shapefile into geojson file. All files have been output as `output1`.
 
 ```Python
-def convert_epsg(self):
+    def convert_epsg(self):
 ```
 The function converts json file of output1 that was generated under spatial reference EPSG 2248 to the spatial reference of world EPSG 4326. The files contains not only 'Polygon' but also 'MultiPolygon' which requires additional step for conversion.
 In addition, this function attain the school address from the output1.
 
 ```Python
-def get_coordinates(self):
+    def get_coordinates(self):
 ```
 The functionality is to acquire the GPS coordinates of every school in the project.
 
@@ -180,8 +180,7 @@ Parameter | Description
 This class uses folium madule to plot results in an interactive maps. Each school is represented by popup icon with a pie chart indicating percentage of sentiments of parents' feedback.
 
 ```Python
-def get_json(self, data, school_name):
-
+    def get_json(self, data, school_name):
 ```
 Parameter | Description
 ----|----
@@ -191,7 +190,7 @@ Parameter | Description
 It uses `vincint` module to acquire json data of the pie chart of the results.
 
 ```Python
-def folium_visual(self, col):
+    def folium_visual(self, col):
 ```
 Parameter | Description
 ----|----
