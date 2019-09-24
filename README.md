@@ -20,9 +20,7 @@ This project primarily focuses on the sentiment and preferences of parents for n
 ---------------------------
 
 ### 2.1 Materials
-
----------------------------
-
+### 2.1.1 Survey dataset
 The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. Prior to the analysis, the PDF file were converted to an excel file containing school name, comments, and options. See Methods for additional cleaning procedures.
 
 ##### **Original Survey Comments**
@@ -33,14 +31,12 @@ The survey results after Public Engagement Session in June, 2019 for LOU Redistr
 
 ![](data/survey_example_converted.png)
 
-
+### 2.1.2 Shapefile
 The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the basic information of school districts, including school names, school address, the types of schools, and the polygon data that separates school districts. The shapefile was created by ESRI ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers (OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the original coordinates of Maryland were converted under the spatial reference ID EPSG 4326 of world map. See Methods for details.
 
 ---------------------------
 
 ### 2.2 Methods
-___________________________
-
 I used Python programming language to develop three classes to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes is compiled together as a module named 'redistrict'. See below for details of functionality of each class as well as methods inside.
 
 ### 2.2.1 redistrict Module
@@ -196,7 +192,7 @@ Parameter | Description
 ----|----
 `col`| the color of your choice for popup icon
 
-
+-----------------------
 ## 3. Results
 The final results vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
 
