@@ -194,7 +194,7 @@ MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisu
 ```
 **Output**                                              
 **(Please forgive me for not having time to further clean the shapefile)**
-[](/examples/example_es_A.html)
+[](http://examples/example_es_A.html)
 
 
 ---
