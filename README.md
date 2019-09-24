@@ -42,7 +42,7 @@ This module includes three newly developed classes, `SentimentAnalysis`, `Shape2
 Class  | Description
 ------ | -----------
 `SentimentAnalysis` | Build a sentiment score dictionary of words based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
-`Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world spatial reference
+`Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the spatial reference of Maryland to the spatial reference of the world
 `MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
 
 ### 2.2.1.1 The class for the sentiment analysis
@@ -54,7 +54,7 @@ class SentimentAnalysis:
         self.swn_all_words = {}
         self.build_swn(base)
 ```
-In general, this class calculates the scores of the sentiments of words of a string or a text file. The results will include mean score, percentage, and raw scores of all scored words. The SentiWordNet 3.0 can be download at [here](https://github.com/aesuli/SentiWordNet).
+In general, this class calculates the scores of the sentiments of words of a string or a text file. The results include mean score, percentage, and raw scores of all scored words. The SentiWordNet 3.0 can be download at [here](https://github.com/aesuli/SentiWordNet).
 
 ```Python
     def weighting(self, method, score_list):
