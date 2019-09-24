@@ -160,7 +160,7 @@ The functionality is to acquire the GPS coordinates of every school in the proje
 
 ### 2.2.1.3 The class visualizing the results
 ```Python
-class MapVisualization():
+class MapVisualization:
 
     def __init__(self, coordinates, score, option, location, polygon):
         self.coordinates = coordinates
