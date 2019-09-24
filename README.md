@@ -25,9 +25,12 @@ This project primarily focuses on the sentiment and preferences of parents for n
 
 The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. Prior to the analysis, the PDF file were converted to an excel file containing school name, comments, and options. See Methods for additional cleaning procedures.
 
-**Original Survey Comments**
+`Original Survey Comments`
+
 ![](data/survey_example.png)
-**Converted Survey Comments**
+
+`Converted Survey Comments`
+
 ![](data/survey_example_converted.png)
 
 
