@@ -6,7 +6,7 @@ reqs = [str(each_req) for each_req in lines]
 
 setup(name='redistrict',
       version='0.1',
-      description='Simple API to analyze sentiments of LOU redistricting',
+      description='Simple module to analyze sentiments of LOU redistricting',
       long_description = read_file('README.md'),
       author='Meng Chen',
       author_email='meng.chen03@gmail.com',

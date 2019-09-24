@@ -29,11 +29,11 @@ class MapVisualization:
 
         return pie_json
 
-    def folium_visual(self, col):
+    def folium_visual(self, col, file_name):
         nominatim = Nominatim(user_agent='my-application')
-        locationCenter = nominatim.geocode(self.location)
-        map = folium.Map(location=[locationCenter.latitude,
-                                   locationCenter.longitude],
+        location_center = nominatim.geocode(self.location)
+        map = folium.Map(location=[location_center.latitude,
+                                   location_center.longitude],
                          zoom_start=11)
 
         for school in self.coordinates.keys():
@@ -55,5 +55,6 @@ class MapVisualization:
 
         geojson = self.polygon
         folium.GeoJson(geojson, name='geojson').add_to(map)
+        map.save(file_name)
 
         return map

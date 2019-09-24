@@ -8,6 +8,7 @@ and some of the school districts are multipolygon instead of standard polygon.
 Multiple steps have been adopted to address such differences among the data.
 
 """
+import json
 from json import dumps
 import shapefile
 from pyproj import Proj, transform
@@ -22,7 +23,7 @@ class Shape2Json:
         self.output1 = output1
         self.output2 = output2
         self.school_param = school_param
-        self.school_list = school_names
+        self.school_list = school_list
         self.addresses = addresses
         self.coordinates = coordinates
 
@@ -89,7 +90,7 @@ class Shape2Json:
                 address = attributes['ADDRESS']
                 city = attributes['CITY']
                 self.addresses.update({school: (address + ' ' + city)})
-                geo_new = {'type': types, 'coordinates': [coordinates]}
+                geo_new = {'type': type, 'coordinates': [coordinates]}
                 features_new.append(dict(type='Feature',
                                          geometry=geo_new,
                                          properties=attributes))

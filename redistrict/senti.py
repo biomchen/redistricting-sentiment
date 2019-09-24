@@ -23,89 +23,88 @@ class SentimentAnalysis:
         records = [line.split('\t') for line in open(self.base)]
         for rec in records:
             word = rec[4].split('#')[0]
-            pScore = rec[2]
-            nScore = rec[3]
-            if word not in self.swnAll:
+            true_score = float(rec[2]) - float(rec[3])
+            if word not in self.swn_all_words:
                 self.swn_all_words[word] = {}
-                self.swn_all_words[word]['score'] = float(pScore)-float(nScore)
+                self.swn_all_words[word]['score'] = true_score
 
-    def weighting(self, m, s):
-        if m == 'arithmetic':
+    def weighting(self, method, scores_list):
+        if method == 'arithmetic':
             scores = 0
-            for score in s:
+            for score in scores_list:
                 scores += score
-            weighted_sum = scores/len(s)
-        elif m == 'geometric':
+            weighted_sum = scores/len(scores_list)
+        elif method == 'geometric':
             weighted_sum = 0
             num = 1
-            for score in s:
+            for score in scores_list:
                 weighted_sum += (score * (1/2**num))
                 num += 1
-        elif m == 'harmonic':
+        elif method == 'harmonic':
             weighted_sum = 0
             num = 2
-            for score in s:
+            for score in scores_list:
                 weighted_sum += (score * (1/num))
                 num += 1
         return weighted_sum
 
     def clean_text(self, filename):
         if '.txt' in filename or '.csv' in filename:
-            textsCleanAll = []
+            texts_clean_all = []
             data = open(filename, encoding='utf8')
             texts = [line.rsplit() for line in data]
             try:
                 for line in texts:
                     for text in line:
-                        textClean = text.lower()
-                        textClean = re.sub(r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
+                        text_clean = text.lower()
+                        text_clean = re.sub(r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
                                            '',
-                                           textClean)
-                        textsCleanAll.append(textClean)
-                return textsCleanAll
+                                           text_clean)
+                        texts_clean_all.append(text_clean)
+                return texts_clean_all
             except Exception:
                 return "name error"
         else:
             try:
-                textClean = filename.lower()
-                textClean = re.sub(r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
+                text_clean = filename.lower()
+                text_clean = re.sub(r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]',
                                    '',
-                                   textClean).split()
-                return textClean
+                                   text_clean).split()
+                return text_clean
             except Exception:
                 return "name error"
 
     def score_text(self, text):
-        scoresAll = []
+        scores_all = []
         scores = 0
-        count = 0
-        pCount = 0
-        nCount = 0
-        finalScore = {}
-        methodNames = ['arithmetic', 'geometric', 'harmonic']
-        textSet = set(self.clean_text(text))
-        keySet = set(self.swn_all_words.keys())
+        total_count = 0
+        positive_count = 0
+        negative_count = 0
+        final_score = {}
+        methods = ['arithmetic', 'geometric', 'harmonic']
+        text_set = set(self.clean_text(text))
+        key_set = set(self.swn_all_words.keys())
 
-        for word in textSet.intersection(keySet):
-            singleScore = self.swn_all_words[word]['score']
-            if singleScore > 0:
-                pCount += 1
-            elif singleScore < 0:
-                nCount += 1
-                count += 1
-                scoresAll.append(singleScore)
+        for word in text_set.intersection(key_set):
+            single_score = self.swn_all_words[word]['score']
+            if single_score > 0:
+                positive_count += 1
+            elif single_score < 0:
+                negative_count += 1
+            total_count += 1
+            scores_all.append(single_score)
 
-        if count >= 1:
-            for method in methodNames:
-                score = self.weighting(method, scoresAll)
-                finalScore[method] = round(score, 3)
-            positive = round(pCount/count, 3)
-            negative = round(nCount/count, 3)
+        if total_count >= 1:
+            for method in methods:
+                score = self.weighting(method, scores_all)
+                final_score[method] = round(score, 3)
+            positive = round(positive_count/total_count, 3)
+            negative = round(negative_count/total_count, 3)
             neutral = 1 - positive - negative
-            return (list(finalScore.values()),
+            return (list(final_score.values()),
                     positive,
                     negative,
                     neutral,
-                    scoresAll)
+                    scores_all)
         else:
             return 0
