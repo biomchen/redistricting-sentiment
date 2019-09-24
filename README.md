@@ -22,11 +22,11 @@ The survey results after Public Engagement Session in June, 2019 for LOU Redistr
 
 ##### **Original Survey Comments**
 
-![](examples/survey_example.png)
+![](/examples/survey_example.png)
 
 ##### **Converted Survey Comments**
 
-![](examples/survey_example_converted.png)
+![](/examples/survey_example_converted.png)
 
 ### 2.1.2 Shapefile
 The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the basic information of school districts, including school names, school address, the types of schools, and the polygon data that separates school districts. The shapefile was created by ESRI ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers (OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the original coordinates of Maryland were converted under the spatial reference ID EPSG 4326 of world map. See Methods for details.
@@ -194,7 +194,7 @@ MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisu
 ```
 **Output**                                              
 **(Please forgive me for not having time to further clean the shapefile)**
-[](http://examples/example_es_A.html)
+[](/examples/example_es_A.html)
 
 
 ---
