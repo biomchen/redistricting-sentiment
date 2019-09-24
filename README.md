@@ -22,11 +22,11 @@ The survey results after Public Engagement Session in June, 2019 for LOU Redistr
 
 ##### **Original Survey Comments**
 
-![](data/survey_example.png)
+![](examples/survey_example.png)
 
 ##### **Converted Survey Comments**
 
-![](data/survey_example_converted.png)
+![](examples/survey_example_converted.png)
 
 ### 2.1.2 Shapefile
 The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the basic information of school districts, including school names, school address, the types of schools, and the polygon data that separates school districts. The shapefile was created by ESRI ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers (OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the original coordinates of Maryland were converted under the spatial reference ID EPSG 4326 of world map. See Methods for details.
@@ -34,14 +34,14 @@ The shapefiles of Frederick County School District have been downloaded at Frede
 ---
 
 ### 2.2 Methods
-I used Python programming language to develop three classes to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes is compiled together as a module named 'redistrict'. See below for details of functionality of each class as well as methods inside.
+I used Python programming language to develop three classes to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes are compiled together as a module named 'redistrict'. See below for details of the functionality of each class as well as methods within it.
 
 ### 2.2.1 redistrict Module
 This module includes three newly developed classes, `SentimentAnalysis`, `Shape2Json`, and `MapVisualization`. Below is brief description of each class.
 
 Class  | Description
 ------ | -----------
-`SentimentAnalysis` | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
+`SentimentAnalysis` | Build a sentiment score dictionary of words based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
 `Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world spatial reference
 `MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
 
@@ -54,22 +54,22 @@ class SentimentAnalysis:
         self.swn_all_words = {}
         self.build_swn(base)
 ```
-In general, this class calculates the scores of the sentiments of sentences or paragraphs using either string or text file. The results will include mean score, percentage, and row scores of all scored words. The SentiWordNet 3.0 can be download at [here](https://github.com/aesuli/SentiWordNet).
+In general, this class calculates the scores of the sentiments of words of a string or a text file. The results will include mean score, percentage, and raw scores of all scored words. The SentiWordNet 3.0 can be download at [here](https://github.com/aesuli/SentiWordNet).
 
 ```Python
     def weighting(self, method, score_list):
 ```
-It uses different weighting methods to calculate the mean of the sentiment scores.
+It uses different weighting methods to calculate the mean of the sentiment score.
 
 Parameter | Description
 ----|----
-`method` | arithmetic, geometric, and harmonic
+`method` | arithmetic, geometric, or harmonic method
 `score_list` | a list of the raw sentiment scores of the words
 
 ```Python
     def build_swn(self, base):
 ```
-This function builds a dictionary of the sentiment score of each word in the SentiWordNet 3.0. The heading and descriptive details of SentiWordNet project has been removed prior to the input for building the dictionary.
+This function builds a dictionary of the sentiment scores of words based on SentiWordNet 3.0. The heading and descriptive details of SentiWordNet project has been removed prior to the input for building the dictionary.
 
 Parameter | Description
 ----|----
@@ -78,7 +78,7 @@ Parameter | Description
 ```Python
     def clean_text(self, filename):
 ```
-It changes the upper case to lower case as well removes non-word characters in a sentence or a paragraph before compiling them together for calculating the sentiment.
+It changes the upper case to lower case as well as removes non-word characters in a sentence or a paragraph before compiling them together for scoring the sentiment.
 
 Parameter | Description
 ----|----
@@ -87,7 +87,7 @@ Parameter | Description
 ```Python
     def score_text(self, text):
 ```
-This scores the sentiment of each word in the sentence or paragraphs, and calculate the mean score (arithmetic, geometric, and harmonic) of the sentiments embeded in the words. In addition, it will calculate the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
+This scores the sentiment of each word in the sentence or paragraphs, and calculate the mean score (arithmetic, geometric, and harmonic) of the sentiments. In addition, it quantify the percentage of positive, negative, and neural sentiment for understanding the preferences of the parents. Raw score for each word are also be recorded.
 
 Parameter | Description
 ----|----
@@ -101,7 +101,7 @@ SentimentAnalysis().score_text('Welcome to our new house.')
 ```
 **Output**:                                                                 
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
-![](results/result_example1.png)
+![](examples/result_example1.png)
 
 ### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
@@ -117,7 +117,7 @@ class Shape2Json:
         self.addresses = addresses
         self.coordinates = coordinates
 ```
-The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. Unfortunately, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for a field attribute. the The conversion of the shapefile are two-step process using two methods, convert_json and convert_epsg.
+The class converts an ESRI shapefile into a geojson file and get the coordinates of each school. It is noted that, during the generation of the shapefiles, both 'SCHOOL' and 'SCHOOL_1' has been used for a field attribute. In general, the conversion of the shapefile are two-step process using two methods, convert_json and convert_epsg.
 
 Parameter | Description
 ----|----
@@ -125,9 +125,9 @@ Parameter | Description
 `output1` | json output after converting the shapefile
 `output2` | json output after converting output1 from the spatial reference of Maryland to the spatial reference of world
 `school_param` | 'SCHOOL' used in one of field attributes for elementary and high schools; 'SCHOO_1' used for middle schools
-`school_list` | school names by grouping elementary, middle, and high schools separately
-`addresses` | the school addresses
-`coordinates` | the gps cooridinates of the schools
+`school_list` | a list of elementary schools, middle schools, or high schools
+`addresses` | a list of school addresses
+`coordinates` | a list of the cooridinates of the schools
 
 ```Python
     def convert_json(self):
@@ -137,13 +137,12 @@ It converts shapefile into geojson file. All files have been output as `output1`
 ```Python
     def convert_epsg(self):
 ```
-The function converts json file of output1 that was generated under spatial reference EPSG 2248 to the spatial reference of world EPSG 4326. The files contains not only 'Polygon' but also 'MultiPolygon' which requires additional step for conversion.
-In addition, this function attain the school address from the output1.
+The function converts json file of output1 that was generated under spatial reference EPSG 2248 to the spatial reference of world EPSG 4326. The files contains not only 'Polygon' but also 'MultiPolygon' which requires additional step for conversion. In addition, this function attains the address of each school.
 
 ```Python
     def get_coordinates(self):
 ```
-The functionality is to acquire the GPS coordinates of every school in the project.
+Its functionality is to acquire the GPS coordinates of every school in the study for visualization.
 
 ### 2.2.1.3 The class visualizing the results
 ```Python
@@ -159,12 +158,12 @@ class MapVisualization:
 Parameter | Description
 ----|----
 `coordinates` | the GPS coordinates of the schools
-`score` | the sentiment score that can be represented as  percentage of the positive, negative, and neural feedbacks from parents for visualizing the pie chart
-`option` | proposed option A and option B
-`location` | centeral location of the map
-`polygon` | the coordiantes of school districts by elementary, middle, and high
+`score` | the sentiment score that can be represented as  percentage of the positive, negative, and neural feedbacks from parents
+`option` | proposed option A and option B for school redistricting
+`location` | central location of the map
+`polygon` | the coordinates of school districts by elementary, middle, and high
 
-This class uses folium madule to plot results in an interactive maps. Each school is represented by popup icon with a pie chart indicating percentage of sentiments of parents' feedback.
+This class uses folium module to plot results in interactive maps. Each school is represented by popup icon with a pie chart indicating percentage of sentiments of parents' feedback.
 
 ```Python
     def get_json(self, data, school_name):
@@ -172,9 +171,9 @@ This class uses folium madule to plot results in an interactive maps. Each schoo
 Parameter | Description
 ----|----
 `data`| sentiment score data
-`school_name`| the name of each school
+`school_name`| the name of the school
 
-It uses `vincint` module to acquire json data of the pie chart of the results.
+It uses `vincint` module to acquire json data of the pie chart of the results for visualization.
 
 ```Python
     def folium_visual(self, col):
@@ -185,7 +184,7 @@ Parameter | Description
 
 ---
 ## 3. Results
-The final results vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
+In general, six interactive maps have been produced based on three school categories and two options. The sentiments vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
 
 #### An Example:
 
@@ -195,7 +194,7 @@ MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisu
 ```
 **Output**                                              
 **(Please forgive me for not having time to further clean the shapefile)**
-![](results/result_example2.png)
+![](examples/example_es_A.html)
 
 
 ---
