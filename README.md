@@ -3,7 +3,10 @@
 Author @Meng Chen
 
 ---------------------------
+
 ## 1. Introduction
+
+---------------------------
 
 Linganore-Oakdale-Urbana (LOU) Area is located in the southeastern area of the Frederick County of Maryland. During last ten years, the local communities have been transformed into well-maintained suburban residency for people who work in the Washington-Maryland area. Many professionals, such as administrative government employees or military personals chose to live in these neighborhoods, despite the distant transportation between their working places and homes. Even some government facilities have been located in this area. For an example, the Social Security Data Center is located next to the Park and Ride of the Exit 26 of Interstate-270 in the Urbana area. Recently, [Kite Pharma](https://www.kitepharma.com) is starting to build a pharmaceutical manufacturing facility here, and along its side, there will be a hotel and restaurant chain established in two years. Urbana area has become the prime area for both business and residents.
 
@@ -47,8 +50,6 @@ Class  | Description
 `SentimentAnalysis` | Build a word score dictionary based on SentiWordNet 3.0; calculate the score of the sentiment of parents' feedbacks
 `Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the Maryland geospatial reference to the world spatial reference
 `MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
-
----------------------------
 
 ### 2.2.1.1 The class for the sentiment analysis
 ```Python
@@ -108,8 +109,6 @@ SentimentAnalysis().score_text('Welcome to our new house.')
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
 ![](results/result_example1.png)
 
----------------------------
-
 ### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
 class Shape2Json:
@@ -152,8 +151,6 @@ In addition, this function attain the school address from the output1.
 ```
 The functionality is to acquire the GPS coordinates of every school in the project.
 
----------------------------
-
 ### 2.2.1.3 The class visualizing the results
 ```Python
 class MapVisualization:
@@ -193,7 +190,10 @@ Parameter | Description
 `col`| the color of your choice for popup icon
 
 -----------------------
+
 ## 3. Results
+
+-----------------------
 The final results vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
 
 #### An Example:
