@@ -11,9 +11,9 @@ import vincent
 
 class MapVisualization:
 
-    def __init__(self, coordinates, precentage, option, location, polygon):
+    def __init__(self, coordinates, score, option, location, polygon):
         self.coordinates = coordinates
-        self.precentage = precentage
+        self.score = score
         self.option = option
         self.location = location
         self.polygon = polygon
@@ -43,7 +43,7 @@ class MapVisualization:
             if lat == 'NA' or lon == 'NA':
                 continue
             else:
-                school_json = self.precentage[school][self.option]
+                school_json = self.score[school][self.option]
                 chart_json = self.get_json(school_json, school)
                 vega = folium.Vega(chart_json, width=200, height=100)
                 pop_up = folium.Popup(max_width=400).add_child(vega)
@@ -56,4 +56,4 @@ class MapVisualization:
         geojson = self.polygon
         folium.GeoJson(geojson, name='geojson').add_to(map)
 
-        return initMap
+        return map

@@ -153,9 +153,9 @@ The functionality is to acquire the GPS coordinates of every school in the proje
 ```Python
 class MapVisualization():
 
-    def __init__(self, coordinates, precentage, option, location, polygon):
+    def __init__(self, coordinates, score, option, location, polygon):
       self.coordinates = coordinates
-      self.precentage = precentage
+      self.score = precentage
       self.option = option
       self.location = location
       self.polygon = polygon
@@ -163,7 +163,7 @@ class MapVisualization():
 Parameter | Description
 ----|----
 `coordinates` | the GPS coordinates of the schools
-`percentage` | the percentage of the positive, negative, and neural feedbacks from parents for visualizing the pie chart
+`score` | the sentiment score that can be represented as  percentage of the positive, negative, and neural feedbacks from parents for visualizing the pie chart
 `option` | proposed option A and option B
 `location` | centeral location of the map
 `polygon` | the coordiantes of school districts by elementary, middle, and high
