@@ -3,9 +3,7 @@
 Author @Meng Chen
 
 ---------------------------
-
 ## 1. Introduction
-
 ---------------------------
 
 Linganore-Oakdale-Urbana (LOU) Area is located in the southeastern area of the Frederick County of Maryland. During last ten years, the local communities have been transformed into well-maintained suburban residency for people who work in the Washington-Maryland area. Many professionals, such as administrative government employees or military personals chose to live in these neighborhoods, despite the distant transportation between their working places and homes. Even some government facilities have been located in this area. For an example, the Social Security Data Center is located next to the Park and Ride of the Exit 26 of Interstate-270 in the Urbana area. Recently, [Kite Pharma](https://www.kitepharma.com) is starting to build a pharmaceutical manufacturing facility here, and along its side, there will be a hotel and restaurant chain established in two years. Urbana area has become the prime area for both business and residents.
@@ -17,9 +15,7 @@ Starting in January, 2019, Frederick County has contracted with Cropper GIS Cons
 This project primarily focuses on the sentiment and preferences of parents for new proposed options after the Public Engagement Session in June, 2019. The parents' preferable options will be compared with the plan of the superintendent's recommendation to investigate whether Board of Education's choices are aligned with parents' preferences and seek potential explanation. These will help board members understand the if parents support or oppose which option in a quantitative way and identify which communities have been mostly affected after June's proposal. In addition, the results will aid parents to recognize the educational needs of the majority of the their local communities.
 
 ---------------------------
-
 ## 2. Materials and Methods
-
 ---------------------------
 
 ### 2.1 Materials
@@ -190,9 +186,7 @@ Parameter | Description
 `col`| the color of your choice for popup icon
 
 -----------------------
-
 ## 3. Results
-
 -----------------------
 The final results vary by different neighborhoods. For an example, parents in Urbana area provide great positive feedbacks for the new proposals of middle and high schools, while they provided more neural feedbacks for elementary school district. Such a results indicate a great improvement of the new proposal, as parents were furious about the previous proposal, suggesting that the board of the education has listened to the residents of the Urbana area to improve their redistricting effort on middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting. Together, this will help board of the education make decision on which option would they choose for the superintendent recommendation.
 
