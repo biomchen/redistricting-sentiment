@@ -194,7 +194,11 @@ It should be noted that the algorithm of the sentiment analysis is not perfectly
 
 **Input**:
 ```python
-MapVisualization(coordinates, score, 'A', 'Frederick, MD', 'ES.json').foliumVisual('blue', 'results/es_A.html')
+MapVisualization(coordinates,
+                 score,
+                 'A',
+                 'Frederick, MD',
+                 'ES.json').foliumVisual('blue', 'results/es_A.html')
 ```
 **Output**                                              
 **(Please forgive me for not having time to further clean the shapefile)**
