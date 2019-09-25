@@ -37,7 +37,7 @@ The shapefiles of Frederick County School District have been downloaded at Frede
 I used Python programming language to develop a package `redistrict` to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes are compiled together as a module named 'redistrict'. See below for details of the functionality of each class as well as methods within it.
 
 ### 2.2.1 'redistrict' Package
-This package includes three newly developed classes, [`SentimentAnalysis`](redistrict/senti.py), `Shape2Json`, and `MapVisualization`. Below is brief description of each class.
+This package includes three newly developed classes, [`SentimentAnalysis`](redistrict/senti.py), [`Shape2Json`](redistrict/shp_json.py), and [`MapVisualization`](redistrict/map_visual.py). Below is brief description of each class.
 
 Class  | Description
 ------ | -----------
