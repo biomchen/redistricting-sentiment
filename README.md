@@ -45,7 +45,7 @@ Class  | Description
 `Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the spatial reference of Maryland to the spatial reference of the world
 `MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
 
-##### 2.2.1.1 The class for the sentiment analysis
+#### 2.2.1.1 The class for the sentiment analysis
 ```Python
 class SentimentAnalysis:
 
@@ -103,7 +103,7 @@ SentimentAnalysis().score_text('Welcome to our new house.')
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
 ![](examples/result_example1.png)
 
-##### 2.2.1.2 The class for converting shapefile to geojson
+#### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
 class Shape2Json:
 
@@ -144,7 +144,7 @@ The function converts json file of output1 that was generated under spatial refe
 ```
 Its functionality is to acquire the GPS coordinates of every school in the study for visualization.
 
-##### 2.2.1.3 The class visualizing the results
+#### 2.2.1.3 The class visualizing the results
 ```Python
 class MapVisualization:
 
