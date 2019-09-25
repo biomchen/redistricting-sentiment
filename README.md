@@ -17,7 +17,7 @@ This project primarily focuses on the sentiment and preferences of parents for n
 ## 2. Materials and Methods
 
 ### 2.1 Materials
-#### 2.1.1 Survey dataset
+### 2.1.1 Survey dataset
 The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. Prior to the analysis, the PDF file were converted to an excel file containing school name, comments, and options. See Methods for additional cleaning procedures.
 
 ##### **Original Survey Comments**
@@ -28,7 +28,7 @@ The survey results after Public Engagement Session in June, 2019 for LOU Redistr
 
 ![](/examples/survey_example_converted.png)
 
-#### 2.1.2 Shapefile
+### 2.1.2 Shapefile
 The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the basic information of school districts, including school names, school address, the types of schools, and the polygon data that separates school districts. The shapefile was created by ESRI ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers (OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the original coordinates of Maryland were converted under the spatial reference ID EPSG 4326 of world map. See Methods for details.
 
 ---
@@ -36,7 +36,7 @@ The shapefiles of Frederick County School District have been downloaded at Frede
 ### 2.2 Methods
 I used Python programming language to develop a package `redistrict` to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes are compiled together as a module named 'redistrict'. See below for details of the functionality of each class as well as methods within it.
 
-#### 2.2.1 redistrict Package
+### 2.2.1 redistrict Package
 This package includes three newly developed classes, `SentimentAnalysis`, `Shape2Json`, and `MapVisualization`. Below is brief description of each class.
 
 Class  | Description
@@ -45,7 +45,7 @@ Class  | Description
 `Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the spatial reference of Maryland to the spatial reference of the world
 `MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
 
-#### 2.2.1.1 The class for the sentiment analysis
+### 2.2.1.1 The class for the sentiment analysis
 ```Python
 class SentimentAnalysis:
 
@@ -103,7 +103,7 @@ SentimentAnalysis().score_text('Welcome to our new house.')
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
 ![](examples/result_example1.png)
 
-#### 2.2.1.2 The class for converting shapefile to geojson
+### 2.2.1.2 The class for converting shapefile to geojson
 ```Python
 class Shape2Json:
 
@@ -144,7 +144,7 @@ The function converts json file of output1 that was generated under spatial refe
 ```
 Its functionality is to acquire the GPS coordinates of every school in the study for visualization.
 
-#### 2.2.1.3 The class visualizing the results
+### 2.2.1.3 The class visualizing the results
 ```Python
 class MapVisualization:
 
