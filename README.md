@@ -1,9 +1,9 @@
-## Sentiment of Linganore-Oakdale-Urbana Area Redistricting
+# Sentiment of Linganore-Oakdale-Urbana Area Redistricting
 
 Author @Meng Chen
 
 ---
-## 1. Introduction
+# 1. Introduction
 
 Linganore-Oakdale-Urbana (LOU) Area is located in the southeastern area of the Frederick County of Maryland. During last ten years, the local communities have been transformed into well-maintained suburban residency for people who work in the Washington-Maryland area. Many professionals, such as administrative government employees or military personals chose to live in these neighborhoods, despite the distant transportation between their working places and homes. Even some government facilities have been located in this area. For an example, the Social Security Data Center is located next to the Park and Ride of the Exit 26 of Interstate-270 in the Urbana area. Recently, [Kite Pharma](https://www.kitepharma.com) is starting to build a pharmaceutical manufacturing facility here, and along its side, there will be a hotel and restaurant chain established in two years. Urbana area has become the prime area for both business and residents.
 
@@ -14,10 +14,10 @@ Starting in January, 2019, Frederick County has contracted with Cropper GIS Cons
 This project primarily focuses on the sentiment and preferences of parents for new proposed options after the Public Engagement Session in June, 2019. The parents' preferable options will be compared with the plan of the superintendent's recommendation to investigate whether Board of Education's choices are aligned with parents' preferences and seek potential explanation. These will help board members understand the if parents support or oppose which option in a quantitative way and identify which communities have been mostly affected after June's proposal on the basis of the parenets' feedbacks. In addition, the results will help parents recognize the educational needs of the majority of the their local communities.
 
 ---
-## 2. Materials and Methods
+# 2. Materials and Methods
 
-### 2.1 Materials
-### 2.1.1 Survey dataset
+## 2.1 Materials
+## 2.1.1 Survey dataset
 The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. Prior to the analysis, the PDF file were converted to an excel file containing school name, comments, and options. See Methods for additional cleaning procedures.
 
 ##### **Original Survey Comments**
@@ -28,15 +28,15 @@ The survey results after Public Engagement Session in June, 2019 for LOU Redistr
 
 ![](/examples/survey_example_converted.png)
 
-### 2.1.2 Shapefile
+## 2.1.2 Shapefile
 The shapefiles of Frederick County School District have been downloaded at Frederick County [website](https://www.frederickcountymd.gov/5969/Download-GIS-Data). The shapefile contains the basic information of school districts, including school names, school address, the types of schools, and the polygon data that separates school districts. The shapefile was created by ESRI ArcGIS under EPSG 2248. The EPSG was short for European Petroleum Survey Group but now known as the Geomatics Committee of the International Association of Oil and Gas Producers (OGP). 2248 is the EPSG spatial reference ID for Maryland. To project the Maryland to the world map, the original coordinates of Maryland were converted under the spatial reference ID EPSG 4326 of world map. See Methods for details.
 
 ---
 
-### 2.2 Methods
+## 2.2 Methods
 I used Python programming language to develop a package `redistrict` to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes are compiled together as a module named 'redistrict'. See below for details of the functionality of each class as well as methods within it.
 
-### 2.2.1 'redistrict' Package
+## 2.2.1 'redistrict' Package
 This package includes three newly developed classes, `SentimentAnalysis`, `Shape2Json`, and `MapVisualization`. Below is brief description of each class.
 
 Class  | Description
@@ -45,7 +45,7 @@ Class  | Description
 `Shape2Json`| Convert the ESRI shapefile to geojson file; convert coordinates from the spatial reference of Maryland to the spatial reference of the world
 `MapVisualization` | Visualize the sentiment score of different school districts on a interactive map
 
-### 2.2.1.1 The class for the sentiment analysis
+## 2.2.1.1 The class for the sentiment analysis
 ```Python
 class SentimentAnalysis:
 
@@ -103,7 +103,7 @@ SentimentAnalysis().score_text('Welcome to our new house.')
 Mean Score (Arithmetic | Geometric | Harmonic) | Percentage (Positive | Negative | Neutral) | Raw Scores
 ![](examples/result_example1.png)
 
-### 2.2.1.2 The class for converting shapefile to geojson
+## 2.2.1.2 The class for converting shapefile to geojson
 ```Python
 class Shape2Json:
 
@@ -144,7 +144,7 @@ The function converts json file of output1 that was generated under spatial refe
 ```
 Its functionality is to acquire the GPS coordinates of every school in the study for visualization.
 
-### 2.2.1.3 The class visualizing the results
+## 2.2.1.3 The class visualizing the results
 ```Python
 class MapVisualization:
 
@@ -184,7 +184,7 @@ Parameter | Description
 `file_name`| save the interactive map to a file in the results folder
 
 ---
-## 3. Results and Conclusion
+# 3. Results and Conclusion
 In general, six interactive maps have been produced based on three school categories and two options. The sentiments vary by different schools. For an example, parents in Urbana area show positive feedbacks for the latest proposal for redistricting middle and high schools, while they have relatively neural feedbacks for the elementary school district. In comparison with the feedbacks from Engagement Session on March, 2019, these results show a great improvement, suggesting that the Board of Education took Urbana parents' feedback seriously and may take extra effort to explore best options for the middle and high school redistricting. However, it remains unclear if parents found the common ground of the elementary school redistricting as the neural sentiments exist. Similarly, other neighborhoods show inconsistent support for or opposition against the latest options by school categories. Thus, it requires board members to review the school redistrict options case by case prior to the superintendent recommendation. By identifying the sentiment and preference of the parents in different neighborhoods, this project helps board members understand the impact of redistricting on each neighborhoods and provides references to them for making final recommendations. In addition, the parents in local communities can easily assess the emotions among their neighbors via the visualized results and recognize if their educational needs are align with the majority of their neighborhoods.
 
 It should be noted that the algorithm of the sentiment analysis is optimized for this project and needs tweaks, such as incorporating with Natural Language Toolkit (`nltk`), to apply to other similar projects. Additionally, the json files for visualization may require some organization in order to plot complete polygons without any interference with each other. However, due to the limited time, the results of current project can still be used as good initial assessments for understanding the needs of parents after the Engagement Session on June, 2019. Future improvements need to address the issues mentioned above.
