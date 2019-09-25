@@ -1,13 +1,10 @@
 """
 A class to analyze sentiments of the comments from LOU redistricting survey.
-
 The SentiWordNet 3.0 dataset has been preprocessed before the analyses
 by removing all description at the beginning of the data as well as
 empty space in the end of it.
-
 Building a SentiWordNet is adopted from Anela Chan with some modifications:
 https://github.com/anelachan/sentimentanalysis
-
 """
 import re
 
