@@ -273,7 +273,7 @@ class Shape2Json(object):
         in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
         out_proj = Proj(init='epsg:4326')
 
-        print("Converting its coordinates ...")
+        print("Converting its spatial reference ...")
 
         with open(self.output1) as json_file:
             data = json.load(json_file)
