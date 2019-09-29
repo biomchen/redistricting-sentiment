@@ -25,7 +25,7 @@ class SchoolComments(object):
     old_names: school names in comments file
 
     '''
-    def __init__(self, old_names, fname, sheet, options=['A', 'B', 'AB']):
+    def __init__(self, old_names):
         self.old_names = old_names
         self.make_dict()
 
@@ -56,7 +56,7 @@ class SchoolComments(object):
                 new_names,
                 elementary_schs, middle_schs, high_schs)
 
-    def write_comments(self):
+    def write_comments(self, fname, sheet, options=['A', 'B', 'AB']):
         df = pd.read_excel(fname, sheet_name=sheet)
         names_dict = self.make_dict()[0]
         for key in names_dict.keys():
@@ -390,8 +390,7 @@ class MapVisualization(object):
 
 
 def map_plot(sch_coords, score, option, polygon,
-             distr_type, location='Frederick', # distr_type: es, ms, hs
-             color='blue'):
+             distr_type): # distr_type: es, ms, hs
     """
     Plot the results.
 
@@ -402,9 +401,12 @@ def map_plot(sch_coords, score, option, polygon,
     option: 'A', 'B'
     polygon: district json file
     distr_type: elementary, middle, or high school
-    
+
     """
     plot = MapVisualization(sch_coords, score, option,
-                            polygon, location)
-    plot.folium_visual(color,
-                       'results/{}_{}.html'.format(distr_type, option))
+                            'Frederick', polygon)
+    plot_visual = plot.folium_visual('blue',
+                                     'results/{}_{}.html'.
+                                     format(distr_type, option))
+
+    return plot_visual
