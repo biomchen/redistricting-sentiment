@@ -273,7 +273,7 @@ class Shape2Json(object):
         in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
         out_proj = Proj(init='epsg:4326')
 
-        print("Converting its spatial reference ...")
+        print("Converting Maryland spatial reference from EPSG 2248 to 4326...")
 
         with open(self.output1) as json_file:
             data = json.load(json_file)
@@ -390,7 +390,7 @@ class MapVisualization(object):
 
 def map_plot(sch_coords, score, option, polygon,
              distr_type): # distr_type: es, ms, hs
-    print('Ploting results of {} school district'.format(distr_type))
+    print('Saving the interactive plot of {} school district'.format(distr_type))
     """
     Plot the results.
 
