@@ -48,4 +48,4 @@ coordinates_es['Green Valley Elementary'] = (39.3434, -77.2657)
 
 # plot the results
 map_plot(coordinates_es, scores_per, 'A',
-        'results/json_es_converted.json', 'es')
+        'results/json_es_converted.json', 'elementary')

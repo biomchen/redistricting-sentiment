@@ -273,7 +273,7 @@ class Shape2Json(object):
         in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
         out_proj = Proj(init='epsg:4326')
 
-        print("coverting its coordinates ...")
+        print("Converting its coordinates ...")
 
         with open(self.output1) as json_file:
             data = json.load(json_file)
@@ -322,7 +322,7 @@ class Shape2Json(object):
     def get_coordinates(self):
         self.coordinates = {}
 
-        print("getting GPS coordinates ...")
+        print("Getting GPS coordinates of schools ...")
 
         for school in self.addresses.keys():
             address = self.addresses[school]
@@ -390,6 +390,7 @@ class MapVisualization(object):
 
 def map_plot(sch_coords, score, option, polygon,
              distr_type): # distr_type: es, ms, hs
+    print('Ploting results of {} school district'.format(distr_type))
     """
     Plot the results.
 
