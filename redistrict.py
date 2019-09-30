@@ -64,7 +64,8 @@ class SchoolComments(object):
         new_names = self.make_dict()[1]
         for sch in new_names:
             for opt in options:
-                txt = open('results/comments_{0}_{1}.txt'.format(sch, opt),
+                dir = 'results/comments_{}_{}.txt'
+                txt = open(dir.format(sch, opt),
                            'w')
                 comments = df[df.School == sch][df.Option == opt].Comments
                 for comment in comments:
@@ -197,8 +198,8 @@ def get_score(sch_names, options=['A', 'B', 'AB'], path='results/'):
             scores_per[sch][option] = {}
             scores_raw[sch][option] = {}
             senti_analysis = SentimentAnalysis()
-            new_path = os.path.join(path,
-                                    'comments_{}_{}.txt'.format(sch, option))
+            dir = 'comments_{}_{}.txt'
+            new_path = os.path.join(path, dir.format(sch, option))
             files = glob.glob(new_path)
             for file in files:
                 comment = open(file, 'r')
@@ -390,7 +391,8 @@ class MapVisualization(object):
 
 def map_plot(sch_coords, score, option, polygon,
              distr_type): # distr_type: es, ms, hs
-    print('Saving the interactive plot of {} school district'.format(distr_type))
+    theme = 'Saving the interactive plot of {} school district'
+    print(theme.format(distr_type))
     """
     Plot the results.
 
@@ -405,8 +407,7 @@ def map_plot(sch_coords, score, option, polygon,
     """
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
-    plot_visual = plot.folium_visual('blue',
-                                     'results/{}_{}.html'.
-                                     format(distr_type, option))
+    dir = 'results/{}_{}.html'
+    plot_visual = plot.folium_visual('blue', dir.format(distr_type, option))
 
     return plot_visual
