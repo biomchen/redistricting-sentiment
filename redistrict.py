@@ -23,6 +23,10 @@ class SchoolComments(object):
     -----------
     old_names: school names in comments file
 
+    Methods:
+    -----------
+    make_dict: dictionary of old vs new schools
+    write_comments: save the comments into separate files
     '''
     def __init__(self, old_names):
         self.old_names = old_names
@@ -80,8 +84,15 @@ class SentimentAnalysis(object):
     LOU redistricting survey.
 
     Attributes
-    --------
+    -----------
     base: SentiWordNet 3.0 dataset
+
+    Methods:
+    -----------
+    build_swn: building a sentiment word net
+    weighting: weighting schemes
+    clean_text: clean up those unwanted strings in the texts
+    score_text: use the build_swn to score the sentiments of text
 
     """
 
@@ -120,6 +131,7 @@ class SentimentAnalysis(object):
         return weighted_sum
 
     def clean_text(self, filename):
+        mess = r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]'
         if '.txt' in filename or '.csv' in filename:
             texts_clean_all = []
             data = open(filename, encoding='utf8')
@@ -128,8 +140,7 @@ class SentimentAnalysis(object):
                 for line in texts:
                     for text in line:
                         text_clean = text.lower()
-                        text_clean = re.sub(
-                            r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]', '', text_clean)
+                        text_clean = re.sub(mess, '', text_clean)
                         texts_clean_all.append(text_clean)
                 return texts_clean_all
             except Exception:
@@ -137,8 +148,7 @@ class SentimentAnalysis(object):
         else:
             try:
                 text_clean = filename.lower()
-                text_clean = re.sub(
-                    r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]', '', text_clean).split()
+                text_clean = re.sub(mess', '', text_clean).split()
                 return text_clean
             except Exception:
                 return "name error"
@@ -182,7 +192,6 @@ class SentimentAnalysis(object):
 def get_score(sch_names, options=['A', 'B', 'AB'], path='results/'):
     '''
     A function to get the sentiment scores of each school district
-
     '''
     # make dictionaries to store the results
     scores_mean = {}
@@ -248,12 +257,10 @@ class Shape2Json(object):
         fields = reader.fields[1:]
         field_names = [field[0] for field in fields]
         features = []
-
         name = self.fname.split('_')[0]
         name = name.split('/')[-1]
         print("Converting the shapefile of {} school district to json ...".
               format(name.lower()))
-
         for record in reader.shapeRecords():
             attributes = dict(zip(field_names, record.record))
             if attributes[self.school_param] in self.school_list:
@@ -263,7 +270,6 @@ class Shape2Json(object):
                                 properties=attributes))
             else:
                 continue
-
         json_file = open(self.output1, 'w')
         json_file.write(dumps({'type': 'FeatureCollection',
                                'features': features},
@@ -273,20 +279,16 @@ class Shape2Json(object):
     def convert_epsg(self):
         in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
         out_proj = Proj(init='epsg:4326')
-
         print("Converting Maryland spatial reference from EPSG 2248 to 4326...")
-
         with open(self.output1) as json_file:
             data = json.load(json_file)
             features_old = data['features']
             coordinates = []
             features_new = []
             self.addresses = {}
-
             for feature in features_old:
                 records = feature['geometry']['coordinates'][0]
                 type = feature['geometry']['type']
-
                 if type == 'Polygon':
                     for coordinate in records:
                         coordinate_new = transform(in_proj,
@@ -313,7 +315,6 @@ class Shape2Json(object):
                 features_new.append(dict(type='Feature',
                                          geometry=geo_new,
                                          properties=attributes))
-
         json_file = open(self.output2, 'w')
         json_file.write(dumps({'type': 'FeatureCollection',
                                'features': features_new},
@@ -322,9 +323,7 @@ class Shape2Json(object):
 
     def get_coordinates(self):
         self.coordinates = {}
-
         print("Getting GPS coordinates of schools ...")
-
         for school in self.addresses.keys():
             address = self.addresses[school]
             nominatim = Nominatim(user_agent='my-application')
@@ -355,7 +354,6 @@ class MapVisualization(object):
         pie_chart.colors(brew='Set2')
         pie_chart.legend(school_name[:-10])  # -10 ES, -6 MS, -4 HS
         pie_json = pie_chart.to_json()
-
         return pie_json
 
     def folium_visual(self, col, file_name):
@@ -364,7 +362,6 @@ class MapVisualization(object):
         map = folium.Map(location=[location_center.latitude,
                                    location_center.longitude],
                          zoom_start=11)
-
         for school in self.coordinates.keys():
             lat = self.coordinates[school][0]
             lon = self.coordinates[school][1]
@@ -381,11 +378,9 @@ class MapVisualization(object):
                               popup=pop_up,
                               icon=icon
                               ).add_to(map)
-
         geojson = self.polygon
         folium.GeoJson(geojson, name='geojson').add_to(map)
         map.save(file_name)
-
         return map
 
 
@@ -408,6 +403,6 @@ def map_plot(sch_coords, score, option, polygon,
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
     dir = 'results/{}_{}.html'
-    plot_visual = plot.folium_visual('blue', dir.format(distr_type, option))
-
+    plot_visual = plot.folium_visual('blue',
+                                     dir.format(distr_type, option))
     return plot_visual
