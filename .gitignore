@@ -4,3 +4,11 @@ redistrct/__pycache__
 *.pyc
 *.egg-info
 *.egg
+*.cpg
+*.dbf
+*.prj
+*.sbn
+*.sbx
+*.shp
+*.xml
+*.shx
