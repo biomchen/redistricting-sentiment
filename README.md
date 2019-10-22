@@ -1,6 +1,9 @@
 ## Sentiment of Linganore-Oakdale-Urbana Area Redistricting
 
-Author @Meng Chen
+**Meng Chen**                          
+Centre for Research and Education on Biological Evolution and Environment          
+School of Earth Sciences                                                            
+Nanjing University, Nanjing, China, 210093   
 
 ---
 ## 1. Introduction
