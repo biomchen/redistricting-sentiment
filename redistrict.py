@@ -7,14 +7,51 @@ import os
 import json
 import pandas as pd
 import numpy as np
+import vincent
+import folium
+import camelot
 from json import dumps
 import shapefile
 from pyproj import Proj, transform
 from geopy.geocoders import Nominatim
 from pandas.io.json import json_normalize
-import vincent
-import folium
+from nltk.corpus import stopwords
+from nltk.tokenize import RegexpTokenizer
+from itertools import chain
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
 
+
+def get_pdf_data(dat, columns):
+    dat = [(tb.df[1], tb.df[2]) for tb in dat]
+    df = pd.DataFrame()
+    for tb in dat:
+        rows = len(tb)
+        df_tb = pd.DataFrame(tb).T
+        df = pd.concat([df, df_tb], axis=0)
+    df.columns = columns
+    df = df[df[columns[1]] != 'N/A']
+    df = df[df[columns[1]] != 'n/a']
+    return df
+
+def plot_words(data):
+    tokenizer = RegexpTokenizer(r'\w+')
+    stop_words = stopwords.words('english')
+    words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
+    words_clean =[word.lower() for word in list(chain(*words))
+                  if word.lower() not in stop_words]
+    comments_wc = WordCloud(
+        background_color='white',
+        max_words=2000,
+        stopwords=stop_words
+    )
+    comments_wc.generate(str(words_clean))
+    fig = plt.figure()
+    fig.set_figwidth(14)
+    fig.set_figheight(25)
+    plt.imshow(comments_wc, interpolation='bilinear')
+    plt.axis('off')
+    plt.show()
 
 class SchoolComments(object):
     '''
@@ -150,7 +187,7 @@ class SentimentAnalysis(object):
         else:
             try:
                 text_clean = filename.lower()
-                text_clean = re.sub(mess', '', text_clean).split()
+                text_clean = re.sub(mess, '', text_clean).split()
                 return text_clean
             except Exception:
                 return "name error"

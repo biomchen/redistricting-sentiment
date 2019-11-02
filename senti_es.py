@@ -48,5 +48,5 @@ def main():
             'results/json_es_converted.json',
             'elementary')
 
-if __init__ == '__main__':
+if __name__ == '__main__':
     main()
