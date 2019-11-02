@@ -12,3 +12,5 @@ redistrct/__pycache__
 *.shp
 *.xml
 *.shx
+*.txt
+*.json
