@@ -40,15 +40,13 @@ def plot_words(data):
     words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
     words_clean =[word.lower() for word in list(chain(*words))
                   if word.lower() not in stop_words]
-    comments_wc = WordCloud(
-        background_color='white',
-        max_words=2000,
-        stopwords=stop_words
-    )
+    comments_wc = WordCloud(background_color='white',
+                            max_words=2000,
+                            stopwords=stop_words)
     comments_wc.generate(str(words_clean))
     fig = plt.figure()
     fig.set_figwidth(14)
-    fig.set_figheight(25)
+    fig.set_figheight(18)
     plt.imshow(comments_wc, interpolation='bilinear')
     plt.axis('off')
     plt.show()

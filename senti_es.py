@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# I developed a redistrict module
+# it is in the same directory of the github link
 from redistrict import *
 
 def main():
@@ -10,6 +12,17 @@ def main():
                      'Urbana ES', 'Gov. T.J. MS', 'New Market MS',
                      'Oakdale MS', 'Urbana MS', 'Windsor Knolls MS',
                      'Linganore HS', 'Oakdale HS', 'Urbana HS']
+    # for the elemnetary school option A
+    columns = ['Live-in School', 'Comments of ES, option A']
+    data = 'data/comments/LOU_SurveyResultsJune.pdf'
+    print('Reading data from pdf file and perform cleaning...')
+    tables = camelot.read_pdf(data, pages='4-26')
+    df_table = get_pdf_data(tables, columns)
+    schools = df_table['Live-in School']
+    df_table = df_table.loc[schools.isin(sch_names_old)]
+    print('Ploting the data in Word Cloud...')
+    plot_words(df_table)
+    plt.show()
     # get school comments
     sch_comments = SchoolComments(sch_names_old)
     # get school new names
