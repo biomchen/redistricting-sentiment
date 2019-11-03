@@ -1,6 +1,6 @@
 ## Sentiment of Linganore-Oakdale-Urbana Area Redistricting
 
-(**Needs to be updated soon**)
+(**will be updated soon**)
 
 **Meng Chen**                          
 Centre for Research and Education on Biological Evolution and Environment          
