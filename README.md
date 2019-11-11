@@ -14,22 +14,24 @@ Linganore-Oakdale-Urbana (LOU) Area is located in the southeastern area of the F
 
 These ongoing commercial developments bring prosperity to the local communities. So does anxiety. For an example, the workforce brought by Kite Pharma has been estimated about 200-300 employees initially to 700-900 by its capacity. Such huge workforce will need hundreds of homes to accommodate their housing needs in nearby communities. Thus, the estate projects have been steadfastly developed in this area. More and more housing projects start to show themselves off the landscape. In contrast, only two new elementary schools have been added to the entire area, which could not alleviate overcrowd situations in local communities. It becomes clear that, lacking of additional government funding, the Board of Education of Frederick County has an urgent need to conduct school redistricting on the basis of changing feeder patterns.
 
-Starting in January, 2019, Frederick County has contracted with Cropper GIS Consulting to conduct the redistricting study, which is expected to completed by the end of the 2019. This study primarily focuses on attendance boundary and feeder patterns for two new schools that supposedly address the enrollment growth in LOU area and provides projections of the school enrollments in next five-eight years. Based on the message of the Board of Education, the redistricting roots in their core belief that all students are entitled equally to respect, opportunity, and excellence ([here for details](https://www.fcps.org/capital-program/linganore-oakdale-urbana-area-redistricting-study)). However, after the Public Engagement Session in March, 2019, the proposed attendance boundary stirred the outrage from local communities based on analyses of the parents' feedbacks provided by the study. Most of parents show extremely frustrated by new attendance boundaries. Some parents in Urbana area for example organized a local hearing to express their frustration to a member of the Board of Education. With entirely two new options proposed in the Public Engagement Session in June, 2019, such outrage seems to be alleviated based on an initial assessment. Unfortunately, the quantitative assessment of parents' preferences were not available to the public prior to the superintendent's recommendation that was presented on September 11, 2019.
+Starting in January, 2019, Frederick County has contracted with Cropper GIS Consulting to conduct the redistricting study and expected the study would be completed by the end of the 2019. This study primarily focuses on the attendance boundary and feeder patterns of local communities as two new schools have been added to the school district. Supposedly, this project can fully address the enrollment growth in LOU area and provide projections of the school enrollments in next five-eight years. Based on the message of the Board of Education, the redistricting roots in their core belief that all students are entitled equally to respect, opportunity, and excellence ([here for details](https://www.fcps.org/capital-program/linganore-oakdale-urbana-area-redistricting-study)). However, after the Public Engagement Session in March, 2019, the proposed attendance boundary stirred the outrage from local communities based on analyses of the parents' feedbacks provided by the Cropper GIS. Most of parents were extremely frustrated by the proposed new attendance boundaries. Some parents in Urbana area for example organized a local hearing to express their frustration to one of the Board of Education members. In attempt to alleviate the outrage raised from local communities, two entirely new options have been proposed in the Public Engagement Session in June, 2019 to replace the old ones. It is not clear that if those new options satisfying the needs of the local communities despite some positive sign in the parents' feedbacks.
 
-This project primarily focuses on the sentiment and preferences of parents for new proposed options after the Public Engagement Session in June, 2019. The parents' preferable options will be compared with the plan of the superintendent's recommendation to investigate whether Board of Education's choices are aligned with parents' preferences and seek potential explanation. These will help board members understand the if parents support or oppose which option in a quantitative way and identify which communities have been mostly affected after June's proposal on the basis of the parenets' feedbacks. In addition, the results will help parents recognize the educational needs of the majority of the their local communities.
+This project is the quantitative assessment of the parents' feedbacks prior to the superintendent's recommendation in the October. It primarily focuses on the sentiment and preferences of parents for new proposed options after the Public Engagement Session in June, 2019. The parents' preferable options will be compared with the plan of the superintendent's recommendation to investigate whether Board of Education's choices are aligned with parents' preferences and seek potential explanation. These will provide the board members the basic understanding of parents preferences quantitatively and help them identify which communities have been mostly affected after June's proposal. In addition, the results will help parents recognize the educational needs of the majority of the their local communities.
+
+It should be noted that this project will apply Natural Language Processing (NLP) techniques and can be broadly implemented in other similar projects.
 
 ---
 ## 2. Materials and Methods
 
 ## 2.1 Materials
 ### 2.1.1 Survey dataset
-The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. Prior to the analysis, the PDF file were converted to an excel file containing school name, comments, and options. See Methods for additional cleaning procedures.
+The survey results after Public Engagement Session in June, 2019 for LOU Redistricting Study can be found in the designed webpage by Frederick County Public Schools [website](https://www.fcps.org/capital-program/lou-meetings). The feedbacks are compiled and represented in numerous tables spreading among 209 pages of single PDF file. I used the `camelot` to extract the feedbacks from numerous tables. The feedbacks can be grouped based on the option and the school type. All feedbacks were saved in a SQL database.
 
 ##### **Original Survey Comments**
 
 ![](/examples/survey_example.png)
 
-##### **Converted Survey Comments**
+##### **Survey Comments in the SQL database**
 
 ![](/examples/survey_example_converted.png)
 
@@ -40,6 +42,14 @@ The shapefiles of Frederick County School District have been downloaded at Frede
 
 ## 2.2 Methods
 I used Python programming language to develop a package `redistrict` to quantify the parents' comments as sentiment score and to visualize the sentiments in interactive maps. Each of class has specific methods for analyzing data, saving outputs, and/or visualizing the results. Three classes are compiled together as a module named 'redistrict'. See below for details of the functionality of each class as well as methods within it.
+
+## The second plot using data of elementary schools with all options
+The data and approaches used here were outdated. This is just for the exhibit purpose.
+
+During the fellowship, I will use `nltk.sentiment.vader` to calculate the sentiment score of each comments and cluster schools using `K-means` with the sentiment score. I will add the information of the local business to address the crowdedness of those local communities. To show the project here, I just adopt the outdated methods and data.
+
+For the inital whole project, I will refer you to the notebook `senti_notebook.ipynb` as well as the module I developed `redistrict`.
+#### Import the module `redistrict`
 
 ### 2.2.1 'redistrict' Package
 This package includes three newly developed classes `SentimentAnalysis`, `Shape2Json`, `MapVisualization`. Below is brief description of each class.
