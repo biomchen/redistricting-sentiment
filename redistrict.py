@@ -106,8 +106,7 @@ class SchoolComments(object):
         for sch in new_names:
             for opt in options:
                 dir = 'results/comments_{}_{}.txt'
-                txt = open(dir.format(sch, opt),
-                           'w')
+                txt = open(dir.format(sch, opt), 'w')
                 comments = df[df.School == sch][df.Option == opt].Comments
                 for comment in comments:
                     comment = str(comment)
