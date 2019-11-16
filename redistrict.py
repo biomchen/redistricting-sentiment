@@ -22,7 +22,8 @@ from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
 
-def get_pdf_data(dat, columns):
+def get_pdf_data(file, pages, columns, sch_names):
+    dat = camelot.read_pdf(file, pages=pages)
     dat = [(tb.df[1], tb.df[2]) for tb in dat]
     df = pd.DataFrame()
     for tb in dat:
@@ -32,6 +33,8 @@ def get_pdf_data(dat, columns):
     df.columns = columns
     df = df[df[columns[1]] != 'N/A']
     df = df[df[columns[1]] != 'n/a']
+    schools = df[columns[0]]
+    df = df.loc[schools.isin(sch_names)]
     return df
 
 def plot_words(data):
