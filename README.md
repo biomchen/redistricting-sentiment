@@ -1,4 +1,4 @@
-## Focus of sentiments among local communities -- A case study of Linganore-Oakdale-Urbana (LOU) Area
+## Sentiments among local communities - A case study of Linganore-Oakdale-Urbana (LOU) Area
 
 **Meng Chen**                          
 Centre for Research and Education on Biological Evolution and Environment          
