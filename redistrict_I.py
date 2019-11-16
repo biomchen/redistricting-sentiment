@@ -15,10 +15,6 @@ import shapefile
 from pyproj import Proj, transform
 from geopy.geocoders import Nominatim
 from pandas.io.json import json_normalize
-from nltk.corpus import stopwords
-from nltk.tokenize import RegexpTokenizer
-from itertools import chain
-from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
 class SchoolComments(object):
