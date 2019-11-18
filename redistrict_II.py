@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 
 import re
-import csv
-import glob
-import os
 import json
 import pandas as pd
 import numpy as np
+import sqlite3
 import vincent
 import folium
 import camelot
@@ -19,259 +17,139 @@ from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from itertools import chain
 from wordcloud import WordCloud
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk import tokenize
 import matplotlib.pyplot as plt
 
 
-def get_pdf_data(file, pages, columns, sch_names):
-    dat = camelot.read_pdf(file, pages=pages)
-    dat = [(tb.df[1], tb.df[2]) for tb in dat]
-    df = pd.DataFrame()
-    for tb in dat:
-        rows = len(tb)
-        df_tb = pd.DataFrame(tb).T
-        df = pd.concat([df, df_tb], axis=0)
-    df.columns = columns
-    df = df[df[columns[1]] != 'N/A']
-    df = df[df[columns[1]] != 'n/a']
-    schools = df[columns[0]]
-    df = df.loc[schools.isin(sch_names)]
-    return df
+class SentiComments(object):
+    ''' a class to calculate the sentiment score of each comments
 
-def plot_words(data):
-    tokenizer = RegexpTokenizer(r'\w+')
-    stop_words = stopwords.words('english')
-    words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
-    words_clean =[word.lower() for word in list(chain(*words))
-                  if word.lower() not in stop_words]
-    comments_wc = WordCloud(background_color='white',
-                            max_words=2000,
-                            stopwords=stop_words)
-    comments_wc.generate(str(words_clean))
-    fig = plt.figure()
-    fig.set_figwidth(14)
-    fig.set_figheight(18)
-    plt.imshow(comments_wc, interpolation='bilinear')
-    plt.axis('off')
-    plt.show()
+        Parameters:
+        file: pdf file has data in the tables
+        pages: different pages corresponding to different tables
+        columns: column names
+        sch_names: school names
+        option: 'A', 'B', 'AB'
 
-class SchoolComments(object):
+        Methods:
+        get_pdf_data: extracting the data from tables in the pdf file
+        plot_words: making word cloud plots
+        senti_results: produce the sentiment scores
     '''
-    Object to get comments from parents from different
-    elementary, middle, and high school districts.
 
-    Attributes:
-    -----------
-    old_names: school names in comments file
+    def __init__(self, file, pages, columns, sch_names, option):
+        self.file = file
+        self.pages = pages
+        self.columns = columns
+        self.sch_names = sch_names
+        self.option =  option
+        self.get_pdf_data()
 
-    Methods:
-    -----------
-    make_dict: dictionary of old vs new schools
-    write_comments: save the comments into separate files
-    '''
-    def __init__(self, old_names):
-        self.old_names = old_names
-        self.make_dict()
+    def get_pdf_data(self):
+        dat = camelot.read_pdf(self.file, pages=self.pages)
+        dat = [(tb.df[1], tb.df[2]) for tb in dat]
+        df = pd.DataFrame()
+        for tb in dat:
+            rows = len(tb)
+            df_tb = pd.DataFrame(tb).T
+            df = pd.concat([df, df_tb], axis=0)
+        df.columns = self.columns
+        df = df[df[self.columns[1]] != 'N/A']
+        df = df[df[self.columns[1]] != 'n/a']
+        schools = df[self.columns[0]]
+        df = df.loc[schools.isin(self.sch_names)]
+        df['Option'] = self.option
+        return df
 
-    def make_dict(self):
-        new_names = []
-        elementary_schs = []
-        middle_schs = []
-        high_schs = []
-        for name in self.old_names:
-            sch_type = name.split(' ')[-1]
-            if sch_type == 'ES':
-                new_name = re.sub('ES', 'Elementary', name)
-                elementary_schs.append(new_name)
-                new_names.append(new_name)
-            elif sch_type == 'MS':
-                new_name = re.sub('MS', 'Middle', name)
-                middle_schs.append(new_name)
-                new_names.append(new_name)
-            elif sch_type == 'HS':
-                new_name = re.sub('HS', 'High', name)
-                high_schs.append(new_name)
-                new_names.append(new_name)
+    def plot_words(self):
+        tokenizer = RegexpTokenizer(r'\w+')
+        stop_words = stopwords.words('english')
+        data = self.get_pdf_data()
+        words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
+        words_clean =[word.lower() for word in list(chain(*words))
+                      if word.lower() not in stop_words]
+        comments_wc = WordCloud(background_color='white',
+                                max_words=2000,
+                                stopwords=stop_words)
+        comments_wc.generate(str(words_clean))
+        fig = plt.figure()
+        fig.set_figwidth(14)
+        fig.set_figheight(18)
+        plt.imshow(comments_wc, interpolation='bilinear')
+        plt.axis('off')
+        plt.show()
 
-        names_dict = {old_name: new_name for (old_name, new_name)
-                      in zip(self.old_names, new_names)}
+    def senti_score(self):
+        # Vader (Valence Aware Dictionary and sEntiment Reasoner)
+        SentiAnalyzer = SentimentIntensityAnalyzer()
+        schools = []
+        scores = []
+        results = {}
+        data = self.get_pdf_data()
+        for _, comment in data.iterrows():
+            schools.append(comment[0])
+            score = SentiAnalyzer.polarity_scores(str(comment[1]))
+            scores.append(score['compound'])
+        df_scores = pd.DataFrame([schools, scores]).T
+        df_scores.columns = ['School', 'Score']
+        for school in df_scores['School'].unique():
+            sch_score = df_scores[df_scores['School'] == school]
+            sch_score = sch_score['Score'].astype(float)
+            score_mean = round(np.mean(sch_score), 3)
+            num_scores = len(sch_score)
+            # positive sentiment
+            results_pos = len(sch_score[sch_score >= 0.05])
+            results_pos = round(results_pos/num_scores, 3)
+            # negative sentiment
+            results_neg = len(sch_score[sch_score <= -0.05])
+            results_neg = round(results_neg/num_scores, 3)
+            # neutural sentiment
+            results_neu = len(sch_score[sch_score <= 0.05][sch_score >= -0.05])
+            results_neu = round(results_neu/num_scores, 3)
+            results.update({school:{self.option:{'Positive':results_pos,
+                                                 'Negative':results_neg,
+                                                 'Neutral':results_neu}}})
+                                                 #'Mean': score_mean}}})
+        return results
 
-        return (names_dict,
-                new_names,
-                elementary_schs, middle_schs, high_schs)
+def df2sql(name, db, df):
+    '''dumps the df into the SQL database'''
+    conn = sqlite3.connect(db)
+    df.to_sql(name, conn, if_exists='replace')
 
-    def write_comments(self, fname, sheet, options=['A', 'B', 'AB']):
-        df = pd.read_excel(fname, sheet_name=sheet)
-        names_dict = self.make_dict()[0]
-        for key in names_dict.keys():
-            df['School'] = df['School'].replace(key, names_dict[key])
+def merge_dfs(file, tb_pages, columns, sch_names, options):
+    '''merge the comments of different options into one dataframe'''
+    dfs = pd.DataFrame()
+    for pages, option in zip(tb_pages, options):
+        df = SentiComments(file, pages, columns,
+                           sch_names, option).get_pdf_data()
+        dfs = pd.concat([dfs, df], axis=0)
+    return dfs
 
-        new_names = self.make_dict()[1]
-        for sch in new_names:
-            for opt in options:
-                dir = 'results/comments_{}_{}.txt'
-                txt = open(dir.format(sch, opt), 'w')
-                comments = df[df.School == sch][df.Option == opt].Comments
-                for comment in comments:
-                    comment = str(comment)
-                    txt.write(comment)
-            txt.close()
-
-
-class SentimentAnalysis(object):
-    """
-    A class to analyze sentiments of the comments from
-    LOU redistricting survey.
-
-    Attributes
-    -----------
-    base: SentiWordNet 3.0 dataset
-
-    Methods:
-    -----------
-    build_swn: building a sentiment word net
-    weighting: weighting schemes
-    clean_text: clean up those unwanted strings in the texts
-    score_text: use the build_swn to score the sentiments of text
-
-    """
-
-    def __init__(self, base='SentiWordNet.txt'):
-        self.base = base
-        self.swn_all_words = {}
-        self.build_swn(base)
-
-    def build_swn(self, base):
-        records = [line.split('\t') for line in open(self.base)]
-        for rec in records:
-            word = rec[4].split('#')[0]
-            true_score = float(rec[2]) - float(rec[3])
-            if word not in self.swn_all_words:
-                self.swn_all_words[word] = {}
-                self.swn_all_words[word]['score'] = true_score
-
-    def weighting(self, method, scores_list):
-        if method == 'arithmetic':
-            scores = 0
-            for score in scores_list:
-                scores += score
-            weighted_sum = scores/len(scores_list)
-        elif method == 'geometric':
-            weighted_sum = 0
-            num = 1
-            for score in scores_list:
-                weighted_sum += (score * (1/2**num))
-                num += 1
-        elif method == 'harmonic':
-            weighted_sum = 0
-            num = 2
-            for score in scores_list:
-                weighted_sum += (score * (1/num))
-                num += 1
-        return weighted_sum
-
-    def clean_text(self, filename):
-        mess = r'[.?!;:@#$%^&*()-_+={}[]|\>/’"]'
-        if '.txt' in filename or '.csv' in filename:
-            texts_clean_all = []
-            data = open(filename, encoding='utf8')
-            texts = [line.rsplit() for line in data]
-            try:
-                for line in texts:
-                    for text in line:
-                        text_clean = text.lower()
-                        text_clean = re.sub(mess, '', text_clean)
-                        texts_clean_all.append(text_clean)
-                return texts_clean_all
-            except Exception:
-                return "name error"
-        else:
-            try:
-                text_clean = filename.lower()
-                text_clean = re.sub(mess, '', text_clean).split()
-                return text_clean
-            except Exception:
-                return "name error"
-
-    def score_text(self, text):
-        scores_all = []
-        scores = 0
-        total_count = 0
-        positive_count = 0
-        negative_count = 0
-        final_score = {}
-        methods = ['arithmetic', 'geometric', 'harmonic']
-        text_set = set(self.clean_text(text))
-        key_set = set(self.swn_all_words.keys())
-
-        for word in text_set.intersection(key_set):
-            single_score = self.swn_all_words[word]['score']
-            if single_score > 0:
-                positive_count += 1
-            elif single_score < 0:
-                negative_count += 1
-            total_count += 1
-            scores_all.append(single_score)
-
-        if total_count >= 1:
-            for method in methods:
-                score = self.weighting(method, scores_all)
-                final_score[method] = round(score, 3)
-            positive = round(positive_count/total_count, 3)
-            negative = round(negative_count/total_count, 3)
-            neutral = 1 - positive - negative
-            return (list(final_score.values()),
-                    positive,
-                    negative,
-                    neutral,
-                    scores_all)
-        else:
-            return 0
-
-
-def get_score(sch_names, options=['A', 'B', 'AB'], path='results/'):
-    '''
-    A function to get the sentiment scores of each school district
-    '''
-    # make dictionaries to store the results
-    scores_mean = {}
-    scores_per = {}
-    scores_raw = {}
-
-    for sch in sch_names:
-        scores_mean[sch] = {}
-        scores_per[sch] = {}
-        scores_raw[sch] = {}
-        for option in options:
-            scores_mean[sch][option] = {}
-            scores_per[sch][option] = {}
-            scores_raw[sch][option] = {}
-            senti_analysis = SentimentAnalysis()
-            dir = 'comments_{}_{}.txt'
-            new_path = os.path.join(path, dir.format(sch, option))
-            files = glob.glob(new_path)
-            for file in files:
-                comment = open(file, 'r')
-                if len(comment.read()) == 0:
-                    scores_mean[sch][option] = 'NA'
-                    scores_per[sch][option] = 'NA'
-                    scores_raw[sch][option] = 'NA'
-                else:
-                    score = senti_analysis.score_text(file)
-                    scores_mean[sch][option] = score[0]
-                    scores_per[sch][option]['Positive'] = score[1]
-                    scores_per[sch][option]['Negaitive'] = score[2]
-                    scores_per[sch][option]['Neutral'] = score[3]
-                    scores_raw[sch][option] = score[-1]
-
-    return (scores_mean, scores_per, scores_raw)
-
+def change_names(sch_names_old):
+    new_names = []
+    elementary_schs = []
+    middle_schs = []
+    high_schs = []
+    for name in sch_names_old:
+        sch_type = name.split(' ')[-1]
+        if sch_type == 'ES':
+            new_name = re.sub('ES', 'Elementary', name)
+            elementary_schs.append(new_name)
+        elif sch_type == 'MS':
+            new_name = re.sub('MS', 'Middle', name)
+            middle_schs.append(new_name)
+        elif sch_type == 'HS':
+            new_name = re.sub('HS', 'High', name)
+            high_schs.append(new_name)
+    return (elementary_schs, middle_schs, high_schs)
 
 class Shape2Json(object):
-    """
+    '''
     Object to convert shapefile to json file.
 
-    Attributes
-    ----------
+    Parameters:
     fname : input file name
     output1: output file of json without conversion of EPSG reference
     output2: output file of json with after EPSG conversion
@@ -280,7 +158,13 @@ class Shape2Json(object):
     addresses: school addresses
     coordinates: coordinates of schools
 
-    """
+    Methods:
+    convert_json: converting shapefile to json and save the data
+    convert_epsg: convert the coordiantes to world reference maps from Maryland
+                  reference
+    get_coordinates: get gps coordinates of the schools
+
+    '''
     def __init__(self, fname, output1, output2, school_param, school_list,
                  addresses=None, coordinates=None):
         self.fname = fname
@@ -368,16 +252,26 @@ class Shape2Json(object):
             nominatim = Nominatim(user_agent='my-application')
             coordinate = nominatim.geocode(address)
             if coordinate is None:
-                self.coordinates.update({school: ('NA', 'NA')})
+                self.coordinates.update({school:('NA', 'NA')})
             else:
-                self.coordinates.update({school: (coordinate.latitude,
-                                                  coordinate.longitude)})
-
+                self.coordinates.update({school:(coordinate.latitude,
+                                                 coordinate.longitude)})
 
 class MapVisualization(object):
-    """
-    Object to visualize the sentiments in an interactive map.
-    """
+    '''
+    a class to visualize the sentiments in an interactive map.
+
+    Parameters:
+    coordinates: gps coordiantes of the schools
+    score: sentiment score; mean score, proportion, or etc
+    option: school district options
+    location: centeral location of the school districts
+    polygon: the polygon file of each school district
+
+    Methods:
+    get_json: converting data to json for donut plot using vincent
+    folium_visual: using folium to visualize results
+    '''
     def __init__(self, coordinates, score, option, location, polygon):
         self.coordinates = coordinates
         self.score = score
@@ -404,7 +298,6 @@ class MapVisualization(object):
         for school in self.coordinates.keys():
             lat = self.coordinates[school][0]
             lon = self.coordinates[school][1]
-
             if lat == 'NA' or lon == 'NA':
                 continue
             else:
@@ -422,23 +315,12 @@ class MapVisualization(object):
         map.save(file_name)
         return map
 
-
 def map_plot(sch_coords, score, option, polygon,
              distr_type): # distr_type: es, ms, hs
+    '''use the class MapVisualization to visualize the results'''
     theme = 'Saving the interactive plot of {} school district'
     print(theme.format(distr_type))
-    """
-    Plot the results.
 
-    Attributes
-    ----------
-    sch_coordinates: school coordinates
-    score: sentiment score as you choose
-    option: 'A', 'B'
-    polygon: district json file
-    distr_type: elementary, middle, or high school
-
-    """
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
     dir = 'results/{}_{}.html'
