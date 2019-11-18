@@ -65,7 +65,6 @@ class SchoolComments(object):
         names_dict = self.make_dict()[0]
         for key in names_dict.keys():
             df['School'] = df['School'].replace(key, names_dict[key])
-
         new_names = self.make_dict()[1]
         for sch in new_names:
             for opt in options:
@@ -163,7 +162,6 @@ class SentimentAnalysis(object):
         methods = ['arithmetic', 'geometric', 'harmonic']
         text_set = set(self.clean_text(text))
         key_set = set(self.swn_all_words.keys())
-
         for word in text_set.intersection(key_set):
             single_score = self.swn_all_words[word]['score']
             if single_score > 0:
