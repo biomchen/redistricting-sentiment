@@ -228,11 +228,10 @@ def get_score(sch_names, options=['A', 'B', 'AB'], path='results/'):
 
 
 class Shape2Json(object):
-    """
-    Object to convert shapefile to json file.
+    '''
+    a class to convert shapefile to json file.
 
-    Attributes
-    ----------
+    Parameters:
     fname : input file name
     output1: output file of json without conversion of EPSG reference
     output2: output file of json with after EPSG conversion
@@ -241,7 +240,12 @@ class Shape2Json(object):
     addresses: school addresses
     coordinates: coordinates of schools
 
-    """
+    Methods:
+    convert_json: converting shapefile to json and save the data
+    convert_epsg: convert the coordiantes to world reference maps from Maryland
+                  reference
+    get_coordinates: get gps coordinates of the schools
+    '''
     def __init__(self, fname, output1, output2, school_param, school_list,
                  addresses=None, coordinates=None):
         self.fname = fname
@@ -336,9 +340,20 @@ class Shape2Json(object):
 
 
 class MapVisualization(object):
-    """
-    Object to visualize the sentiments in an interactive map.
-    """
+    '''
+    a class to visualize the sentiments in an interactive map.
+
+    Parameters:
+    coordinates: gps coordiantes of the schools
+    score: sentiment score; mean score, proportion, or etc
+    option: school district options
+    location: centeral location of the school districts
+    polygon: the polygon file of each school district
+
+    Methods:
+    get_json: converting data to json for donut plot using vincent
+    folium_visual: using folium to visualize results
+    '''
     def __init__(self, coordinates, score, option, location, polygon):
         self.coordinates = coordinates
         self.score = score
@@ -386,20 +401,9 @@ class MapVisualization(object):
 
 def map_plot(sch_coords, score, option, polygon,
              distr_type): # distr_type: es, ms, hs
+    '''use the class MapVisualization to visualize the results'''
     theme = 'Saving the interactive plot of {} school district'
     print(theme.format(distr_type))
-    """
-    Plot the results.
-
-    Attributes
-    ----------
-    sch_coordinates: school coordinates
-    score: sentiment score as you choose
-    option: 'A', 'B'
-    polygon: district json file
-    distr_type: elementary, middle, or high school
-
-    """
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
     dir = 'results/{}_{}.html'

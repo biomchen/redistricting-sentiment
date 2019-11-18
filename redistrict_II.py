@@ -146,7 +146,7 @@ def change_names(sch_names_old):
 
 class Shape2Json(object):
     '''
-    Object to convert shapefile to json file.
+    a class to convert shapefile to json file.
 
     Parameters:
     fname : input file name
@@ -162,7 +162,6 @@ class Shape2Json(object):
     convert_epsg: convert the coordiantes to world reference maps from Maryland
                   reference
     get_coordinates: get gps coordinates of the schools
-
     '''
     def __init__(self, fname, output1, output2, school_param, school_list,
                  addresses=None, coordinates=None):
@@ -319,7 +318,6 @@ def map_plot(sch_coords, score, option, polygon,
     '''use the class MapVisualization to visualize the results'''
     theme = 'Saving the interactive plot of {} school district'
     print(theme.format(distr_type))
-
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
     dir = 'results/{}_{}.html'
