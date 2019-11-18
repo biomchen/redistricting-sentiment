@@ -12,7 +12,6 @@ from json import dumps
 import shapefile
 from pyproj import Proj, transform
 from geopy.geocoders import Nominatim
-from pandas.io.json import json_normalize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from itertools import chain
@@ -43,7 +42,7 @@ class SentiComments(object):
         self.pages = pages
         self.columns = columns
         self.sch_names = sch_names
-        self.option =  option
+        self.option = option
         self.get_pdf_data()
 
     def get_pdf_data(self):
