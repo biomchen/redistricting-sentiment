@@ -54,10 +54,8 @@ class SchoolComments(object):
                 new_name = re.sub('HS', 'High', name)
                 high_schs.append(new_name)
                 new_names.append(new_name)
-
         names_dict = {old_name: new_name for (old_name, new_name)
                       in zip(self.old_names, new_names)}
-
         return (names_dict,
                 new_names,
                 elementary_schs, middle_schs, high_schs)
