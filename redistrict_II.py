@@ -317,7 +317,7 @@ def map_plot(sch_coords, score, option, polygon,
              distr_type): # distr_type: es, ms, hs
     '''use the class MapVisualization to visualize the results'''
     theme = 'Saving the interactive plot of {} school district'
-    print(theme.format(distr_type))
+    print(theme.format(d istr_type))
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
     dir = 'results/{}_{}.html'

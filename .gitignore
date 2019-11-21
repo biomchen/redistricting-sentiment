@@ -15,3 +15,7 @@ redistrct/__pycache__
 *.txt
 *.json
 *.key
+Comments.sqlite
+results/es_A_I.html
+results/es_A_II.html
+results/es_B.html
