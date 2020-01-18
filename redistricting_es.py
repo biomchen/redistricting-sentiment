@@ -2,7 +2,7 @@
 
 # I developed a redistrict module
 # it is in the same directory of the github link
-from redistrict_II import *
+from redistrict import *
 
 def main():
     # old school names
