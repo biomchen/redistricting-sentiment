@@ -68,9 +68,11 @@ class SentiComments(object):
         words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
         words_clean =[word.lower() for word in list(chain(*words))
                       if word.lower() not in stop_words]
-        comments_wc = WordCloud(background_color='white',
-                                max_words=2000,
-                                stopwords=stop_words)
+        comments_wc = WordCloud(
+            background_color='white',
+            max_words=2000,
+            stopwords=stop_words
+        )
         comments_wc.generate(str(words_clean))
         fig = plt.figure()
         fig.set_figwidth(14)
@@ -106,10 +108,14 @@ class SentiComments(object):
             # neutural sentiment
             results_neu = len(sch_score[sch_score <= 0.05][sch_score >= -0.05])
             results_neu = round(results_neu/num_scores, 3)
-            results.update({school:{self.option:{'Positive':results_pos,
-                                                 'Negative':results_neg,
-                                                 'Neutral':results_neu}}})
-                                                 #'Mean': score_mean}}})
+            results.update(
+                {
+                school:{
+                    self.option:{
+                        'Positive':results_pos,
+                        'Negative':results_neg,
+                        'Neutral':results_neu}}}
+            )                             #'Mean': score_mean}}})
         return results
 
 def df2sql(name, db, df):
@@ -121,8 +127,12 @@ def merge_dfs(file, tb_pages, columns, sch_names, options):
     '''merge the comments of different options into one dataframe'''
     dfs = pd.DataFrame()
     for pages, option in zip(tb_pages, options):
-        df = SentiComments(file, pages, columns,
-                           sch_names, option).get_pdf_data()
+        df = SentiComments(
+            file,
+            pages,
+            columns,
+            sch_names,
+            option).get_pdf_data()
         dfs = pd.concat([dfs, df], axis=0)
     return dfs
 
@@ -186,15 +196,21 @@ class Shape2Json(object):
             attributes = dict(zip(field_names, record.record))
             if attributes[self.school_param] in self.school_list:
                 geo_records = record.shape.__geo_interface__
-                features.append(dict(type='Feature',
-                                geometry=geo_records,
-                                properties=attributes))
+                features.append(
+                    dict(type='Feature',
+                        geometry=geo_records,
+                        properties=attributes
+                    )
+                )
             else:
                 continue
         json_file = open(self.output1, 'w')
-        json_file.write(dumps({'type': 'FeatureCollection',
-                               'features': features},
-                              indent=2) + '\n')
+        json_file.write(
+            dumps(
+                {'type': 'FeatureCollection','features': features},
+                indent=2)
+                + '\n'
+            )
         json_file.close()
 
     def convert_epsg(self):
@@ -212,34 +228,46 @@ class Shape2Json(object):
                 type = feature['geometry']['type']
                 if type == 'Polygon':
                     for coordinate in records:
-                        coordinate_new = transform(in_proj,
-                                                   out_proj,
-                                                   coordinate[0],
-                                                   coordinate[1])
-                        coordinates.append([coordinate_new[0],
-                                            coordinate_new[1]])
+                        coordinate_new = transform(
+                            in_proj,
+                            out_proj,
+                            coordinate[0],
+                            coordinate[1]
+                        )
+                        coordinates.append(
+                            [coordinate_new[0], coordinate_new[1]]
+                        )
                 elif type == 'MultiPolygon':
                     for record in records:
                         for coordinate in record:
-                            coordinate_new = transform(in_proj,
-                                                       out_proj,
-                                                       coordinate[0],
-                                                       coordinate[1])
-                            coordinates.append([coordinate_new[0],
-                                                coordinate_new[1]])
+                            coordinate_new = transform(
+                                in_proj,
+                                out_proj,
+                                coordinate[0],
+                                coordinate[1]
+                            )
+                            coordinates.append(
+                                [coordinate_new[0], coordinate_new[1]]
+                            )
                 attributes = feature['properties']
                 school = attributes[self.school_param]
                 address = attributes['ADDRESS']
                 city = attributes['CITY']
                 self.addresses.update({school: (address + ' ' + city)})
                 geo_new = {'type': type, 'coordinates': [coordinates]}
-                features_new.append(dict(type='Feature',
-                                         geometry=geo_new,
-                                         properties=attributes))
+                features_new.append(
+                    dict(
+                        type='Feature',
+                        geometry=geo_new,
+                        properties=attributes)
+                    )
         json_file = open(self.output2, 'w')
-        json_file.write(dumps({'type': 'FeatureCollection',
-                               'features': features_new},
-                              indent=2) + '\n')
+        json_file.write(
+            dumps(
+                {'type': 'FeatureCollection', 'features': features_new},
+                indent=2)
+                + '\n'
+            )
         json_file.close()
 
     def get_coordinates(self):
@@ -252,8 +280,9 @@ class Shape2Json(object):
             if coordinate is None:
                 self.coordinates.update({school:('NA', 'NA')})
             else:
-                self.coordinates.update({school:(coordinate.latitude,
-                                                 coordinate.longitude)})
+                self.coordinates.update(
+                    {school:(coordinate.latitude, coordinate.longitude)}
+                )
 
 class MapVisualization(object):
     '''
@@ -278,10 +307,12 @@ class MapVisualization(object):
         self.polygon = polygon
 
     def get_json(self, data, school_name):
-        pie_chart = vincent.Pie(data,
-                                height=100,
-                                width=100,
-                                inner_radius=25)
+        pie_chart = vincent.Pie(
+            data,
+            height=100,
+            width=100,
+            inner_radius=25
+        )
         pie_chart.colors(brew='Set2')
         pie_chart.legend(school_name[:-10])  # -10 ES, -6 MS, -4 HS
         pie_json = pie_chart.to_json()
@@ -290,9 +321,10 @@ class MapVisualization(object):
     def folium_visual(self, col, file_name):
         nominatim = Nominatim(user_agent='my-application')
         location_center = nominatim.geocode(self.location)
-        map = folium.Map(location=[location_center.latitude,
-                                   location_center.longitude],
-                         zoom_start=11)
+        map = folium.Map(
+            location=[location_center.latitude, location_center.longitude],
+            zoom_start=11
+        )
         for school in self.coordinates.keys():
             lat = self.coordinates[school][0]
             lon = self.coordinates[school][1]
@@ -304,23 +336,25 @@ class MapVisualization(object):
                 vega = folium.Vega(chart_json, width=200, height=100)
                 pop_up = folium.Popup(max_width=400).add_child(vega)
                 icon = folium.Icon(color=col, icon='info-sign')
-                folium.Marker(location=[lat, lon],
-                              popup=pop_up,
-                              icon=icon
-                              ).add_to(map)
+                folium.Marker(
+                    location=[lat, lon],
+                    popup=pop_up,
+                    icon=icon
+                ).add_to(map)
         geojson = self.polygon
         folium.GeoJson(geojson, name='geojson').add_to(map)
         map.save(file_name)
         return map
 
-def map_plot(sch_coords, score, option, polygon,
-             distr_type): # distr_type: es, ms, hs
+def map_plot(sch_coords, score, option, polygon, distr_type): # distr_type: es, ms, hs
     '''use the class MapVisualization to visualize the results'''
     theme = 'Saving the interactive plot of {} school district'
     print(theme.format(d istr_type))
     plot = MapVisualization(sch_coords, score, option,
                             'Frederick', polygon)
     dir = 'results/{}_{}.html'
-    plot_visual = plot.folium_visual('blue',
-                                     dir.format(distr_type, option))
+    plot_visual = plot.folium_visual(
+        'blue',
+        dir.format(distr_type, option)
+    )
     return plot_visual
