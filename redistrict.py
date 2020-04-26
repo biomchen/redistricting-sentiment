@@ -21,7 +21,7 @@ from nltk import tokenize
 import matplotlib.pyplot as plt
 
 
-class SentiComments(object):
+class SentiComments:
     ''' a class to calculate the sentiment score of each comments
 
         Parameters:
@@ -69,10 +69,10 @@ class SentiComments(object):
         words_clean =[word.lower() for word in list(chain(*words))
                       if word.lower() not in stop_words]
         comments_wc = WordCloud(
-            background_color='white',
-            max_words=2000,
-            stopwords=stop_words
-        )
+                        background_color='white',
+                        max_words=2000,
+                        stopwords=stop_words
+                        )
         comments_wc.generate(str(words_clean))
         fig = plt.figure()
         fig.set_figwidth(14)
@@ -128,11 +128,11 @@ def merge_dfs(file, tb_pages, columns, sch_names, options):
     dfs = pd.DataFrame()
     for pages, option in zip(tb_pages, options):
         df = SentiComments(
-            file,
-            pages,
-            columns,
-            sch_names,
-            option).get_pdf_data()
+                file,
+                pages,
+                columns,
+                sch_names,
+                option).get_pdf_data()
         dfs = pd.concat([dfs, df], axis=0)
     return dfs
 
@@ -349,7 +349,7 @@ class MapVisualization(object):
 def map_plot(sch_coords, score, option, polygon, distr_type): # distr_type: es, ms, hs
     '''use the class MapVisualization to visualize the results'''
     theme = 'Saving the interactive plot of {} school district'
-    print(theme.format(d istr_type))
+    print(theme.format(distr_type))
     plot = MapVisualization(sch_coords, score, option, 'Frederick', polygon)
     dir = 'results/{}_{}.html'
     plot_visual = plot.folium_visual(
