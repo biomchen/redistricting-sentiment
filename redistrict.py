@@ -97,6 +97,7 @@ class SentiComments:
         for school in df_scores['School'].unique():
             sch_score = df_scores[df_scores['School'] == school]
             sch_score = sch_score['Score'].astype(float)
+            # mean sentiments
             score_mean = round(np.mean(sch_score), 3)
             num_scores = len(sch_score)
             # positive sentiment
@@ -109,13 +110,16 @@ class SentiComments:
             results_neu = len(sch_score[sch_score <= 0.05][sch_score >= -0.05])
             results_neu = round(results_neu/num_scores, 3)
             results.update(
-                {
-                school:{
-                    self.option:{
-                        'Positive':results_pos,
-                        'Negative':results_neg,
-                        'Neutral':results_neu}}}
-            )                             #'Mean': score_mean}}})
+                {school:
+                    {self.option:
+                        {'Positive':results_pos,
+                         'Negative':results_neg,
+                         'Neutral':results_neu,
+                         'Mean': score_mean
+                         }
+                    }
+                }
+            )
         return results
 
 def df2sql(name, db, df):
