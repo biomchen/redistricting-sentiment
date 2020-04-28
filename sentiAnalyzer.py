@@ -125,11 +125,15 @@ st.markdown(
     )
 gdf = shape2PDF(folder, sch_dict, grade)
 score = comSenti.analyzeScores()
-map = VisualizeResults(gdf, score).visualMap()
 st.markdown(
     '''Visualize the Mean Sentiment Score of Each School on US OpenStreetMap \
     (OSM) data using `Folium`.''')
-st.markdown(map._repr_html_(), unsafe_allow_html=True)
+
+def main():
+    map = VisualizeResults(gdf, score).visualMap()
+    return st.markdown(map._repr_html_(), unsafe_allow_html=True)
+
+main()
 
 st.markdown('''The web app is created by [Meng Chen](https://biomchen.github.io)\
  with `Streamlit`.''')
