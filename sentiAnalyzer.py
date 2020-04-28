@@ -84,6 +84,24 @@ st.sidebar.markdown(
     )
 
 comSenti = CommentSentiments(db, grade, option)
+gdf = shape2PDF(folder, sch_dict, grade)
+score = comSenti.analyzeScores()
+
+st.markdown(
+    '''<h2 style='text-align: left; color: black;'>Interactive Map for Each \
+    School District
+    </h2>''',
+     unsafe_allow_html=True
+    )
+st.markdown(
+    '''Visualize the Mean Sentiment Score of Each School on US OpenStreetMap \
+    (OSM) data using `Folium`.''')
+
+def main():
+    map = VisualizeResults(gdf, score).visualMap()
+    return st.markdown(map._repr_html_(), unsafe_allow_html=True)
+
+main()
 
 st.markdown('''<h2 style='text-align: left; color: black;'>Wold Clouds of \
     feedbacks''',
@@ -117,23 +135,6 @@ comSenti.visualizeMean()
 plt.show()
 st.pyplot()
 
-st.markdown(
-    '''<h2 style='text-align: left; color: black;'>Interactive Map for Each \
-    School District
-    </h2>''',
-     unsafe_allow_html=True
-    )
-gdf = shape2PDF(folder, sch_dict, grade)
-score = comSenti.analyzeScores()
-st.markdown(
-    '''Visualize the Mean Sentiment Score of Each School on US OpenStreetMap \
-    (OSM) data using `Folium`.''')
-
-def main():
-    map = VisualizeResults(gdf, score).visualMap()
-    return st.markdown(map._repr_html_(), unsafe_allow_html=True)
-
-main()
 
 st.markdown('''The web app is created by [Meng Chen](https://biomchen.github.io)\
  with `Streamlit`.''')
