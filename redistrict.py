@@ -1,113 +1,178 @@
 #!/usr/bin/env python
 
-import re
-import json
-import pandas as pd
 import numpy as np
+import pandas as pd
+import geopandas as gpd
+import camelot
+import seaborn as sns
 import sqlite3
 import vincent
 import folium
-import camelot
-from json import dumps
-import shapefile
-from pyproj import Proj, transform
+from itertools import chain
 from geopy.geocoders import Nominatim
+from nltk import tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
-from itertools import chain
-from wordcloud import WordCloud
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk import tokenize
+from wordcloud import WordCloud
+import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 
 
-class SentiComments:
-    ''' a class to calculate the sentiment score of each comments
+class PdfTable:
+    ''' a class to get the data of the table from pdf file
+    '''
+    def __init__(self, pdFile, grade, schDict):
+        self.pdFile = pdFile
+        self.grade = grade
+        self.schDict = schDict
+        self.pageList()
+        self.names()
+        self.options()
+
+    def pageList(self):
+        return self.schDict[self.grade][4]
+
+    def names(self):
+        return self.schDict[self.grade][1]
+
+    def options(self):
+        return self.schDict[self.grade][5]
+
+    def readPDF(self, pages):
+        dat = camelot.read_pdf(self.pdFile, pages=pages)
+        return [(tb.df[1], tb.df[2]) for tb in dat]
+
+    def scrapeData(self):
+        page_list = self.pageList()
+        sch_names = self.names()
+        options = self.options()
+        dfs = pd.DataFrame()
+
+        for pages, option in zip(page_list, options):
+            dat = self.readPDF(pages=pages)
+            df = pd.DataFrame()
+            for tb in dat:
+                df_tb = pd.DataFrame(tb).T
+                df = pd.concat([df, df_tb], axis=0)
+            df.columns = ['Live-in School', 'Comments']
+            df = df[df['Comments'] != 'N/A']
+            df = df[df['Comments'] != 'n/a']
+            schools = df['Live-in School']
+            df = df.loc[schools.isin(sch_names)]
+            df['Option'] = option
+            dfs = pd.concat([dfs, df], axis=0)
+
+        if self.grade == 'Middle':
+            new_name_list = []
+            for v in dfs['Live-in School']:
+                if v == 'Gov. T.J. MS':
+                    new_name_list.append('Governor Thomas Jeffson MS')
+                else:
+                    new_name_list.append(v)
+            dfs['Live-in School'] = new_name_list
+            return dfs
+        else:
+            return dfs
+
+def df2sql(name, db, df):
+    '''dumps the df into the SQL database'''
+    conn = sqlite3.connect(db)
+    df.to_sql(name, conn, if_exists='replace')
+
+class CommentSentiments:
+    ''' a class to analyze the sentiments of comments from local
+        communities with regrads the shcool redistricting proposal
 
         Parameters:
-        file: pdf file has data in the tables
-        pages: different pages corresponding to different tables
-        columns: column names
-        sch_names: school names
+        db: sql database storing all comments
+        grade: elementary, middle, or high school districts
         option: 'A', 'B', 'AB'
 
         Methods:
-        get_pdf_data: extracting the data from tables in the pdf file
-        plot_words: making word cloud plots
-        senti_results: produce the sentiment scores
+        getComments: reading the comments from sql database
+        plotWords: making word cloud plots of each grade
+        scoreSentiment: calculating the sentiments scores of each school
+                        using Valence Aware Dictionary and sEntiment Reasoner;
+                        the componud scores were chosen for analyses.
+        scoreBySchool: produce all raw scores of each school
+        analyzeScores: analyze the scores using by the cut of line +-0.05
+        visualizeBySchools: show the distribution of the sentiment scores
+        visualizeMean: show the mean sentiment scores
     '''
 
-    def __init__(self, file, pages, columns, sch_names, option):
-        self.file = file
-        self.pages = pages
-        self.columns = columns
-        self.sch_names = sch_names
+    def __init__(self, db, grade, option):
+        self.db = db
+        self.grade = grade
         self.option = option
-        self.get_pdf_data()
 
-    def get_pdf_data(self):
-        dat = camelot.read_pdf(self.file, pages=self.pages)
-        dat = [(tb.df[1], tb.df[2]) for tb in dat]
-        df = pd.DataFrame()
-        for tb in dat:
-            rows = len(tb)
-            df_tb = pd.DataFrame(tb).T
-            df = pd.concat([df, df_tb], axis=0)
-        df.columns = self.columns
-        df = df[df[self.columns[1]] != 'N/A']
-        df = df[df[self.columns[1]] != 'n/a']
-        schools = df[self.columns[0]]
-        df = df.loc[schools.isin(self.sch_names)]
-        df['Option'] = self.option
+    def getComments(self):
+        conn = sqlite3.connect(self.db)
+        df = pd.read_sql_query(
+            "SELECT * FROM {0} WHERE Option='{1}'"
+            .format(self.grade, self.option),
+            conn)
+        df.drop(['index'], axis=1, inplace=True)
+        conn.close()
         return df
 
-    def plot_words(self):
+    def plotWords(self):
         tokenizer = RegexpTokenizer(r'\w+')
         stop_words = stopwords.words('english')
-        data = self.get_pdf_data()
+        data = self.getComments()
         words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
         words_clean =[word.lower() for word in list(chain(*words))
                       if word.lower() not in stop_words]
         comments_wc = WordCloud(
                         background_color='white',
                         max_words=2000,
-                        stopwords=stop_words
-                        )
+                        stopwords=stop_words)
         comments_wc.generate(str(words_clean))
-        fig = plt.figure()
-        fig.set_figwidth(14)
-        fig.set_figheight(18)
+        fig = plt.figure(figsize=(20,10), facecolor='k')
         plt.imshow(comments_wc, interpolation='bilinear')
         plt.axis('off')
-        plt.show()
+        plt.tight_layout(pad=0)
 
-    def senti_score(self):
+    def scoreSentiment(self):
         # Vader (Valence Aware Dictionary and sEntiment Reasoner)
         SentiAnalyzer = SentimentIntensityAnalyzer()
         schools = []
         scores = []
         results = {}
-        data = self.get_pdf_data()
+        data = self.getComments()
         for _, comment in data.iterrows():
             schools.append(comment[0])
             score = SentiAnalyzer.polarity_scores(str(comment[1]))
             scores.append(score['compound'])
         df_scores = pd.DataFrame([schools, scores]).T
         df_scores.columns = ['School', 'Score']
-        for school in df_scores['School'].unique():
-            sch_score = df_scores[df_scores['School'] == school]
-            sch_score = sch_score['Score'].astype(float)
+        return df_scores
+
+    def scoreBySchool(self):
+        df = self.scoreSentiment()
+        scores = {}
+        for school in df['School'].unique():
+            score = df[df['School'] == school]
+            score = score['Score'].astype(float)
+            scores.update({school: score})
+        return scores
+
+    def analyzeScores(self):
+        df = self.scoreBySchool()
+        results = {}
+        for school in df.keys():
+            score = df[school]
             # mean sentiments
-            score_mean = round(np.mean(sch_score), 3)
-            num_scores = len(sch_score)
+            score_mean = round(np.mean(score), 3)
+            num_scores = len(score)
             # positive sentiment
-            results_pos = len(sch_score[sch_score >= 0.05])
+            results_pos = len(score[score >= 0.05])
             results_pos = round(results_pos/num_scores, 3)
             # negative sentiment
-            results_neg = len(sch_score[sch_score <= -0.05])
+            results_neg = len(score[score <= -0.05])
             results_neg = round(results_neg/num_scores, 3)
             # neutural sentiment
-            results_neu = len(sch_score[sch_score <= 0.05][sch_score >= -0.05])
+            results_neu = len(score[score <= 0.05][score >= -0.05])
             results_neu = round(results_neu/num_scores, 3)
             results.update(
                 {school:
@@ -116,179 +181,62 @@ class SentiComments:
                          'Negative':results_neg,
                          'Neutral':results_neu,
                          'Mean': score_mean
-                         }
-                    }
-                }
-            )
+                         }}})
         return results
 
-def df2sql(name, db, df):
-    '''dumps the df into the SQL database'''
-    conn = sqlite3.connect(db)
-    df.to_sql(name, conn, if_exists='replace')
-
-def merge_dfs(file, tb_pages, columns, sch_names, options):
-    '''merge the comments of different options into one dataframe'''
-    dfs = pd.DataFrame()
-    for pages, option in zip(tb_pages, options):
-        df = SentiComments(
-                file,
-                pages,
-                columns,
-                sch_names,
-                option).get_pdf_data()
-        dfs = pd.concat([dfs, df], axis=0)
-    return dfs
-
-def change_names(sch_names_old):
-    new_names = []
-    elementary_schs = []
-    middle_schs = []
-    high_schs = []
-    for name in sch_names_old:
-        sch_type = name.split(' ')[-1]
-        if sch_type == 'ES':
-            new_name = re.sub('ES', 'Elementary', name)
-            elementary_schs.append(new_name)
-        elif sch_type == 'MS':
-            new_name = re.sub('MS', 'Middle', name)
-            middle_schs.append(new_name)
-        elif sch_type == 'HS':
-            new_name = re.sub('HS', 'High', name)
-            high_schs.append(new_name)
-    return (elementary_schs, middle_schs, high_schs)
-
-class Shape2Json(object):
-    '''
-    a class to convert shapefile to json file.
-
-    Parameters:
-    fname : input file name
-    output1: output file of json without conversion of EPSG reference
-    output2: output file of json with after EPSG conversion
-    school_param: field values in shapefile; 'SCHOOL' or 'SCHOOL_1'
-    school_list: a list of school names
-    addresses: school addresses
-    coordinates: coordinates of schools
-
-    Methods:
-    convert_json: converting shapefile to json and save the data
-    convert_epsg: convert the coordiantes to world reference maps from Maryland
-                  reference
-    get_coordinates: get gps coordinates of the schools
-    '''
-    def __init__(self, fname, output1, output2, school_param, school_list,
-                 addresses=None, coordinates=None):
-        self.fname = fname
-        self.output1 = output1
-        self.output2 = output2
-        self.school_param = school_param
-        self.school_list = school_list
-        self.addresses = addresses
-        self.coordinates = coordinates
-
-    def convert_json(self):  # school_param: 'SCHOOL_1' or 'SCHOOL'
-        reader = shapefile.Reader(self.fname)
-        fields = reader.fields[1:]
-        field_names = [field[0] for field in fields]
-        features = []
-        name = self.fname.split('_')[0]
-        name = name.split('/')[-1]
-        print("Converting the shapefile of {} school district to json ...".
-              format(name.lower()))
-        for record in reader.shapeRecords():
-            attributes = dict(zip(field_names, record.record))
-            if attributes[self.school_param] in self.school_list:
-                geo_records = record.shape.__geo_interface__
-                features.append(
-                    dict(type='Feature',
-                        geometry=geo_records,
-                        properties=attributes
-                    )
-                )
-            else:
-                continue
-        json_file = open(self.output1, 'w')
-        json_file.write(
-            dumps(
-                {'type': 'FeatureCollection','features': features},
-                indent=2)
-                + '\n'
+    def visualizeBySchools(self):
+        schoolScores = self.scoreBySchool()
+        schooList = list(schoolScores.keys())
+        scores = [score.values for _, score in schoolScores.items()]
+        idxs = [idx for idx, val in enumerate(scores) if len(val) < 2]
+        for idx in idxs:
+            scores.pop(idx)
+            schooList.pop(idx)
+        fig = ff.create_distplot(scores, schooList, bin_size=0.05)
+        fig.update_layout(
+            autosize=False,
+            width=750,
+            height=600,
+            margin=dict(l=0, r=30, t=15, b=10)
             )
-        json_file.close()
+        return fig
 
-    def convert_epsg(self):
-        in_proj = Proj(init='epsg:2248')  # pyproj.Proj API parameters
-        out_proj = Proj(init='epsg:4326')
-        print("Converting Maryland spatial reference from EPSG 2248 to 4326...")
-        with open(self.output1) as json_file:
-            data = json.load(json_file)
-            features_old = data['features']
-            coordinates = []
-            features_new = []
-            self.addresses = {}
-            for feature in features_old:
-                records = feature['geometry']['coordinates'][0]
-                type = feature['geometry']['type']
-                if type == 'Polygon':
-                    for coordinate in records:
-                        coordinate_new = transform(
-                            in_proj,
-                            out_proj,
-                            coordinate[0],
-                            coordinate[1]
-                        )
-                        coordinates.append(
-                            [coordinate_new[0], coordinate_new[1]]
-                        )
-                elif type == 'MultiPolygon':
-                    for record in records:
-                        for coordinate in record:
-                            coordinate_new = transform(
-                                in_proj,
-                                out_proj,
-                                coordinate[0],
-                                coordinate[1]
-                            )
-                            coordinates.append(
-                                [coordinate_new[0], coordinate_new[1]]
-                            )
-                attributes = feature['properties']
-                school = attributes[self.school_param]
-                address = attributes['ADDRESS']
-                city = attributes['CITY']
-                self.addresses.update({school: (address + ' ' + city)})
-                geo_new = {'type': type, 'coordinates': [coordinates]}
-                features_new.append(
-                    dict(
-                        type='Feature',
-                        geometry=geo_new,
-                        properties=attributes)
-                    )
-        json_file = open(self.output2, 'w')
-        json_file.write(
-            dumps(
-                {'type': 'FeatureCollection', 'features': features_new},
-                indent=2)
-                + '\n'
-            )
-        json_file.close()
+    def visualizeMean(self):
+        averageScores = self.analyzeScores()
+        schools = list(averageScores.keys())
+        num = len(schools)
+        a = num / 9 # largest number of the schools in district: ES
+        meanValues = [list(v.values())[0]['Mean']
+                       for v in averageScores.values()]
+        df = pd.DataFrame([schools, meanValues]).T
+        df.columns = ['School', 'Mean']
+        fg, ax = plt.subplots(figsize=(13, 6*a+0.5))
+        ax.tick_params(axis='y', which='major', labelsize=13)
+        ax.barh(df['School'], df['Mean'], align='center', height=0.6)
+        ax.axvline(0.05, ls='--', color='r')
+        ax.axvline(-0.05, ls='--', color='r')
+        ax.text(-0.15, num, 'Negative', fontsize=20, color='green')
+        ax.text(-0.02, num, 'Neutural', fontsize=20, color='green')
+        ax.text(0.10, num, 'Positive', fontsize=20, color='green')
+        ax.set_xlabel('Sentiment score', fontsize=20)
+        ax.set_xlim(-0.2, 0.2)
 
-    def get_coordinates(self):
-        self.coordinates = {}
-        print("Getting GPS coordinates of schools ...")
-        for school in self.addresses.keys():
-            address = self.addresses[school]
-            nominatim = Nominatim(user_agent='my-application')
-            coordinate = nominatim.geocode(address)
-            if coordinate is None:
-                self.coordinates.update({school:('NA', 'NA')})
-            else:
-                self.coordinates.update(
-                    {school:(coordinate.latitude, coordinate.longitude)}
-                )
+def shape2PDF(folder, schDict, grade):
+    if grade == 'Middle':
+        schDict[grade][1][0]='Governor Thomas Johnson MS'
+    else:
+        schDict = schDict
+    directory = folder + schDict[grade][2]
+    df = gpd.read_file(directory).to_crs({'init':'epsg:4326'})
+    df.rename(columns={df.columns[1]: 'School'}, inplace=True)
+    df['School'] = [
+        row[1].replace(grade, schDict[grade][0])
+        for _, row in df.iterrows()]
+    df['ZIP_CODE'] = df['ZIP_CODE'].astype(int)
+    df = df[df['School'].isin(schDict[grade][1])]
+    return df
 
-class MapVisualization(object):
+class VisualizeResults:
     '''
     a class to visualize the sentiments in an interactive map.
 
@@ -303,61 +251,104 @@ class MapVisualization(object):
     get_json: converting data to json for donut plot using vincent
     folium_visual: using folium to visualize results
     '''
-    def __init__(self, coordinates, score, option, location, polygon):
-        self.coordinates = coordinates
-        self.score = score
-        self.option = option
-        self.location = location
-        self.polygon = polygon
+    def __init__(self, gdf, scores):
+        self.gdf = gdf
+        self.scores = scores
+        self.nominatim()
 
-    def get_json(self, data, school_name):
-        pie_chart = vincent.Pie(
-            data,
+    def nominatim(self):
+        return Nominatim(user_agent='my-application')
+
+    def getCoords(self):
+        coords = {}
+        print("Getting GPS coordinates of schools ...")
+        for _, row in self.gdf.iterrows():
+            add = row['ADDRESS'] + ', ' + str(row['ZIP_CODE'])
+            school = row['School']
+            coord = self.nominatim().geocode(add)
+            if coord is None:
+                coords.update({school:('NA', 'NA')})
+            else:
+                coords.update(
+                    {school:(coord.latitude, coord.longitude)}
+                )
+        return coords
+
+    def json2PieChart(self, score, schName):
+        pieChart = vincent.Pie(
+            score,
             height=100,
             width=100,
             inner_radius=25
         )
-        pie_chart.colors(brew='Set2')
-        pie_chart.legend(school_name[:-10])  # -10 ES, -6 MS, -4 HS
-        pie_json = pie_chart.to_json()
-        return pie_json
+        pieChart.colors(brew='Set2')
+        pieChart.legend(schName)  # -10 ES, -6 MS, -4 HS
+        pieJson = pieChart.to_json()
+        return pieJson
 
-    def folium_visual(self, col, file_name):
-        nominatim = Nominatim(user_agent='my-application')
-        location_center = nominatim.geocode(self.location)
-        map = folium.Map(
-            location=[location_center.latitude, location_center.longitude],
-            zoom_start=11
-        )
-        for school in self.coordinates.keys():
-            lat = self.coordinates[school][0]
-            lon = self.coordinates[school][1]
+    def score2Json(self):
+        schools = self.scores.keys() # school list
+        scores = self.scores.values() # results of analyzing scores
+        coords = self.getCoords()
+        for school in schools:
+            lat = coords[school][0]
+            lon = coords[school][1]
             if lat == 'NA' or lon == 'NA':
                 continue
             else:
-                school_json = self.score[school][self.option]
-                chart_json = self.get_json(school_json, school)
-                vega = folium.Vega(chart_json, width=200, height=100)
+                score = list(scores)[0]
+                keys = ['Positive', 'Negative', 'Neutral']
+                score = {k:score[key] for key in keys}
+            return score
+
+    def visualMap(self):
+        mdCoords = [39.38, -77.36] #  Frederick County MD GPS coordinates
+        map = folium.Map(
+            location=[mdCoords[0], mdCoords[1]],
+            zoom_start=11
+        )
+        schools = self.scores.keys() # school list
+        scores = self.scores.values() # results of analyzing scores
+        coords = self.getCoords()
+        meanScores = []
+
+        for school in schools:
+            lat = coords[school][0]
+            lon = coords[school][1]
+            if lat == 'NA' or lon == 'NA':
+                continue
+            else:
+                score = list(self.scores[school].values())[0]
+                keys = ['Positive', 'Negative', 'Neutral']
+                meanScore = score['Mean']
+                meanScores.append(meanScore)
+                score = {k:score[k] for k in keys}
+                chart = self.json2PieChart(score, school)
+                vega = folium.Vega(chart, width=200, height=100)
                 pop_up = folium.Popup(max_width=400).add_child(vega)
-                icon = folium.Icon(color=col, icon='info-sign')
+                icon = folium.Icon(color='blue', icon='info-sign')
                 folium.Marker(
                     location=[lat, lon],
                     popup=pop_up,
                     icon=icon
                 ).add_to(map)
-        geojson = self.polygon
-        folium.GeoJson(geojson, name='geojson').add_to(map)
-        map.save(file_name)
-        return map
 
-def map_plot(sch_coords, score, option, polygon, distr_type): # distr_type: es, ms, hs
-    '''use the class MapVisualization to visualize the results'''
-    theme = 'Saving the interactive plot of {} school district'
-    print(theme.format(distr_type))
-    plot = MapVisualization(sch_coords, score, option, 'Frederick', polygon)
-    dir = 'results/{}_{}.html'
-    plot_visual = plot.folium_visual(
-        'blue',
-        dir.format(distr_type, option)
-    )
-    return plot_visual
+        dat = pd.DataFrame([schools, meanScores]).T
+        dat.columns=['School','Mean Score']
+        print(dat)
+
+        folium.Choropleth(
+            geo_data=self.gdf,
+            name='choropleth',
+            data=dat,
+            columns=['School','Mean Score'],
+            key_on='feature.properties.School',
+            fill_color='YlGnBu',
+            legend_name='Mean sentiment score',
+            na_fill_color='white',
+            na_fill_opacity=0.2,
+            fill_opacity=0.7,
+            line_weight=0.6,
+            line_opacity=0.2).add_to(map)
+
+        return map
