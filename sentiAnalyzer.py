@@ -57,7 +57,7 @@ st.sidebar.markdown('**Proposed Options**')
 option = st.sidebar.selectbox('Choose your faverite option',
     list(sch_dict[grade])[5])
 
-st.sidebar.markdown("**Project Explanation**")
+st.sidebar.markdown("**Project **")
 st.sidebar.markdown(
     '''**Issue**: Sentiment plays an important role in modern society \
     as the success of the social media development around the globe. School \

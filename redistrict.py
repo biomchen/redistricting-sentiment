@@ -8,6 +8,7 @@ import seaborn as sns
 import sqlite3
 import vincent
 import folium
+import streamlit as st
 from itertools import chain
 from geopy.geocoders import Nominatim
 from nltk import tokenize
@@ -106,6 +107,7 @@ class CommentSentiments:
         self.grade = grade
         self.option = option
 
+    @st.cache(persist=True, suppress_st_warning=True)
     def getComments(self):
         conn = sqlite3.connect(self.db)
         df = pd.read_sql_query(
@@ -304,8 +306,12 @@ class VisualizeResults:
     def visualMap(self):
         mdCoords = [39.38, -77.36] #  Frederick County MD GPS coordinates
         map = folium.Map(
-            location=[mdCoords[0], mdCoords[1]],
-            zoom_start=11
+            location=[
+            mdCoords[0], mdCoords[1]],
+            zoom_start=11,
+            control_scale=True,
+            prefer_canvas=True,
+            disable_3d=True
         )
         schools = self.scores.keys() # school list
         scores = self.scores.values() # results of analyzing scores
