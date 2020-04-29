@@ -15,7 +15,7 @@ from nltk import tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-#from wordcloud import WordCloud
+from wordcloud import WordCloud
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 
@@ -68,7 +68,7 @@ class PdfTable:
             new_name_list = []
             for v in dfs['Live-in School']:
                 if v == 'Gov. T.J. MS':
-                    new_name_list.append('Governor Thomas Jeffson MS')
+                    new_name_list.append('Governor Thomas Johnson MS')
                 else:
                     new_name_list.append(v)
             dfs['Live-in School'] = new_name_list
@@ -273,7 +273,11 @@ class VisualizeResults:
                 coords.update(
                     {school:(coord.latitude, coord.longitude)}
                 )
-        print(coords)
+                print('{0}: {1}, {2}'.format(
+                    school,
+                    coord.latitude,
+                    coord.longitude)
+                    )
         return coords
 
     def json2PieChart(self, score, schName):
@@ -306,8 +310,6 @@ class VisualizeResults:
     def visualMap(self):
         mdCoords = [39.38, -77.36] #  Frederick County MD GPS coordinates
         map = folium.Map(
-            width='50%',
-            height='50%',
             location=[
             mdCoords[0], mdCoords[1]],
             zoom_start=11,
@@ -343,6 +345,7 @@ class VisualizeResults:
 
         dat = pd.DataFrame([schools, meanScores]).T
         dat.columns=['School','Mean Score']
+        print('Mean Sentiment Socre')
         print(dat)
 
         folium.Choropleth(

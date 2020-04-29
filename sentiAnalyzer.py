@@ -42,7 +42,7 @@ sch_dict = {
 
 
 # set the title of web app
-st.title('Feel Better or Feel Worse?')
+st.title('Better or Worse?')
 st.markdown('''<p style='text-align: left; color: teal; font-size: 22px'>\
     Sentiment Aanlyses on community feedbacks of the Linganore-Oakdale-Urbana \
     (LOU) Area of Frederick County, MD, regarding to School Redistricting \
@@ -57,23 +57,22 @@ st.sidebar.markdown('**Proposed Options**')
 option = st.sidebar.selectbox('Choose your faverite option',
     list(sch_dict[grade])[5])
 
-st.sidebar.markdown("**Project **")
+st.sidebar.markdown("**Project Purpose**")
 st.sidebar.markdown(
-    '''**Issue**: Sentiment plays an important role in modern society \
-    as the success of the social media development around the globe. School \
-    redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry \
-    from the local communities in the social media. In order to understand \
-    the concerns about local communities, Frederick County Board of Education \
-    provided an online platform for community members to express their \
-    opinions and conducted a basic statistics of local community concerns. \
-    However, the statistical analyses lack of details about what sentiment of \
-    the local communities were and why the communities show favor/disfavor to \
-    the school redistricting plans.'''
+    '''**Problem**: School redistricting in Linganore-Oakdale-Urbana (LOU) \
+    area has stirred outcry from the local communities in the social media. \
+    In order to understand the concerns about local communities, Frederick \
+    County Board of Education provided an online platform for community \
+    members to express their opinions and conducted a basic statistics of \
+    local community concerns. However, the statistical analyses lack of \
+    details about what sentiment of the local communities were and why the \
+    communities show favor/disfavor to the school redistricting plans.'''
     )
 st.sidebar.markdown(
-    '''**Approach**: In order to understand these, I created a python module \
-    `redistrict` to help perform sentiment analyses on the feedbacks of local \
-    communities for different proposed school redistrict plans. '''
+    '''**Approach**: I created a python module `redistrict` to help perform \
+    data extraction, exploratory analyses, sentiment calculation, and result\
+    visualization with regard to the community feedbacks for proposed school \
+    redistrict plans. '''
     )
 st.sidebar.markdown(
     '''**Insights**: It shows that local communities more strongly oppose \
@@ -92,8 +91,8 @@ st.markdown('''<h2 style='text-align: left; color: black;'>Wold Clouds of \
 st.markdown(
     '''The feedbacks were provided in a more-than-200-page pdf file. The \
     `camelot` package was used to scrape table data from the file.''')
-#comSenti.plotWords()
-#st.pyplot()
+comSenti.plotWords()
+st.pyplot()
 
 st.markdown('''<h2 style='text-align: left; color: black;'>Senttiment Score \
     Distribution</h2>''',
@@ -103,8 +102,8 @@ st.markdown(
     '''The sentiment score was calculated with Valence Aware Dictionary and \
     sEntiment Reasoner (`VADER`) from `NLTK`; the componud scores were used \
     for analyses.''')
-#fig = comSenti.visualizeBySchools()
-#st.plotly_chart(fig)
+fig = comSenti.visualizeBySchools()
+st.plotly_chart(fig)
 
 st.markdown(
     '''<h2 style='text-align: left; color: black;'>Mean Sentiment Score\
@@ -113,9 +112,9 @@ st.markdown(
     )
 st.markdown(
     '''The average score of each school with regard to the option.''')
-#comSenti.visualizeMean()
-#plt.show()
-#st.pyplot()
+comSenti.visualizeMean()
+plt.show()
+st.pyplot()
 
 st.markdown(
     '''<h2 style='text-align: left; color: black;'>Interactive Map for Each \
