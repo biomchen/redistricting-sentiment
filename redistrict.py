@@ -7,8 +7,6 @@ import camelot
 import sqlite3
 import vincent
 import folium
-from folium import plugins
-import streamlit as st
 from itertools import chain
 from geopy.geocoders import Nominatim
 from nltk import tokenize
