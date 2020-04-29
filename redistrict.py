@@ -107,7 +107,6 @@ class CommentSentiments:
         self.grade = grade
         self.option = option
 
-    @st.cache(persist=True, suppress_st_warning=True)
     def getComments(self):
         conn = sqlite3.connect(self.db)
         df = pd.read_sql_query(
@@ -274,6 +273,7 @@ class VisualizeResults:
                 coords.update(
                     {school:(coord.latitude, coord.longitude)}
                 )
+        print(coords)
         return coords
 
     def json2PieChart(self, score, schName):
