@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import geopandas as gpd
 import camelot
-import seaborn as sns
 import sqlite3
 import vincent
 import folium
