@@ -306,8 +306,8 @@ class VisualizeResults:
     def visualMap(self):
         mdCoords = [39.38, -77.36] #  Frederick County MD GPS coordinates
         map = folium.Map(
-            width='80%',
-            height='80%',
+            width='50%',
+            height='50%',
             location=[
             mdCoords[0], mdCoords[1]],
             zoom_start=11,
