@@ -92,8 +92,8 @@ st.markdown('''<h2 style='text-align: left; color: black;'>Wold Clouds of \
 st.markdown(
     '''The feedbacks were provided in a more-than-200-page pdf file. The \
     `camelot` package was used to scrape table data from the file.''')
-comSenti.plotWords()
-st.pyplot()
+#comSenti.plotWords()
+#st.pyplot()
 
 st.markdown('''<h2 style='text-align: left; color: black;'>Senttiment Score \
     Distribution</h2>''',

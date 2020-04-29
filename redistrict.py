@@ -14,7 +14,7 @@ from nltk import tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from wordcloud import WordCloud
+#from wordcloud import WordCloud
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 
