@@ -103,8 +103,8 @@ st.markdown(
     '''The sentiment score was calculated with Valence Aware Dictionary and \
     sEntiment Reasoner (`VADER`) from `NLTK`; the componud scores were used \
     for analyses.''')
-fig = comSenti.visualizeBySchools()
-st.plotly_chart(fig)
+#fig = comSenti.visualizeBySchools()
+#st.plotly_chart(fig)
 
 st.markdown(
     '''<h2 style='text-align: left; color: black;'>Mean Sentiment Score\
@@ -113,9 +113,9 @@ st.markdown(
     )
 st.markdown(
     '''The average score of each school with regard to the option.''')
-comSenti.visualizeMean()
-plt.show()
-st.pyplot()
+#comSenti.visualizeMean()
+#plt.show()
+#st.pyplot()
 
 st.markdown(
     '''<h2 style='text-align: left; color: black;'>Interactive Map for Each \
