@@ -6,7 +6,6 @@
 Centre for Research and Education on Biological Evolution and Environment          
 School of Earth Sciences and Engineering                                                         
 Nanjing University, Nanjing, China, 210093                  
-[GitHub link](https://github.com/biomchen/redistricting_sentiment)  
 
 ------------                                                      
 
