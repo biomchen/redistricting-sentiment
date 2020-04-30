@@ -324,7 +324,7 @@ class VisualizeResults:
         map = folium.Map(
             location=[
             mdCoords[0], mdCoords[1]],
-            zoom_start=11,
+            zoom_start=10,
             control_scale=True,
             prefer_canvas=True,
             disable_3d=True
