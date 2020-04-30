@@ -359,5 +359,4 @@ class VisualizeResults:
             fill_opacity=0.7,
             line_weight=0.6,
             line_opacity=0.2).add_to(map)
-
         return map
