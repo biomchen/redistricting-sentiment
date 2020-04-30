@@ -80,16 +80,16 @@ st.sidebar.markdown(
 
 st.sidebar.markdown('''**Insights**''')
 st.sidebar.markdown(
-    '''* The positive feedbacks of LOU commmunities \
-    towards the second-round-proposed school redistricting plans indicate \
-    that the latest plans present merits that statisfy local communities.''')
+    '''* The positive feedbacks of LOU communities towards the \
+    second-round-proposed school redistricting plans indicate \
+    that the latest plans present merits that satisfy local communities.''')
 st.sidebar.markdown(
     '''* Using interactive analyses on the sentiment, local education \
-    adminstration could effectively identify where needs are and tailor its \
+    administration could effectively identify where needs are and tailor its \
     resources to address those local community needs, which would save time \
     and money.''')
 st.sidebar.markdown(
-    '''* My web app could serve as a platform for general public \
+    '''* This web app could serve as a platform for general public \
     to understand their neighbours' feelings of the school redistricting \
     studies. For more details, please click [here]\
     (https://biomchen.github.io/redistricting.html).
