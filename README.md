@@ -6,7 +6,7 @@ School redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry f
 \
 ![](./figs/fig1.png)\
 <p algin="center">
-  <img src="example.png" width="600" height="308">
+  <img src="./figs/fig1.png" width="600" height="308">
 </p>
 **Fig. 1** Word clouds of the LOU feedbacks.
 
