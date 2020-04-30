@@ -49,53 +49,67 @@ st.markdown('''<p style='text-align: left; color: teal; font-size: 22px'>\
     Proposals.</p3>''',
     unsafe_allow_html=True)
 # seting up the sidebar and loading the data
-st.sidebar.title('Select School District and Option')
+st.sidebar.title('Make a selection')
 st.sidebar.markdown('**School Districts**')
-grade = st.sidebar.selectbox('Choose your focus district',
+grade = st.sidebar.selectbox('Choose district',
     list(sch_dict.keys()))
-st.sidebar.markdown('**Proposed Options**')
-option = st.sidebar.selectbox('Choose your faverite option',
+st.sidebar.markdown('**Options**')
+option = st.sidebar.selectbox('Choose option',
     list(sch_dict[grade])[5])
+st.sidebar.markdown("* **Option AB** refers to related but unspecified comments \
+    towards to either Option A or Option B.")
 
-st.sidebar.markdown("**Project Purpose**")
+st.sidebar.markdown("**Project Brief**")
+st.sidebar.markdown('''**Problem**''')
 st.sidebar.markdown(
-    '''**Problem**: School redistricting in Linganore-Oakdale-Urbana (LOU) \
-    area has stirred outcry from the local communities in the social media. \
+    '''* School redistricting in Linganore-Oakdale-Urbana (LOU) area has \
+    stirred outcry from the local communities in the social media. \
     In order to understand the concerns about local communities, Frederick \
     County Board of Education provided an online platform for community \
     members to express their opinions and conducted a basic statistics of \
-    local community concerns. However, the statistical analyses lack of \
+    local community concerns. However, their analyses lack of \
     details about what sentiment of the local communities were and why the \
     communities show favor/disfavor to the school redistricting plans.'''
     )
+st.sidebar.markdown('''**Approach**''')
 st.sidebar.markdown(
-    '''**Approach**: I created a python module `redistrict` to help perform \
-    data extraction, exploratory analyses, sentiment calculation, and result\
-    visualization with regard to the community feedbacks for proposed school \
-    redistrict plans. '''
-    )
+    '''* Created a python module `redistrict` to help perform data extraction, \
+    exploratory analyses, sentiment calculation, and result visualization \
+    with regard to the community feedbacks for proposed school redistrict \
+    plans. ''')
+
+st.sidebar.markdown('''**Insights**''')
 st.sidebar.markdown(
-    '''**Insights**: It shows that local communities more strongly oppose \
-    to any changes of the middle and high schools in comparison with that of \
-    the elementary schools. Despite this general pattern, the sentiments of \
-    different school districts vary and you can find more details by \
-    clicking [here](https://biomchen.github.io/redistricting.html). '''
+    '''* The positive feedbacks of LOU commmunities \
+    towards the second-round-proposed school redistricting plans indicate \
+    that the latest plans present merits that statisfy local communities.''')
+st.sidebar.markdown(
+    '''* Using interactive analyses on the sentiment, local education \
+    adminstration could effectively identify where needs are and tailor its \
+    resources to address those local community needs, which would save time \
+    and money.''')
+st.sidebar.markdown(
+    '''* My web app could serve as a platform for general public \
+    to understand their neighbours' feelings of the school redistricting \
+    studies. For more details, please click [here]\
+    (https://biomchen.github.io/redistricting.html).
+    '''
     )
 
 comSenti = CommentSentiments(db, grade, option)
 
 st.markdown('''<h2 style='text-align: left; color: black;'>Wold Clouds of \
-    feedbacks''',
+    LOU Feedbacks''',
     unsafe_allow_html=True
    )
 st.markdown(
-    '''The feedbacks were provided in a more-than-200-page pdf file. The \
-    `camelot` package was used to scrape table data from the file.''')
+    '''The feedbacks were provided in a over-200-page pdf file. The \
+    `camelot` package was implemented to scrape data from the table.''')
 comSenti.plotWords()
 st.pyplot()
 
-st.markdown('''<h2 style='text-align: left; color: black;'>Senttiment Score \
-    Distribution</h2>''',
+st.markdown('''<h2 style='text-align: left; color: black;'>Interactive Plot of \
+    Sentiment Scores</h2>''',
     unsafe_allow_html=True
     )
 st.markdown(
@@ -106,20 +120,19 @@ fig = comSenti.visualizeBySchools()
 st.plotly_chart(fig)
 
 st.markdown(
-    '''<h2 style='text-align: left; color: black;'>Mean Sentiment Score\
-    </h2>''',
+    '''<h2 style='text-align: left; color: black;'>Mean Sentiment Score of \
+    LOU School Districts</h2>''',
      unsafe_allow_html=True
     )
 st.markdown(
-    '''The average score of each school with regard to the option.''')
+    '''The average score of each school regarding to the selected option.''')
 comSenti.visualizeMean()
 plt.show()
 st.pyplot()
 
 st.markdown(
-    '''<h2 style='text-align: left; color: black;'>Interactive Map for Each \
-    School District
-    </h2>''',
+    '''<h2 style='text-align: left; color: black;'>Interactive Map for LOU \
+    School Districts</h2>''',
      unsafe_allow_html=True
     )
 st.markdown(
