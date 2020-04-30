@@ -8,6 +8,7 @@ import sqlite3
 import vincent
 import folium
 from itertools import chain
+import geopy
 from geopy.geocoders import Nominatim
 from nltk import tokenize
 from nltk.corpus import stopwords
@@ -16,6 +17,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from wordcloud import WordCloud
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
+geopy.geocoders.options.default_timeout=None
 
 
 class PdfTable:
@@ -256,7 +258,7 @@ class VisualizeResults:
         self.nominatim()
 
     def nominatim(self):
-        return Nominatim(user_agent='my-application')
+        return Nominatim(user_agent='sentiAnalyzer')
 
     def getCoords(self):
         coords = {}
