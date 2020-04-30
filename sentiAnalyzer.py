@@ -143,8 +143,7 @@ def main():
     gdf = shape2PDF(folder, sch_dict, grade)
     score = comSenti.analyzeScores()
     map = VisualizeResults(gdf, score).visualMap()
-    #return st.markdown(map._repr_html_(), unsafe_allow_html=True)
-    st.markdown('<iframe src="users/mengchen/documents/github/redistricting-sentiment/map.html"> </iframe>', unsafe_allow_html=True)
+    return st.markdown(map._repr_html_(), unsafe_allow_html=True)
 
 main()
 
