@@ -104,7 +104,7 @@ st.markdown('''<h2 style='text-align: left; color: black;'>Wold Clouds of \
    )
 st.markdown(
     '''The feedbacks were provided in a over-200-page pdf file. The \
-    `camelot` package was implemented to scrape data from the table.''')
+    class `PdfTable` was developed to scrape and parse data from the table.''')
 comSenti.plotWords()
 st.pyplot()
 
@@ -114,8 +114,8 @@ st.markdown('''<h2 style='text-align: left; color: black;'>Interactive Plot of \
     )
 st.markdown(
     '''The sentiment score was calculated with Valence Aware Dictionary and \
-    sEntiment Reasoner (`VADER`) from `nltk`; the componud scores were used \
-    for analyses.''')
+    sEntiment Reasoner (`VADER`); the componud scores were used in the \
+    developed class `CommentSentiments` for analyses.''')
 fig = comSenti.visualizeBySchools()
 st.plotly_chart(fig)
 
@@ -136,8 +136,8 @@ st.markdown(
      unsafe_allow_html=True
     )
 st.markdown(
-    '''Visualize the Mean Sentiment Score of Each School on US OpenStreetMap \
-    (OSM) data using `folium`.''')
+    '''Visualize the mean sentiment score of each school on US OpenStreetMap \
+    (OSM) data using the developed class 'VisualizeResults'.''')
 
 def main():
     gdf = shape2PDF(folder, sch_dict, grade)
@@ -147,5 +147,6 @@ def main():
 
 main()
 
-st.markdown('''The web app is created by [Meng Chen](https://biomchen.github.io)\
- with `streamlit`.''')
+st.markdown('''The web app is created by [Meng Chen]\
+    (https://biomchen.github.io). If you have any comments or suggestios, \
+    please send email to meng.chen03(at)gmail.com.''')
