@@ -294,31 +294,9 @@ class VisualizeResults:
         schools = self.scores.keys() # school list
         scores = self.scores.values() # results of analyzing scores
         coords = self.getCoords()
-        for school in schools:
-            lat = coords[school][0]
-            lon = coords[school][1]
-            if lat == 'NA' or lon == 'NA':
-                continue
-            else:
-                score = list(scores)[0]
-                keys = ['Positive', 'Negative', 'Neutral']
-                score = {k:score[key] for key in keys}
-            return score
-
-    def visualMap(self):
-        mdCoords = [39.38, -77.36] #  Frederick County MD GPS coordinates
-        map = folium.Map(
-            location=[
-            mdCoords[0], mdCoords[1]],
-            zoom_start=11,
-            control_scale=True,
-            prefer_canvas=True,
-            disable_3d=True
-        )
-        schools = self.scores.keys() # school list
-        scores = self.scores.values() # results of analyzing scores
-        coords = self.getCoords()
+        scoreDict = {}
         meanScores = []
+        newCoords = []
 
         for school in schools:
             lat = coords[school][0]
@@ -330,26 +308,32 @@ class VisualizeResults:
                 keys = ['Positive', 'Negative', 'Neutral']
                 meanScore = score['Mean']
                 meanScores.append(meanScore)
-                score = {k:score[k] for k in keys}
-                chart = self.json2PieChart(score, school)
-                vega = folium.Vega(chart, width=200, height=100)
-                pop_up = folium.Popup(max_width=400).add_child(vega)
-                icon = folium.Icon(color='blue', icon='info-sign')
-                folium.Marker(
-                    location=[lat, lon],
-                    popup=pop_up,
-                    icon=icon
-                ).add_to(map)
+                score = {key:score[key] for key in keys}
+                scoreDict.update({school:score})
+                newCoords.append([lat, lon])
 
-        dat = pd.DataFrame([schools, meanScores]).T
-        dat.columns=['School','Mean Score']
+        means = pd.DataFrame([schools, meanScores]).T
+        means.columns = ['School', 'Mean Score']
         print('Mean Sentiment Socre')
-        print(dat)
+        print(means)
+        return [means, scoreDict, newCoords]
 
+    def visualMap(self):
+        mdCoords = [39.38, -77.36] #  Frederick County MD GPS coordinates
+        allScores = self.score2Json()
+        map = folium.Map(
+            location=[
+            mdCoords[0], mdCoords[1]],
+            zoom_start=11,
+            control_scale=True,
+            prefer_canvas=True,
+            disable_3d=True
+        )
+        meanScores = allScores[0]
         folium.Choropleth(
             geo_data=self.gdf,
             name='choropleth',
-            data=dat,
+            data=meanScores,
             columns=['School','Mean Score'],
             key_on='feature.properties.School',
             fill_color='YlGnBu',
@@ -359,4 +343,19 @@ class VisualizeResults:
             fill_opacity=0.7,
             line_weight=0.6,
             line_opacity=0.2).add_to(map)
+
+        scores = allScores[1]
+        schools = list(scores.keys())
+        coords = allScores[2]
+
+        for school, coord in zip(schools, coords):
+            chart = self.json2PieChart(scores[school], school)
+            vega = folium.Vega(chart, width=200, height=100)
+            pop_up = folium.Popup(max_width=400).add_child(vega)
+            icon = folium.Icon(color='blue', icon='info-sign')
+            folium.Marker(
+                location=[coord[0], coord[1]],
+                popup=pop_up,
+                icon=icon
+            ).add_to(map)
         return map
