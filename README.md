@@ -10,7 +10,7 @@ School redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry f
 ## **Insights**
 * The positive feedbacks of LOU commmunities towards the second-round-proposed school redistricting plans indicate that the latest plans present merits that statisfy local communities.
 * Using interactive analyses on the sentiment, local education adminstration could effectively identify where needs are and tailor its resources to address those local community needs, which would save time and money.
-* My [web app](https://bit.ly/BetterOrWorseDemo) could serve as a platform for general public to understand their neighbours' feelings of the school redistricting studies. See Fig 2 for example.
+* My [web app](https://bit.ly/BetterOrWorseDemo) could serve as a platform for general public to understand their neighbours' feelings of the school redistricting studies (see **Fig 2** for example).
 
 ![](./figs/fig3.png)\
 **Fig. 2** Example of the interactive map of sentiments among different school districts.
@@ -28,7 +28,7 @@ In order scrape the data from the pdf file, I extract the comments and parse the
 In the module, I developed three classes `PdfTable`, `CommentSentiments`, and `VisualizeResults` to perform the majority of the required functionality.
 
 * `PdfTable`: extracting the data from a pdf file and to parse information to store it into a SQL database;
-* `CommentSentiments`: visualizing the Word Clouds of community feedbacks, calculating sentiment scores, performing exploratory analyses (see Fig. 3 for example), and visualizing the results;
+* `CommentSentiments`: visualizing the Word Clouds of community feedbacks, calculating sentiment scores, performing exploratory analyses (see **Fig. 3** for example), and visualizing the results;
 * `VisualizeResults`: parsing the results by different school districts and visualizing the results in a interactive map.
 
 ## **Tools and Techs**
