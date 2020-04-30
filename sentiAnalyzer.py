@@ -114,7 +114,7 @@ st.markdown('''<h2 style='text-align: left; color: black;'>Interactive Plot of \
     )
 st.markdown(
     '''The sentiment score was calculated with Valence Aware Dictionary and \
-    sEntiment Reasoner (`VADER`) from `NLTK`; the componud scores were used \
+    sEntiment Reasoner (`VADER`) from `nltk`; the componud scores were used \
     for analyses.''')
 fig = comSenti.visualizeBySchools()
 st.plotly_chart(fig)
@@ -137,7 +137,7 @@ st.markdown(
     )
 st.markdown(
     '''Visualize the Mean Sentiment Score of Each School on US OpenStreetMap \
-    (OSM) data using `Folium`.''')
+    (OSM) data using `folium`.''')
 
 def main():
     gdf = shape2PDF(folder, sch_dict, grade)
@@ -148,4 +148,4 @@ def main():
 main()
 
 st.markdown('''The web app is created by [Meng Chen](https://biomchen.github.io)\
- with `Streamlit`.''')
+ with `streamlit`.''')
