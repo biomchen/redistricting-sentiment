@@ -10,6 +10,7 @@ import folium
 from itertools import chain
 import geopy
 from geopy.geocoders import Nominatim
+import streamlit as st
 from nltk import tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
@@ -237,6 +238,27 @@ def shape2PDF(folder, schDict, grade):
     df = df[df['School'].isin(schDict[grade][1])]
     return df
 
+@st.cache(persist=True, suppress_st_warning=True)
+def getCoords(gdf):
+    coords = {}
+    print("Getting GPS coordinates of schools ...")
+    for _, row in gdf.iterrows():
+        add = row['ADDRESS'] + ', ' + str(row['ZIP_CODE'])
+        school = row['School']
+        coord = Nominatim(user_agent='sentiAnalyzer').geocode(add)
+        if coord is None:
+            coords.update({school:('NA', 'NA')})
+        else:
+            coords.update(
+                {school:(coord.latitude, coord.longitude)}
+            )
+            print('{0}: {1}, {2}'.format(
+                school,
+                coord.latitude,
+                coord.longitude)
+                )
+    return coords
+
 class VisualizeResults:
     '''
     a class to visualize the sentiments in an interactive map.
@@ -255,30 +277,6 @@ class VisualizeResults:
     def __init__(self, gdf, scores):
         self.gdf = gdf
         self.scores = scores
-        self.nominatim()
-
-    def nominatim(self):
-        return Nominatim(user_agent='sentiAnalyzer')
-
-    def getCoords(self):
-        coords = {}
-        print("Getting GPS coordinates of schools ...")
-        for _, row in self.gdf.iterrows():
-            add = row['ADDRESS'] + ', ' + str(row['ZIP_CODE'])
-            school = row['School']
-            coord = self.nominatim().geocode(add)
-            if coord is None:
-                coords.update({school:('NA', 'NA')})
-            else:
-                coords.update(
-                    {school:(coord.latitude, coord.longitude)}
-                )
-                print('{0}: {1}, {2}'.format(
-                    school,
-                    coord.latitude,
-                    coord.longitude)
-                    )
-        return coords
 
     def json2PieChart(self, score, schName):
         pieChart = vincent.Pie(
@@ -295,7 +293,7 @@ class VisualizeResults:
     def score2Json(self):
         schools = self.scores.keys() # school list
         scores = self.scores.values() # results of analyzing scores
-        coords = self.getCoords()
+        coords = getCoords(self.gdf)
         scoreDict = {}
         meanScores = []
         newCoords = []
