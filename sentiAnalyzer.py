@@ -137,7 +137,7 @@ st.markdown(
     )
 st.markdown(
     '''Visualize the mean sentiment score of each school on US OpenStreetMap \
-    (OSM) data using the developed class 'VisualizeResults'.''')
+    (OSM) data using the developed class `VisualizeResults`.''')
 
 def main():
     gdf = shape2PDF(folder, sch_dict, grade)
