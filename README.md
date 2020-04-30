@@ -1,21 +1,49 @@
 #### About
 
-## Sentiments among local communities - A case study of LOU Area
+# **Better or Worse?**
 
 **Meng Chen**                          
 Centre for Research and Education on Biological Evolution and Environment          
 School of Earth Sciences and Engineering                                                         
-Nanjing University, Nanjing, China, 210093                                                          
+Nanjing University, Nanjing, China, 210093                  
+[GitHub link](https://github.com/biomchen/redistricting_sentiment)  
 
-### Project description
-Sentiment plays an important role in modern society as the success of the social media development around the globe. Any people can share their feelings with friends or any people thousands of miles away. In turn, their friends can show their sympathy from the other side of the world without physical presence. Virtually, we are all connected now. People share feeling, reviews, opinions around the world. The embedded sentiments have been widely assessed by researchers in politics, commercials, governments, and etc, in order to conduct polling, to improve their products or service, to implement new policies, and etc. School redistricting is a unique process that has longitudinal impacts on every family in the United States; good school district increases the property price and provide better education for the kids in the district. Each year, numerous redistricting projects have been carried out across the country and have been stirred outcries of local communities based on a variety of reasons. To understand the needs of the local communities, I conducted the sentiment analyses on local communities based on the feedbacks on the proposed new school districts in Linganore-Oakdale-Urbana (LOU) area.
+------------                                                      
 
-LOU area is located in the southeastern area of the Frederick County of Maryland. During last ten years, the local communities have been transformed into popular suburban residency for people who work in the Washington-Maryland area. Many professionals, such as federal government employees or military personals chose to live in these neighborhoods, despite the distant transportation between their working places and homes. Even some government facilities have been established in this area. For an example, the Social Security Data Center is located next to the Park and Ride of the Exit 26 of Interstate-270 in the Urbana area. Recently, [Kite Pharma](https://www.kitepharma.com) is starting to build a pharmaceutical manufacturing facility here, and along its side, a hotel and associated restaurants will be built in two years. Urbana area has become the prime location for both business and residents.
+## **Problem**
+School redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry from the local communities in the social media. In order to understand the concerns about local communities, Frederick County Board of Education provided an online platform for community members to express their opinions and conducted a basic statistics of local community concerns. However, their analyses lack of details about what sentiment of the local communities were and why the communities show favor/disfavor to the school redistricting plans.
 
-These ongoing commercial developments bring prosperity to the local communities. So does anxiety. For an example, the workforce brought by Kite Pharma has been estimated about 200-300 employees initially to 700-900 by its capacity. Such huge workforce will need hundreds of homes to accommodate their housing needs in nearby communities. Thus, the estate projects have been steadfastly developed in this area. More and more housing projects start to show themselves off the landscape. In contrast, only two new elementary schools have been added to the entire area, which could not alleviate overcrowd situations in local communities. It becomes clear that, lacking of additional government funding, the Board of Education of Frederick County has an urgent need to conduct school redistricting on the basis of changing feeder patterns.
+## **Insights**
+* The positive feedbacks of LOU commmunities towards the second-round-proposed school redistricting plans indicate that the latest plans present merits that statisfy local communities.
+* Using interactive analyses on the sentiment, local education adminstration could effectively identify where needs are and tailor its resources to address those local community needs, which would save time and money.
+* My web app could serve as a platform for general public to understand their neighbours' feelings of the school redistricting studies. For more details, please click here.
 
-Starting in January, 2019, Frederick County has contracted with Cropper GIS Consulting to conduct the redistricting study and expected the study would be completed by the end of the 2019. This study primarily focuses on the attendance boundary and feeder patterns of local communities as two new schools have been added to the school district. Supposedly, this project can fully address the enrollment growth in LOU area and provide projections of the school enrollments in next five-eight years. Based on the message of the Board of Education, the redistricting roots in their core belief that all students are entitled equally to respect, opportunity, and excellence ([here for details](https://www.fcps.org/capital-program/linganore-oakdale-urbana-area-redistricting-study)). However, after the Public Engagement Session in March, 2019, the proposed attendance boundary stirred the outrage from local communities based on analyses of the parents' feedbacks provided by the Cropper GIS. Most of parents were extremely frustrated by the proposed new attendance boundaries. Some parents in Urbana area for example organized a local hearing to express their frustration to one of the Board of Education members. In attempt to alleviate the outrage raised from local communities, two entirely new options have been proposed in the Public Engagement Session in June, 2019 to replace the old ones. It is not clear that if those new options satisfying the needs of the local communities despite some positive sign in the parents' feedbacks.
+## **Data**
+The community feedbacks for the second-round proposals of new school districts were assembled in single pdf file that contains numerous tables stratching over 200-page long. The tables store feedbacks for elementary, middle, and high school districts of LOU area in Frederick County, MD. Each school district have tables for options A and B as well as some comments related but not specific to any option. I desginated those unspecific comments to option AB.
 
-This project is the quantitative assessment of the parents' feedbacks prior to the superintendent's recommendation in the October. It primarily focuses on the sentiment and preferences of parents for new proposed options after the Public Engagement Session in June, 2019. The parents' preferable options will be compared with the plan of the superintendent's recommendation to investigate whether Board of Education's choices are aligned with parents' preferences and seek potential explanation. These will provide the board members the basic understanding of parents preferences quantitatively and help them identify which communities have been mostly affected after June's proposal. In addition, the results will help parents recognize the educational needs of the majority of the their local communities.
+## **Approach**
+In order scrape the data from the pdf file, I extract the comments and parse them into dataframe and stored them in a SQL database. To improve the efficiency of analyzing the data, I created `redistrict` module to scrape data, to perform exploratory data analyses and sentiment analyses, and to finally visualize the insights.
 
-It should be noted that this project will apply Natural Language Processing (NLP) techniques and can be broadly implemented in other similar projects.
+#### **Python Module** `redistrict`
+In the module, I developed three classes `PdfTable`, `CommentSentiments`, and `VisualizeResults` to perform the majority of the required functionality.
+
+* `PdfTable`: extracting the data from a pdf file and to parse information to store it into a SQL database;
+* `CommentSentiments`: visualizing the Word Clouds of community feedbacks, calculating sentiment scores, performing exploratory analyses, and visualizing the results;
+* `VisualizeResults`: parsing the results by different school districts and visualizing the results in a interactive map.
+
+## **Tools and Techs**
+* Python
+    * Camelot
+    * Worldcloud
+    * Streamlit
+    * Folium
+    * GeoPandas
+    * NLTK
+    * Plotly
+    * Vincent
+    * Geopy
+* OpenStreetMap(OSM)
+* NLP
+* Feature Engineering
+* SQL
+* AWS EC2, S3
