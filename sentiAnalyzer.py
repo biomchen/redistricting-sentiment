@@ -59,7 +59,7 @@ option = st.sidebar.selectbox('Choose option',
 st.sidebar.markdown("* **Option AB** refers to related but unspecified comments \
     towards to either Option A or Option B.")
 
-st.sidebar.markdown("**Project Brief**")
+st.sidebar.markdown("**Project Description**")
 st.sidebar.markdown('''**Problem**''')
 st.sidebar.markdown(
     '''* School redistricting in Linganore-Oakdale-Urbana (LOU) area has \
