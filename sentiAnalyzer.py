@@ -114,7 +114,7 @@ st.markdown('''<h2 style='text-align: left; color: black;'>Interactive Plot of \
     )
 st.markdown(
     '''The sentiment score was calculated with Valence Aware Dictionary and \
-    sEntiment Reasoner (`VADER`); the componud scores were used in the \
+    sEntiment Reasoner (`VADER`); the componud scores were used by the \
     developed class `CommentSentiments` for analyses.''')
 fig = comSenti.visualizeBySchools()
 st.plotly_chart(fig)
