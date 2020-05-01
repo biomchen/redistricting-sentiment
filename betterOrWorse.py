@@ -87,8 +87,8 @@ st.sidebar.markdown(
     resources to address them, which would save time and money.''')
 st.sidebar.markdown(
     '''* This web app could serve as a platform for general public \
-    to understand their neighbours' feelings of the school redistricting \
-    studies. For more details, please click [here]\
+    to understand their neighbours' sentiments regarding to the school \
+    redistricting studies. For more details, please click [here]\
     (https://biomchen.github.io/redistricting.html).
     '''
     )
