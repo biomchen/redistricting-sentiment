@@ -40,7 +40,6 @@ sch_dict = {
     ]
 }
 
-
 # set the title of web app
 st.title('Better or Worse?')
 st.markdown('''<p style='text-align: left; color: teal; font-size: 22px'>\
@@ -56,8 +55,8 @@ grade = st.sidebar.selectbox('Choose district',
 st.sidebar.markdown('**Options**')
 option = st.sidebar.selectbox('Choose option',
     list(sch_dict[grade])[5])
-st.sidebar.markdown("* **Option AB** refers to related but unspecified comments \
-    towards to either Option A or Option B.")
+st.sidebar.markdown("* **Option AB** refers to other related thoughts besides \
+    those of Options A and B.")
 
 st.sidebar.markdown("**Project Description**")
 st.sidebar.markdown('''**Problem**''')
