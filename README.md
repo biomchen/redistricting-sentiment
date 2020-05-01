@@ -8,7 +8,9 @@ School redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry f
 **Fig. 1** Word clouds of the LOU feedbacks.
 
 ## **Insights**
-* The positive feedbacks of LOU communities towards the second-round-proposed school redistricting plans indicate that the latest plans present merits that satisfied local communities.
+* The LOU commmunities show more positive attitudes towards the second-round proposed school redistricting pl ans. Particularly, both Options A and B of high school districts have much less negative feedbacks than previous versions. Local communities that have childrens enrolled in Linganore HS prefer Option B instead of Option A; those in Oakdale HS like Option A more than Option B. Urbana HS parents seems OK for both options.
+* For middle school districts, communities that have their children enrolled in New Market MS, Oakdale MS, Urbana MS largely prefer Option A. Windosor Knolls MS community shows neurtual attitde towards both options, despite its sentiment score of the Option B is slightly higher. Some parents of Thomas Johnson MS show great objection to the Option A, but relatively neutral attitude to the Option B.
+* Among elementary school districts, the Option A of Deer Crossing ES, Centerville ES, and Spring Ridge ES were largely preferred by local communities, while the Option B gain positive feedbacks among parents of Spring Ridge ES, Green Valley, and Kempton ES. It seems that Spring Ridge ES community particularly favored the Option B.
 * Using interactive sentiment analyses, local education administration could effectively identify where local community needs were and tailor its resources to address them, which would save time and money.
 * My [web app](https://bit.ly/BetterOrWorseDemo) could serve as a platform for general public to understand their neighbors' feelings of the school redistricting studies (see **Fig 2** for example).
 
