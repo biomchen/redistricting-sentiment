@@ -63,31 +63,29 @@ st.sidebar.markdown("**Project Description**")
 st.sidebar.markdown('''**Problem**''')
 st.sidebar.markdown(
     '''* School redistricting in Linganore-Oakdale-Urbana (LOU) area has \
-    stirred outcry from the local communities in the social media. \
+    stirred outcry from the local communities in social media. \
     In order to understand the concerns about local communities, Frederick \
     County Board of Education provided an online platform for community \
-    members to express their opinions and conducted a basic statistics of \
-    local community concerns. However, their analyses lack of \
-    details about what sentiment of the local communities were and why the \
-    communities show favor/disfavor to the school redistricting plans.'''
-    )
+    members to express their opinions and conducted a basic statistic analyses \
+    of the survey. However, the analyses lack of details about sentiment of \
+    the local communities and why the communities show favor/disfavor \
+    to the school redistricting plans.''')
 st.sidebar.markdown('''**Approach**''')
 st.sidebar.markdown(
-    '''* Created a python module `redistrict` to help perform data extraction, \
-    exploratory analyses, sentiment calculation, and result visualization \
-    with regard to the community feedbacks for proposed school redistrict \
-    plans. ''')
+    '''* Created a in-house python module `redistrict` to perform data \
+    extraction, exploratory analyses, sentiment score calculation, and data \
+    visualization with regard to the community feedbacks for proposed school \
+    redistricting plans. ''')
 
 st.sidebar.markdown('''**Insights**''')
 st.sidebar.markdown(
     '''* The positive feedbacks of LOU communities towards the \
     second-round-proposed school redistricting plans indicate \
-    that the latest plans present merits that satisfy local communities.''')
+    that the latest plans had some merits that satisfied local communities.''')
 st.sidebar.markdown(
-    '''* Using interactive analyses on the sentiment, local education \
-    administration could effectively identify where needs are and tailor its \
-    resources to address those local community needs, which would save time \
-    and money.''')
+    '''* Using interactive sentiment analyses, local education administration \
+    could effectively identify where local community needs were and tailor its \
+    resources to address them, which would save time and money.''')
 st.sidebar.markdown(
     '''* This web app could serve as a platform for general public \
     to understand their neighbours' feelings of the school redistricting \

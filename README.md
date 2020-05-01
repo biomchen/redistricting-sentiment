@@ -8,9 +8,9 @@ School redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry f
 **Fig. 1** Word clouds of the LOU feedbacks.
 
 ## **Insights**
-* The positive feedbacks of LOU commmunities towards the second-round-proposed school redistricting plans indicate that the latest plans present merits that statisfy local communities.
-* Using interactive analyses on the sentiment, local education adminstration could effectively identify where needs are and tailor its resources to address those local community needs, which would save time and money.
-* My [web app](https://bit.ly/BetterOrWorseDemo) could serve as a platform for general public to understand their neighbours' feelings of the school redistricting studies (see **Fig 2** for example).
+* The positive feedbacks of LOU communities towards the second-round-proposed school redistricting plans indicate that the latest plans present merits that satisfied local communities.
+* Using interactive sentiment analyses, local education administration could effectively identify where local community needs were and tailor its resources to address them, which would save time and money.
+* My [web app](https://bit.ly/BetterOrWorseDemo) could serve as a platform for general public to understand their neighbors' feelings of the school redistricting studies (see **Fig 2** for example).
 
 ![](./figs/fig3.png)\
 **Fig. 2** Example of the interactive map of sentiments among different school districts.
