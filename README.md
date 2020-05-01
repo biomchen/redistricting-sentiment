@@ -1,7 +1,7 @@
 #### About
 
 # **Better or Worse?**
-for detailed analyses, please see the notebook `redistricting_nb.ipynb`
+For detailed analyses, please see the notebook `redistricting_nb.ipynb`
 ## **Problem**
 School redistricting in Linganore-Oakdale-Urbana (LOU) area has stirred outcry from the local communities in the social media. In order to understand the concerns about local communities, Frederick County Board of Education provided an online platform for community members to express their opinions and conducted a basic statistic analyses of local community concerns. However, their analyses lack of details about what sentiment of the local communities were and why the communities show favor/disfavor to the school redistricting plans.
 \
