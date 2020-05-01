@@ -127,7 +127,7 @@ class CommentSentiments:
                       if word.lower() not in stop_words]
         words_clean = " ".join(word for word in words_clean)
         comments_wc = WordCloud(
-                        background_color='black',
+                        background_color='white',
                         max_words=2000,
                         stopwords=stop_words)
         comments_wc.generate(words_clean)
