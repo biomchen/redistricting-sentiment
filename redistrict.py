@@ -125,11 +125,12 @@ class CommentSentiments:
         words = [tokenizer.tokenize(row[1]) for _, row in data.iterrows()]
         words_clean =[word.lower() for word in list(chain(*words))
                       if word.lower() not in stop_words]
+        words_clean = " ".join(word for word in words_clean)
         comments_wc = WordCloud(
-                        background_color='white',
+                        background_color='black',
                         max_words=2000,
                         stopwords=stop_words)
-        comments_wc.generate(str(words_clean))
+        comments_wc.generate(words_clean)
         fig = plt.figure(figsize=(20,10), facecolor='k')
         plt.imshow(comments_wc, interpolation='bilinear')
         plt.axis('off')
