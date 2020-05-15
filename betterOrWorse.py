@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import redistrict
 from redistrict import *
 import streamlit as st
